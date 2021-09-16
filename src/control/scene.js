@@ -7,4 +7,4 @@ export function Scene(instance, onStart, onRender) {
 
 Scene.prototype.setInstance = function(instance){
     this.instance = instance;
-}
+};

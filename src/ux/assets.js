@@ -14,7 +14,7 @@ Assets.prototype.loadAudio = function(name, url) {
         this._stillLoading -= 1;
         this.sounds[name] = audio;
     }.bind(this));
-}
+};
 Assets.prototype.loadImage = function(name, url) {
     this._stillLoading += 1;
     return new Promise(r => {
@@ -24,7 +24,7 @@ Assets.prototype.loadImage = function(name, url) {
             r(i);
         }); i.src = url;
     });
-}
+};
 Assets.prototype.p_createSil = function(name, color){
     var sourceImg = this.getImage(name).source;
     var canvas = document.createElement("canvas");
@@ -38,7 +38,7 @@ Assets.prototype.p_createSil = function(name, color){
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     this.images[name + SilSuffix] = { source: canvas, width: canvas.width,
             height: canvas.height };
-}
+};
 Assets.prototype.loadFont = function(name, url, mappingUrl) {
     this._stillLoading += 1;
     this.loadImage(name, url);
@@ -60,17 +60,17 @@ Assets.prototype.loadFont = function(name, url, mappingUrl) {
                     height: parseInt(chunks[5].substring(chunks[5].indexOf("=") + 1)),
                     xOffset: parseInt(chunks[6].substring(chunks[6].indexOf("=") + 1)),
                     yOffset: parseInt(chunks[7].substring(chunks[7].indexOf("=") + 1))
-                }
+                };
                 this.fontData[name + "_" + ascii] = data;
             }
         }
         this._stillLoading -= 1;
     }.bind(this));
-}
+};
 Assets.prototype.loadSpriteSheet = function(name, url, mappingUrl){
     this.loadImage(name, url);
     this.loadMapping(name, mappingUrl);
-}
+};
 Assets.prototype.loadMapping = function(name, mappingUrl){
     this._stillLoading += 1;
     _httpGet(mappingUrl, function (s) {
@@ -97,31 +97,31 @@ Assets.prototype.loadMapping = function(name, mappingUrl){
         this.mappingData[name] = returnObject;
         this._stillLoading -= 1;
     }.bind(this));
-}
+};
 Assets.prototype.getLineHeight = function(font) {
     return this.fontData[font + "_LH"];
-}
+};
 Assets.prototype.getImage = function(name) {
     return this.images[name];
-}
+};
 Assets.prototype.containsImage = function(name){
     return _indexOf(name, Object.keys(this.images)) >= 0;
-}
+};
 Assets.prototype.getSound = function(name){
     return this.sounds[name];
-}
+};
 Assets.prototype.containsSound = function(name) {
     return _indexOf(name, Object.keys(this.sounds)) >= 0;
-}
+};
 Assets.prototype.getFontData = function(name){
     return this.fontData[name];
-}
+};
 Assets.prototype.containsFontData = function(name) {
     return _indexOf(name, this.fontData) >= 0;
-}
+};
 Assets.prototype.getMappingData = function(name){
     return this.mappingData[name];
-}
+};
 Assets.prototype.containsMappingData = function(name) {
     return _indexOf(name, this.mappingData) >= 0;
-}
+};

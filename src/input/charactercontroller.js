@@ -11,7 +11,7 @@ export function CharacterController(isPlayerControlled, speed) {
         let controller = this.gameObject.controller;
 
         let isInputting = !instance.isServer &&
-            (input.isDown("W") || input.isDown("A") || input.isDown("S") || input.isDown("D"))
+            (input.isDown("W") || input.isDown("A") || input.isDown("S") || input.isDown("D"));
         if(input && isPlayerControlled && isInputting){
             direction.x = 0;
             direction.y = 0;
@@ -62,6 +62,6 @@ export function CharacterController(isPlayerControlled, speed) {
             let nextY = this.gameObject.y + this.gameObject.velocity.y * instance.deltaTime;
             controller.setMoveTarget(nextX, nextY);
         }
-    }
+    };
     return script;
 }

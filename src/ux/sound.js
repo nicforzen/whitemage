@@ -4,13 +4,13 @@ export function Sound() {
 
 Sound.prototype.setInstance = function(instance){
     this.instance = instance;
-}
+};
 Sound.prototype.getAudio = function(name){
     return this.p_getAudioObject(name, false);
-}
+};
 Sound.prototype.getAudioInstance = function(name){
     return this.p_getAudioObject(name, true);
-}
+};
 Sound.prototype.p_getAudioObject = function(name, isInstance){
     var source = this.instance.assets.getSound(name);
     if(isInstance) source = source.cloneNode();
@@ -51,4 +51,4 @@ Sound.prototype.p_getAudioObject = function(name, isInstance){
             this._src.loop = v;
         }
     };
-}
+};

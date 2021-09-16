@@ -20,20 +20,20 @@ Animation.prototype.advance = function(time){
             }
         }
     }
-}
+};
 Animation.prototype.getImageName = function(){
     return this.frames[this.currentFrame].sprite.imageName;
-}
+};
 Animation.prototype.getSpriteName = function(){
     return this.frames[this.currentFrame].sprite.spriteName;
-}
+};
 Animation.prototype.getIsFlippedX = function(){
     return this.frames[this.currentFrame].sprite.isFlippedX;
-}
+};
 Animation.prototype.getIsFlippedY = function(){
     return this.frames[this.currentFrame].sprite.isFlippedY;
-}
+};
 Animation.prototype.reset = function(){
     this.timer = 0;
     this.currentFrame = 0;
-}
+};

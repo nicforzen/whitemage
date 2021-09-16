@@ -8,11 +8,11 @@ export function Animator(onCalculateAnimation) {
 Animator.prototype.addAnimation = function(name, animation){
     this.animations[name] = animation;
     this.calculateNewAnimation();
-}
+};
 Animator.prototype.advance = function(time){
     if(this.currentAnimation) this.animations[this.currentAnimation].advance(time);
     this.calculateNewAnimation();
-}
+};
 Animator.prototype.calculateNewAnimation = function(){
     if(this.onCalculateAnimation){
         let newAnimation = this.onCalculateAnimation(this.currentAnimation);
@@ -31,4 +31,4 @@ Animator.prototype.calculateNewAnimation = function(){
             renderer.flipX = this.animations[this.currentAnimation].getIsFlippedX();
         }
     }
-}
+};

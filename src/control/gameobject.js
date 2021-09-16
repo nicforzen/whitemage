@@ -25,7 +25,7 @@ export function GameObject(name){
 GameObject.prototype.addScript = function(script){
     script.gameObject = this;
     this.scripts.push(script);
-}
+};
 GameObject.prototype.removeScriptById = function(id){
     for (var i = 0; i < this.scripts.length; i++) {
         let script = this.scripts[i];
@@ -34,17 +34,17 @@ GameObject.prototype.removeScriptById = function(id){
             i -= 1;
         }
     }
-}
+};
 GameObject.prototype.addCollider = function(collider){
     collider.gameObject = this;
     collider.x = this.x - collider.getWidth() * collider.offsetx;
     collider.y = this.y - collider.getHeight() * collider.offsety;
     this.colliders.push(collider);
-}
+};
 GameObject.prototype.setAnimator = function(animator){
     animator.gameObject = this;
     this.animator = animator;
-}
+};
 GameObject.prototype.addSubobject = function(obj){
     obj.parent = this;
     obj.instance = this.instance;
@@ -52,13 +52,13 @@ GameObject.prototype.addSubobject = function(obj){
     obj.y = this.y + obj.localY*this.scale;
     obj.scale = this.scale;
     this.subObjects.push(obj);
-}
+};
 GameObject.prototype.setInstance = function(instance){
     this.instance = instance;
     for(var i = 0; i < this.subObjects.length; i++){
         this.subObjects[i].setInstance(instance);
     }
-}
+};
 GameObject.prototype.collidesAt = function(x, y){
     for(var i = 0; i < this.colliders.length; i++){
         let collider = this.colliders[i];
@@ -68,7 +68,7 @@ GameObject.prototype.collidesAt = function(x, y){
         // }
     }
     return false;
-}
+};
 GameObject.prototype.initialize = function(){
     if(!this.p_initialized){
         for(let a=0;a<this.colliders.length;a++){
@@ -78,4 +78,4 @@ GameObject.prototype.initialize = function(){
         }
         this.p_initialized = true;
     }
-}
+};

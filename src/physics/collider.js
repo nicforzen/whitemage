@@ -1,5 +1,5 @@
 
-import {Vector} from './vector.js'
+import {Vector} from './vector.js';
 import { Point } from './point.js';
 import { Util } from '../util/util.js';
 
@@ -20,7 +20,7 @@ export function BoxCollider(offsetx, offsety, w, h, solid){
         getHeight() {
             return this.h;
         }
-    }
+    };
 }
 
 export function CircleCollider(offsetx, offsety, r, solid){
@@ -39,7 +39,7 @@ export function CircleCollider(offsetx, offsety, r, solid){
         getHeight() {
             return this.r * 2;
         }
-    }
+    };
 }
 
 export function ArcCollider(offsetx, offsety, r, radianStart, radianEnd, solid){
@@ -60,7 +60,7 @@ export function ArcCollider(offsetx, offsety, r, radianStart, radianEnd, solid){
         getHeight() {
             return this.r * 2;
         }
-    }
+    };
 }
 
 export function PolygonCollider(offsetx, offsety, solid, points){
@@ -83,7 +83,7 @@ export function PolygonCollider(offsetx, offsety, solid, points){
         addPoint(point){
             this.points.push(point);
         }
-    }
+    };
 }
 
 export var CollisionUtil = {
@@ -393,4 +393,4 @@ export var CollisionUtil = {
         && x <= boxCollider.x + boxCollider.w
         && y <= boxCollider.y + boxCollider.h;
     }
-}
+};

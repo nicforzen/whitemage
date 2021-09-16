@@ -20,4 +20,4 @@ Script.prototype.initialize = function() {
             }
             this.p_initialized = true;
     }
-}
+};

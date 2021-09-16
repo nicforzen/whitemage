@@ -1,4 +1,4 @@
-import { Vector } from '../physics/vector.js'
+import { Vector } from '../physics/vector.js';
 
 function PlayerController(x, y){
     this.moveTarget = null;
@@ -10,10 +10,10 @@ PlayerController.prototype.setMoveTarget = function(x, y){
         this.moveTarget.x = Math.floor(x);
         this.moveTarget.y = Math.floor(y);
     }
-}
+};
 PlayerController.prototype.clearMoveTarget = function(){
     this.moveTarget = null;
-}
+};
 PlayerController.prototype.getTargetDirectionVector = function(x, y){
     let direction = new Vector(0,0);
     if(this.moveTarget){
@@ -28,7 +28,7 @@ PlayerController.prototype.getTargetDirectionVector = function(x, y){
         }
     }
     return direction;
-}
+};
 PlayerController.prototype.toJson = function(){
     return JSON.stringify(this.moveTarget);
-}
+};

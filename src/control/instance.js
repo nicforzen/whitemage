@@ -39,8 +39,8 @@ export function Instance(isServer, scene, input, render, assets, networkConnecti
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
     this.initialized = true;
     if(!this.isServer){
-        this.prefs = new PlayerPrefs()
-        this.prefs.p_setPrefs(localStorage)
+        this.prefs = new PlayerPrefs();
+        this.prefs.p_setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
         this.render._ctx.imageSmoothingEnabled = false;
@@ -76,14 +76,14 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         }.bind(this));
     }
 
-    if(this.scene.loadAssets) this.scene.loadAssets()
-}
+    if(this.scene.loadAssets) this.scene.loadAssets();
+};
 
 Instance.prototype.getNewObjectId = function(){
-    let id = this._objId
-    this._objId += 1
-    return id
-}
+    let id = this._objId;
+    this._objId += 1;
+    return id;
+};
 Instance.prototype.error = function(message){
     console.error("ERROR: " + message);
     this.hadError = true;
@@ -92,27 +92,27 @@ Instance.prototype.error = function(message){
     this.onMouseMove = null;
     this.onMouseDown = null;
     this.onMouseUp = null;
-}
+};
 Instance.prototype.addObject = function(gameObj){
-    if(!gameObj) return
+    if(!gameObj) return;
     gameObj.setInstance(this);
     this.p_gameObjects.push(gameObj);
     for(var i = 0; i < gameObj.subObjects.length; i++){
         this.p_gameObjects.push(gameObj.subObjects[i]);
     }
     return gameObj;
-}
+};
 Instance.prototype.addUiItem = function(gameObj){
-    if(!gameObj) return
+    if(!gameObj) return;
     gameObj.setInstance(this);
     this.p_uiItems.push(gameObj);
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.p_uiItems.push(gameObj.subObjects[i]);
     }
     return gameObj;
-}
+};
 Instance.prototype.destroyObject = function(gameObj){
-    if(!gameObj) return
+    if(!gameObj) return;
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyObject(gameObj.subObjects[i]);
     }
@@ -121,7 +121,7 @@ Instance.prototype.destroyObject = function(gameObj){
         if(script.onDestroy) script.onDestroy();
     }
     _removeArray(gameObj, this.p_gameObjects);
-}
+};
 Instance.prototype.destroyObjectByName = function(name){
     for (let i = 0; i < this.p_gameObjects.length; i++) {
         let gameObj = this.p_gameObjects[i];
@@ -137,7 +137,7 @@ Instance.prototype.destroyObjectByName = function(name){
             i -= 1;
         }
     }
-}
+};
 Instance.prototype.destroyObjectById = function(id){
     for (let i = 0; i < this.p_gameObjects.length; i++) {
         let gameObj = this.p_gameObjects[i];
@@ -153,15 +153,15 @@ Instance.prototype.destroyObjectById = function(id){
             i -= 1;
         }
     }
-}
+};
 Instance.prototype.findObjectByName = function(name){
     for (let i = 0; i < this.p_gameObjects.length; i++) {
         if(this.p_gameObjects[i].name == name) return this.p_gameObjects[i];
     }
     return null;
-}
+};
 Instance.prototype.destroyUiItem = function(gameObj){
-    if(!gameObj) return
+    if(!gameObj) return;
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyUiItem(gameObj.subObjects[i]);
     }
@@ -170,7 +170,7 @@ Instance.prototype.destroyUiItem = function(gameObj){
         if(script.onDestroy) script.onDestroy();
     }
     _removeArray(gameObj, this.p_uiItems);
-}
+};
 Instance.prototype.destroyUiItemByName = function(name){
     for (let i = 0; i < this.p_uiItems.length; i++) {
         let gameObj = this.p_uiItems[i];
@@ -186,30 +186,30 @@ Instance.prototype.destroyUiItemByName = function(name){
             i -= 1;
         }
     }
-}
+};
 Instance.prototype.getGameObjects = function(){
     return this.p_gameObjects;
-}
+};
 Instance.prototype.findUiItemByName = function(name){
     for (let i = 0; i < this.p_uiItems.length; i++) {
         if(this.p_uiItems[i].name == name) return this.p_uiItems[i];
     }
     return null;
-}
+};
 Instance.prototype.setNetworkConnection = function(socket){
     this.p_socket = socket;
-}
+};
 Instance.prototype.getNetworkConnection = function(){
     if(!this.p_socket) return OfflineConnection();
     return this.p_socket;
-}
+};
 Instance.prototype.p_gameLoop = function() {
     if(this.hadError) return;
 
     // TODO do something with this type of annotation. Needed?
     // #DEBUG
     if(!this.initialized){
-        this.error("Instance must be initialized before running")
+        this.error("Instance must be initialized before running");
     }
     // #END
 
@@ -228,7 +228,7 @@ Instance.prototype.p_gameLoop = function() {
     this.render.renderFrame();
     this.lastTime = time;
     if(this.input) this.input.p_clearUpKeys();
-}
+};
 Instance.prototype.p_update = function() {
     for(let i=0;i<this.p_gameObjects.length;i++){
         let gameObj = this.p_gameObjects[i];
@@ -239,7 +239,7 @@ Instance.prototype.p_update = function() {
             if(script.onUpdate) script.onUpdate();
         }
     }
-}
+};
 Instance.prototype.p_postUpdate = function() {
     for(let i=0;i<this.p_gameObjects.length;i++){
         let gameObj = this.p_gameObjects[i];
@@ -251,7 +251,7 @@ Instance.prototype.p_postUpdate = function() {
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
-}
+};
 Instance.prototype.p_updateUi = function() {
     for(let i=0;i<this.p_uiItems.length;i++){
         let gameObj = this.p_uiItems[i];
@@ -262,7 +262,7 @@ Instance.prototype.p_updateUi = function() {
             if(script.onUpdate) script.onUpdate();
         }
     }
-}
+};
 Instance.prototype.p_postUpdateUi = function() {
     for(let i=0;i<this.p_uiItems.length;i++){
         let gameObj = this.p_uiItems[i];
@@ -274,7 +274,7 @@ Instance.prototype.p_postUpdateUi = function() {
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
-}
+};
 Instance.prototype.p_processMovement = function(timeDilation) {
     // Reconfigure velocities based on collisions
     for(let i=0;i<this.p_gameObjects.length;i++){
@@ -312,7 +312,7 @@ Instance.prototype.p_processMovement = function(timeDilation) {
                         }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "b") {
                             CollisionUtil.resolveBoxCircleCollision(otherObj.colliders[c], gameObj.colliders[b], timeDilation);
                         }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "c") {
-                            CollisionUtil.resolveCircleCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation)
+                            CollisionUtil.resolveCircleCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation);
                         }
                     }
                 }
@@ -349,7 +349,7 @@ Instance.prototype.p_processMovement = function(timeDilation) {
             collider.y = gameObj.y - collider.getHeight() * collider.offsety;
         }
     }
-}
+};
 Instance.prototype.p_dispatchCollisions = function() {
     for(let i=0;i<this.p_gameObjects.length;i++){
         let gameObj = this.p_gameObjects[i];
@@ -383,8 +383,8 @@ Instance.prototype.p_dispatchCollisions = function() {
             }
         }
     }
-}
+};
 Instance.prototype.destroy = function(){
     canvas.outerHTML = canvas.outerHTML;
     window.outerHTML = window.outerHTML;
-}
+};

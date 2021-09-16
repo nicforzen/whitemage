@@ -5,8 +5,6 @@ export function Scene(instance, onStart, onRender) {
     this.onRender = onRender;
 }
 
-Scene.prototype = {
-    setInstance(instance){
-        this.instance = instance;
-    }
-};
+Scene.prototype.setInstance = function(instance){
+    this.instance = instance;
+}

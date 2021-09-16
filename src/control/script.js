@@ -13,13 +13,11 @@ export function Script(){
     this.onScroll = null;
 }
 
-Script.prototype = {
-    initialize() {
-        if(!this.p_initialized){
-                if(this.onStart){
-                        this.onStart();
-                }
-                this.p_initialized = true;
-        }
+Script.prototype.initialize = function() {
+    if(!this.p_initialized){
+            if(this.onStart){
+                    this.onStart();
+            }
+            this.p_initialized = true;
     }
 }

@@ -3,20 +3,18 @@ export function PlayerPrefs () {
     this.p_prefs = null;
 }
 
-PlayerPrefs.prototype = {
-    p_setPrefs(localStorage){
-        this.p_prefs = localStorage;
-    },
-    set(name, value){
-        this.p_prefs.setItem(name, value);
-    },
-    get(name){
-        return this.p_prefs.getItem(name);
-    },
-    clear(name){
-        this.p_prefs.removeItem(name);
-    },
-    clearAll(){
-        this.p_prefs.clear()
-    }
+PlayerPrefs.prototype.p_setPrefs = function(localStorage){
+    this.p_prefs = localStorage;
+}
+PlayerPrefs.prototype.set = function(name, value){
+    this.p_prefs.setItem(name, value);
+}
+PlayerPrefs.prototype.get = function(name){
+    return this.p_prefs.getItem(name);
+}
+PlayerPrefs.prototype.clear = function(name){
+    this.p_prefs.removeItem(name);
+}
+PlayerPrefs.prototype.clearAll = function(){
+    this.p_prefs.clear()
 }

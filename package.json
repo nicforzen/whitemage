@@ -11,6 +11,7 @@
   "author": "Nic Forzen",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^7.32.0",
     "webpack": "^5.52.1",
     "webpack-cli": "^4.8.0"
   },

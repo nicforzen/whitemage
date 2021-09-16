@@ -28,7 +28,6 @@ export function Instance(isServer, scene, input, render, assets, networkConnecti
     this.initialized = false;
     this.bgm = null;
 
-    this.onRender = null;
     if(this.scene) this.scene.setInstance(this);
     if(networkConnection){
         networkConnection.setInstance(this);
@@ -88,7 +87,6 @@ Instance.prototype.error = function(message){
     console.error("ERROR: " + message);
     this.hadError = true;
     this.onUpdate = null;
-    this.onRender = null;
     this.onMouseMove = null;
     this.onMouseDown = null;
     this.onMouseUp = null;

@@ -499,7 +499,7 @@ Render.prototype.p_renderImage = function(name, x, y, scale, alpha, anchorXPerce
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 };
 Render.prototype.p_render = function(){
-    if(this.instance.onRender) this.instance.onRender();
+    if(this.instance.scene.onRender) this.instance.scene.onRender();
     this.instance.p_gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :
             a.renderer.zorder - b.renderer.zorder;});

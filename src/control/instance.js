@@ -30,8 +30,10 @@ export function Instance(isServer, scene, input, render, assets, networkConnecti
 
     this.onRender = null;
     if(this.scene) this.scene.setInstance(this);
-    networkConnection.setInstance(this);
-    this.setNetworkConnection(networkConnection);
+    if(networkConnection){
+        networkConnection.setInstance(this);
+        this.setNetworkConnection(networkConnection);
+    }
 }
 
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {

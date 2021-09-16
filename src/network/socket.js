@@ -17,13 +17,6 @@ NetworkConnection.prototype.disconnect = function(){
     this.p_socket.disconnect();
 }
 
-export function OfflineConnection(hostname, port){}
-
-OfflineConnection.prototype.setInstance = function(instance){}
-OfflineConnection.prototype.sendMessage = function(tag, message){}
-OfflineConnection.prototype.addEventListener = function(tag, event){}
-OfflineConnection.prototype.disconnect = function(){}
-
 export function ServerConnection(io){
     this.io = io;
     this.instance = null;

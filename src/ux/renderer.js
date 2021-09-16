@@ -17,8 +17,6 @@ export function ImageRenderer(name) {
         this.zorder = 0;
 }
 
-ImageRenderer.prototype = {};
-
 export function RectangleRenderer(width, height, color) {
     this.width = width;
     this.height = height;
@@ -38,10 +36,6 @@ export function RectangleRenderer(width, height, color) {
     this.zorder = 0;
 }
 
-RectangleRenderer.prototype = {
-
-};
-
 export function CircleRenderer(r, color){
     this.r = r;
     this.color = color;
@@ -58,10 +52,6 @@ export function CircleRenderer(r, color){
     this.isVisible = true;
     this.zorder = 0;
 }
-
-CircleRenderer.prototype = {
-
-};
 
 export function ArcRenderer(r, radianStart, radianEnd, color){
     this.r = r;
@@ -82,10 +72,6 @@ export function ArcRenderer(r, radianStart, radianEnd, color){
     this.zorder = 0;
 }
 
-ArcRenderer.prototype = {
-
-};
-
 export function PolygonRenderer(points, color) {
     this.points = points;
     this.x = 0;
@@ -103,10 +89,6 @@ export function PolygonRenderer(points, color) {
     this.zorder = 0;
 }
 
-PolygonRenderer.prototype = {
-
-};
-
 export function BitmapTextRenderer(font, text, scale) {
     this.font = font;
     this.text = text;
@@ -118,8 +100,6 @@ export function BitmapTextRenderer(font, text, scale) {
     this.isVisible = true;
     this.zorder = 0;
 }
-
-BitmapTextRenderer.prototype = {};
 
 export function TextRenderer(font, size, color, text, scale, alignment, baseline) {
     this.font = font;
@@ -137,5 +117,3 @@ export function TextRenderer(font, size, color, text, scale, alignment, baseline
     this.isVisible = true;
     this.zorder = 0;
 }
-
-TextRenderer.prototype = {};

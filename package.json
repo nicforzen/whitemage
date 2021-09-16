@@ -1,0 +1,20 @@
+{
+  "name": "whitemage",
+  "version": "0.0.1",
+  "description": "A Unity inspired client/server side game engine.",
+  "main": "/dist/whitemage.js",
+  "private": true,
+  "scripts": {
+    "test": "node ./dist/testnode.js",
+    "start": "node index.js"
+  },
+  "author": "Nic Forzen",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

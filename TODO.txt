@@ -1,0 +1,4 @@
+CircleCircle doesn't even seem to work. unit tests!
+Why have no-op just have null
+isserver should be a global debug setting
+Make sure dist is generated when built for git

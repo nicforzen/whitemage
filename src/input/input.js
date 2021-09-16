@@ -100,7 +100,7 @@ Input.prototype.scroll = function(delta){
         let gameObj = this.instance.p_gameObjects[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
-            if(script.onScroll) script.onScroll(delta);
+            if(script.onMouseScroll) script.onMouseScroll(delta);
         }
     }
 };

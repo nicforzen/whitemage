@@ -3,19 +3,23 @@
 import { Camera } from './camera.js';
 import { PlayerPrefs } from './playerprefs.js';
 import { CollisionUtil } from '../physics/collider.js';
+import { Input } from "../input/input.js";
+import { Assets } from "../ux/assets.js";
+import { Sound } from "../ux/sound.js";
+import { Render } from "../ux/render.js";
 
-export function Instance(isServer, scene, input, render, assets, networkConnection, sound) {
+export function Instance(scene) {
     this._objId = 0;
-    this.isServer = isServer;
+    this.isServer = false;
     this.scene = scene;
-    this.input = input;
+    this.input = new Input();
     if(this.input) this.input.setInstance(this);
-    this.render = render;
+    this.render = new Render();
     if(this.render) this.render.setInstance(this);
     this.deltaTime = 0;
     this.lastTime = new Date().getTime();
-    this.assets = assets;
-    this.sound = sound;
+    this.assets = new Assets();
+    this.sound = new Sound();
     if(this.sound) this.sound.setInstance(this);
     this.camera = new Camera(0, 0, 1);
     this.prefs = null;
@@ -28,10 +32,8 @@ export function Instance(isServer, scene, input, render, assets, networkConnecti
     this.initialized = false;
     this.bgm = null;
 
-    if(this.scene) this.scene.setInstance(this);
-    if(networkConnection){
-        networkConnection.setInstance(this);
-        this.setNetworkConnection(networkConnection);
+    if(this.scene){ 
+        this.scene.setInstance(this);
     }
 }
 
@@ -86,7 +88,6 @@ Instance.prototype.getNewObjectId = function(){
 Instance.prototype.error = function(message){
     console.error("ERROR: " + message);
     this.hadError = true;
-    this.onUpdate = null;
     this.onMouseMove = null;
     this.onMouseDown = null;
     this.onMouseUp = null;
@@ -195,6 +196,7 @@ Instance.prototype.findUiItemByName = function(name){
     return null;
 };
 Instance.prototype.setNetworkConnection = function(socket){
+    socket.setInstance(this);
     this.p_socket = socket;
 };
 Instance.prototype.getNetworkConnection = function(){
@@ -234,7 +236,7 @@ Instance.prototype.p_update = function() {
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             script.initialize();
-            if(script.onUpdate) script.onUpdate();
+            if(script.update) script.update();
         }
     }
 };
@@ -245,7 +247,7 @@ Instance.prototype.p_postUpdate = function() {
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             script.initialize();
-            if(script.onPostUpdate) script.onPostUpdate();
+            if(script.lateupdate) script.lateupdate();
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
@@ -257,7 +259,7 @@ Instance.prototype.p_updateUi = function() {
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             script.initialize();
-            if(script.onUpdate) script.onUpdate();
+            if(script.update) script.update();
         }
     }
 };
@@ -268,7 +270,7 @@ Instance.prototype.p_postUpdateUi = function() {
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             script.initialize();
-            if(script.onPostUpdate) script.onPostUpdate();
+            if(script.lateupdate) script.lateupdate();
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }

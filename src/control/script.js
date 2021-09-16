@@ -1,23 +1,26 @@
 export function Script(){
     this.id = 0;
-    this.p_initialized = false;
+    this._initialized = false;
     this.gameObject = null;
-    this.onUpdate = null;
-    this.onStart = null;
+
+    // Lifecycle methods
+    this.start = null;
+    this.fixedUpdate = null;
+    this.update = null;
+    this.onCollisionDetected = null;
     this.onMouseMove = null;
     this.onMouseDown = null;
     this.onMouseUp = null;
-    this.onCollisionDetected = null;
-    this.onPostUpdate = null;
+    this.onMouseScroll = null;
+    this.lateUpdate = null;
     this.onDestroy = null;
-    this.onScroll = null;
 }
 
 Script.prototype.initialize = function() {
-    if(!this.p_initialized){
-            if(this.onStart){
-                    this.onStart();
-            }
-            this.p_initialized = true;
+    if(!this._initialized){
+        if(this.start){
+                this.start();
+        }
+        this.p_initialized = true;
     }
 };

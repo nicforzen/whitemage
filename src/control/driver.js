@@ -15,7 +15,7 @@ Driver.prototype.start = function(canvas, localStorage) {
         if (this.instance.assets._stillLoading > 0) {
             setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
         } else if(!this.instance.scene.initialized){
-            this.instance.scene.onStart();
+            this.instance.scene.start();
             this.instance.scene.initialized = true;
             setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
         }else {

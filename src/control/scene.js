@@ -1,7 +1,7 @@
 
-export function Scene(instance, onStart, onRender) {
+export function Scene(instance, start, onRender) {
     this.instance = instance;
-    this.onStart = onStart;
+    this.start = start;
     this.onRender = onRender;
 
     this.isServer = false;

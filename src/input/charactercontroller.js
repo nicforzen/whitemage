@@ -1,6 +1,6 @@
 export function CharacterController(isPlayerControlled, speed) {
     let script = new Script();
-    script.onUpdate = function() {
+    script.update = function() {
         this.gameObject.velocity.x = 0;
         this.gameObject.velocity.y = 0;
 

@@ -34,7 +34,7 @@ export function Instance(isServer, scene, input, render, assets, networkConnecti
     this.setNetworkConnection(networkConnection);
 }
 
-Instance.prototype.initialize(gameWidth, gameHeight, canvas, localStorage) {
+Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
     this.initialized = true;
     if(!this.isServer){
         this.prefs = new PlayerPrefs()

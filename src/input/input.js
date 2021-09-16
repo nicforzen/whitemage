@@ -7,7 +7,7 @@ export function Input() {
 Input.prototype.setInstance = function(instance){
     this.instance = instance;
 }
-Input.prototype.onKeyDown(e){
+Input.prototype.onKeyDown = function(e){
     var key = String.fromCharCode(e.keyCode);
     if(this.keysDown.indexOf(key) < 0){
         this.keysDown.push(key);

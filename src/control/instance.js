@@ -226,8 +226,8 @@ Instance.prototype.p_gameLoop = function() {
     this.p_updateUi();
     this.p_postUpdateUi();
     if(this.camera.followTarget){
-        this.camera.x = this.camera.followTarget.x;
-        this.camera.y = this.camera.followTarget.y;
+        this.camera.transform.position.x = this.camera.followTarget.transform.position.x;
+        this.camera.transform.position.y = this.camera.followTarget.transform.position.y;
     }
     this.render.renderFrame();
     this.lastTime = time;
@@ -330,12 +330,12 @@ Instance.prototype.p_processMovement = function(timeDilation) {
         if(gameObj.parent) continue;
         if(gameObj.stationary) continue;
 
-        gameObj.x += gameObj.rigidbody.velocity.x * timeDilation;
-        gameObj.y += gameObj.rigidbody.velocity.y * timeDilation;
+        gameObj.transform.position.x += gameObj.rigidbody.velocity.x * timeDilation;
+        gameObj.transform.position.y += gameObj.rigidbody.velocity.y * timeDilation;
         for(let a=0;a<gameObj.colliders.length;a++){
             let collider = gameObj.colliders[a];
-            collider.x = gameObj.x - collider.getWidth() * collider.offsetx;
-            collider.y = gameObj.y - collider.getHeight() * collider.offsety;
+            collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
+            collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
         }
     }
     // Move subobjects
@@ -345,12 +345,12 @@ Instance.prototype.p_processMovement = function(timeDilation) {
         if(gameObj.stationary) continue;
         
         gameObj.scale = gameObj.localScale * gameObj.parent.scale;
-        gameObj.x = gameObj.parent.x + gameObj.localX*gameObj.parent.scale;
-        gameObj.y = gameObj.parent.y + gameObj.localY*gameObj.parent.scale;
+        gameObj.transform.position.x = gameObj.parent.transform.position.x + gameObj.localX*gameObj.parent.scale;
+        gameObj.transform.position.y = gameObj.parent.transform.position.y + gameObj.localY*gameObj.parent.scale;
         for(let a=0;a<gameObj.colliders.length;a++){
             let collider = gameObj.colliders[a];
-            collider.x = gameObj.x - collider.getWidth() * collider.offsetx;
-            collider.y = gameObj.y - collider.getHeight() * collider.offsety;
+            collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
+            collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
         }
     }
 };

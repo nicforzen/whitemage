@@ -4,8 +4,6 @@ export function GameObject(name){
     this.name = name;
     this.stationary = false;
     this.renderer = null;
-    this.x = 0;
-    this.y = 0;
     this.scale = 1;
     this.angleInRadians = 0;
     this.scripts = [];
@@ -26,6 +24,9 @@ export function GameObject(name){
         velocity: new Vector(),
         mass: 1
     }
+    this.transform = {
+        position: new Vector()
+    }
 }
 
 GameObject.prototype.addScript = function(script){
@@ -43,8 +44,8 @@ GameObject.prototype.removeScriptById = function(id){
 };
 GameObject.prototype.addCollider = function(collider){
     collider.gameObject = this;
-    collider.x = this.x - collider.getWidth() * collider.offsetx;
-    collider.y = this.y - collider.getHeight() * collider.offsety;
+    collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
+    collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
     this.colliders.push(collider);
 };
 GameObject.prototype.setAnimator = function(animator){
@@ -54,8 +55,8 @@ GameObject.prototype.setAnimator = function(animator){
 GameObject.prototype.addSubobject = function(obj){
     obj.parent = this;
     obj.instance = this.instance;
-    obj.x = this.x + obj.localX*this.scale;
-    obj.y = this.y + obj.localY*this.scale;
+    obj.transform.position.x = this.transform.position.x + obj.localX*this.scale;
+    obj.transform.position.y = this.transform.position.y + obj.localY*this.scale;
     obj.scale = this.scale;
     this.subObjects.push(obj);
 };
@@ -79,8 +80,8 @@ GameObject.prototype.initialize = function(){
     if(!this.p_initialized){
         for(let a=0;a<this.colliders.length;a++){
             let collider = this.colliders[a];
-            collider.x = this.x - collider.getWidth() * collider.offsetx;
-            collider.y = this.y - collider.getHeight() * collider.offsety;
+            collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
+            collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
         }
         this.p_initialized = true;
     }

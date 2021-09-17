@@ -1,5 +1,6 @@
 
 export function Driver(instance, fps, gameWidth, gameHeight) {
+    instance.setDriver(this);
     this.instance = instance;
     this.fps = fps;
     this._gameLoopInterval = null;
@@ -19,11 +20,11 @@ Driver.prototype.start = function(canvas, localStorage) {
             this.instance.scene.initialized = true;
             setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
         }else {
-            this.p_start();
+            this._start();
         }
     }
 };
-Driver.prototype.p_start = function() {
+Driver.prototype._start = function() {
     if(this.instance.hadError) clearInterval(this._gameLoopInterval);
     else{
         this.instance.p_gameLoop();
@@ -40,3 +41,6 @@ Driver.prototype.changeScene = function() {
         this.start(document.getElementById('canvas'), window.localStorage);            
     }
 };
+
+///RESET method? To reinit instance? Reload? That makes it sound like it's going in fresh
+// Reinitialize?

@@ -10,6 +10,7 @@ import { Render } from "../ux/render.js";
 
 export function Instance(scene) {
     this._objId = 0;
+    this.driver = null;
     this.isServer = false;
     this.scene = scene;
     this.input = new Input();
@@ -80,6 +81,9 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
     if(this.scene.loadAssets) this.scene.loadAssets();
 };
 
+Instance.prototype.setDriver = function(driver){
+    this.driver = driver;
+};
 Instance.prototype.getNewObjectId = function(){
     let id = this._objId;
     this._objId += 1;

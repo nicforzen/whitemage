@@ -17,16 +17,16 @@ export function GameObject(name){
     this.localY = 0;
     this.localScale = 1;
     this.animator = null;
-    this.p_initialized = false;
+    this._initialized = false;
     this.id = 0;
 
     this.rigidbody = {
         velocity: new Vector2(),
         mass: 1
-    }
+    };
     this.transform = {
         position: new Vector2()
-    }
+    };
 }
 
 GameObject.prototype.addScript = function(script){
@@ -77,12 +77,12 @@ GameObject.prototype.collidesAt = function(x, y){
     return false;
 };
 GameObject.prototype.initialize = function(){
-    if(!this.p_initialized){
+    if(!this._initialized){
         for(let a=0;a<this.colliders.length;a++){
             let collider = this.colliders[a];
             collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
             collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
         }
-        this.p_initialized = true;
+        this._initialized = true;
     }
 };

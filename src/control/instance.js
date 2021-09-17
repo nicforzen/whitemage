@@ -25,9 +25,9 @@ export function Instance(scene) {
     this.camera = new Camera(0, 0, 1);
     this.prefs = null;
 
-    this.p_gameObjects = [];
-    this.p_uiItems = [];
-    this.p_socket = null;
+    this._gameObjects = [];
+    this._uiItems = [];
+    this._socket = null;
 
     this.hadError = false;
     this.initialized = false;
@@ -42,7 +42,7 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
     this.initialized = true;
     if(!this.isServer){
         this.prefs = new PlayerPrefs();
-        this.prefs.p_setPrefs(localStorage);
+        this.prefs._setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
         this.render._ctx.imageSmoothingEnabled = false;
@@ -99,18 +99,18 @@ Instance.prototype.error = function(message){
 Instance.prototype.addObject = function(gameObj){
     if(!gameObj) return;
     gameObj.setInstance(this);
-    this.p_gameObjects.push(gameObj);
+    this._gameObjects.push(gameObj);
     for(var i = 0; i < gameObj.subObjects.length; i++){
-        this.p_gameObjects.push(gameObj.subObjects[i]);
+        this._gameObjects.push(gameObj.subObjects[i]);
     }
     return gameObj;
 };
 Instance.prototype.addUiItem = function(gameObj){
     if(!gameObj) return;
     gameObj.setInstance(this);
-    this.p_uiItems.push(gameObj);
+    this._uiItems.push(gameObj);
     for(let i = 0; i < gameObj.subObjects.length; i++){
-        this.p_uiItems.push(gameObj.subObjects[i]);
+        this._uiItems.push(gameObj.subObjects[i]);
     }
     return gameObj;
 };
@@ -123,11 +123,11 @@ Instance.prototype.destroyObject = function(gameObj){
         let script = gameObj.scripts[j];
         if(script.onDestroy) script.onDestroy();
     }
-    _removeArray(gameObj, this.p_gameObjects);
+    _removeArray(gameObj, this._gameObjects);
 };
 Instance.prototype.destroyObjectByName = function(name){
-    for (let i = 0; i < this.p_gameObjects.length; i++) {
-        let gameObj = this.p_gameObjects[i];
+    for (let i = 0; i < this._gameObjects.length; i++) {
+        let gameObj = this._gameObjects[i];
         if(gameObj.name == name){
             for(let k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyObject(gameObj.subObjects[k]);
@@ -136,14 +136,14 @@ Instance.prototype.destroyObjectByName = function(name){
                 let script = gameObj.scripts[j];
                 if(script.onDestroy) script.onDestroy();
             }
-            this.p_gameObjects.splice(i, 1);
+            this._gameObjects.splice(i, 1);
             i -= 1;
         }
     }
 };
 Instance.prototype.destroyObjectById = function(id){
-    for (let i = 0; i < this.p_gameObjects.length; i++) {
-        let gameObj = this.p_gameObjects[i];
+    for (let i = 0; i < this._gameObjects.length; i++) {
+        let gameObj = this._gameObjects[i];
         if(gameObj.id == id){
             for(var k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyObject(gameObj.subObjects[k]);
@@ -152,14 +152,14 @@ Instance.prototype.destroyObjectById = function(id){
                 let script = gameObj.scripts[j];
                 if(script.onDestroy) script.onDestroy();
             }
-            this.p_gameObjects.splice(i, 1);
+            this._gameObjects.splice(i, 1);
             i -= 1;
         }
     }
 };
 Instance.prototype.findObjectByName = function(name){
-    for (let i = 0; i < this.p_gameObjects.length; i++) {
-        if(this.p_gameObjects[i].name == name) return this.p_gameObjects[i];
+    for (let i = 0; i < this._gameObjects.length; i++) {
+        if(this._gameObjects[i].name == name) return this._gameObjects[i];
     }
     return null;
 };
@@ -172,11 +172,11 @@ Instance.prototype.destroyUiItem = function(gameObj){
         let script = gameObj.scripts[j];
         if(script.onDestroy) script.onDestroy();
     }
-    _removeArray(gameObj, this.p_uiItems);
+    _removeArray(gameObj, this._uiItems);
 };
 Instance.prototype.destroyUiItemByName = function(name){
-    for (let i = 0; i < this.p_uiItems.length; i++) {
-        let gameObj = this.p_uiItems[i];
+    for (let i = 0; i < this._uiItems.length; i++) {
+        let gameObj = this._uiItems[i];
         if(gameObj.name == name){
             for(let k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyUiItem(gameObj.subObjects[k]);
@@ -185,29 +185,29 @@ Instance.prototype.destroyUiItemByName = function(name){
                 let script = gameObj.scripts[j];
                 if(script.onDestroy) script.onDestroy();
             }
-            this.p_uiItems.splice(i, 1);
+            this._uiItems.splice(i, 1);
             i -= 1;
         }
     }
 };
 Instance.prototype.getGameObjects = function(){
-    return this.p_gameObjects;
+    return this._gameObjects;
 };
 Instance.prototype.findUiItemByName = function(name){
-    for (let i = 0; i < this.p_uiItems.length; i++) {
-        if(this.p_uiItems[i].name == name) return this.p_uiItems[i];
+    for (let i = 0; i < this._uiItems.length; i++) {
+        if(this._uiItems[i].name == name) return this._uiItems[i];
     }
     return null;
 };
 Instance.prototype.setNetworkConnection = function(socket){
     socket.setInstance(this);
-    this.p_socket = socket;
+    this._socket = socket;
 };
 Instance.prototype.getNetworkConnection = function(){
-    if(!this.p_socket) return OfflineConnection();
-    return this.p_socket;
+    if(!this._socket) return OfflineConnection();
+    return this._socket;
 };
-Instance.prototype.p_gameLoop = function() {
+Instance.prototype._gameLoop = function() {
     if(this.hadError) return;
 
     // TODO do something with this type of annotation. Needed?
@@ -219,23 +219,23 @@ Instance.prototype.p_gameLoop = function() {
 
     let time = new Date().getTime();
     this.deltaTime = (time - this.lastTime) / 1000;
-    this.p_update();
-    this.p_postUpdate();
-    this.p_dispatchCollisions();
-    this.p_processMovement(this.deltaTime);
-    this.p_updateUi();
-    this.p_postUpdateUi();
+    this._update();
+    this._postUpdate();
+    this._dispatchCollisions();
+    this._processMovement(this.deltaTime);
+    this._updateUi();
+    this._postUpdateUi();
     if(this.camera.followTarget){
         this.camera.transform.position.x = this.camera.followTarget.transform.position.x;
         this.camera.transform.position.y = this.camera.followTarget.transform.position.y;
     }
     this.render.renderFrame();
     this.lastTime = time;
-    if(this.input) this.input.p_clearUpKeys();
+    if(this.input) this.input._clearUpKeys();
 };
-Instance.prototype.p_update = function() {
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+Instance.prototype._update = function() {
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         gameObj.initialize();
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
@@ -244,9 +244,9 @@ Instance.prototype.p_update = function() {
         }
     }
 };
-Instance.prototype.p_postUpdate = function() {
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+Instance.prototype._postUpdate = function() {
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         gameObj.initialize();
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
@@ -256,9 +256,9 @@ Instance.prototype.p_postUpdate = function() {
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
 };
-Instance.prototype.p_updateUi = function() {
-    for(let i=0;i<this.p_uiItems.length;i++){
-        let gameObj = this.p_uiItems[i];
+Instance.prototype._updateUi = function() {
+    for(let i=0;i<this._uiItems.length;i++){
+        let gameObj = this._uiItems[i];
         gameObj.initialize();
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
@@ -267,9 +267,9 @@ Instance.prototype.p_updateUi = function() {
         }
     }
 };
-Instance.prototype.p_postUpdateUi = function() {
-    for(let i=0;i<this.p_uiItems.length;i++){
-        let gameObj = this.p_uiItems[i];
+Instance.prototype._postUpdateUi = function() {
+    for(let i=0;i<this._uiItems.length;i++){
+        let gameObj = this._uiItems[i];
         gameObj.initialize();
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
@@ -279,21 +279,21 @@ Instance.prototype.p_postUpdateUi = function() {
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
 };
-Instance.prototype.p_processMovement = function(timeDilation) {
+Instance.prototype._processMovement = function(timeDilation) {
     // Reconfigure velocities based on collisions
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         if(gameObj.stationary) continue;
 
         // Skip checking colliders if there aren't any on this object
         if(gameObj.colliders.length==0) continue;
 
         // Check against other objects
-        for(let a=0;a<this.p_gameObjects.length;a++){
+        for(let a=0;a<this._gameObjects.length;a++){
             // Skip same object
             if(i==a) continue;
 
-            let otherObj = this.p_gameObjects[a];
+            let otherObj = this._gameObjects[a];
             // Skip all but stationary
             if(!otherObj.stationary) continue;
 
@@ -325,8 +325,8 @@ Instance.prototype.p_processMovement = function(timeDilation) {
     }
 
     // Finally, move objects
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         if(gameObj.parent) continue;
         if(gameObj.stationary) continue;
 
@@ -339,8 +339,8 @@ Instance.prototype.p_processMovement = function(timeDilation) {
         }
     }
     // Move subobjects
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         if(!gameObj.parent) continue;
         if(gameObj.stationary) continue;
         
@@ -354,20 +354,20 @@ Instance.prototype.p_processMovement = function(timeDilation) {
         }
     }
 };
-Instance.prototype.p_dispatchCollisions = function() {
-    for(let i=0;i<this.p_gameObjects.length;i++){
-        let gameObj = this.p_gameObjects[i];
+Instance.prototype._dispatchCollisions = function() {
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
         if(gameObj.stationary) continue;
 
         // Skip checking colliders if there aren't any on this object
         if(gameObj.colliders.length==0) continue;
 
         // Check against other objects
-        for(let a=0;a<this.p_gameObjects.length;a++){
+        for(let a=0;a<this._gameObjects.length;a++){
             // Skip same object
             if(i==a) continue;
 
-            let otherObj = this.p_gameObjects[a];
+            let otherObj = this._gameObjects[a];
             // Skip checking colliders if there aren't any
             if(otherObj.colliders.length==0) continue;
 

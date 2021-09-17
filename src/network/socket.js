@@ -1,20 +1,20 @@
 
 export function NetworkConnection(hostname, port){
     this.instance = null;
-    this.p_socket = io.connect('http://' + hostname + ":" + port);
+    this._socket = io.connect('http://' + hostname + ":" + port);
 }
 
 NetworkConnection.prototype.setInstance = function(instance){
     this.instance = instance;
 };
 NetworkConnection.prototype.sendMessage = function(tag, message){
-    this.p_socket.emit(tag, message);
+    this._socket.emit(tag, message);
 };
 NetworkConnection.prototype.addEventListener = function(tag, event){
-    this.p_socket.on(tag, event.bind(this.instance));
+    this._socket.on(tag, event.bind(this.instance));
 };
 NetworkConnection.prototype.disconnect = function(){
-    this.p_socket.disconnect();
+    this._socket.disconnect();
 };
 
 export function ServerConnection(io){

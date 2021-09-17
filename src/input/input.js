@@ -24,8 +24,8 @@ Input.prototype.onKeyUp = function(e){
 Input.prototype.mouseDown = function(e){
     var local = this.instance.render._getRawCursorPosition(e);
     var point = { x: local.x, y: local.y, button: e.which};
-    for(let i=0;i<this.instance.p_uiItems.length;i++){
-        let gameObj = this.instance.p_uiItems[i];
+    for(let i=0;i<this.instance._uiItems.length;i++){
+        let gameObj = this.instance._uiItems[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseDown
@@ -37,8 +37,8 @@ Input.prototype.mouseDown = function(e){
     }
     local = this.instance.render._getCursorPosition(e);
     point = { x: local.x, y: local.y, button: e.which};
-    for(let i=0;i<this.instance.p_gameObjects.length;i++){
-        let gameObj = this.instance.p_gameObjects[i];
+    for(let i=0;i<this.instance._gameObjects.length;i++){
+        let gameObj = this.instance._gameObjects[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseDown
@@ -50,8 +50,8 @@ Input.prototype.mouseUp = function(e){
     e.preventDefault();
     var local = this.instance.render._getRawCursorPosition(e);
     var point = { x: local.x, y: local.y, button: e.which };
-    for(let i=0;i<this.instance.p_uiItems.length;i++){
-        let gameObj = this.instance.p_uiItems[i];
+    for(let i=0;i<this.instance._uiItems.length;i++){
+        let gameObj = this.instance._uiItems[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseUp
@@ -63,8 +63,8 @@ Input.prototype.mouseUp = function(e){
     }
     local = this.instance.render._getCursorPosition(e);
     point = { x: local.x, y: local.y, button: e.which};
-    for(let i=0;i<this.instance.p_gameObjects.length;i++){
-        let gameObj = this.instance.p_gameObjects[i];
+    for(let i=0;i<this.instance._gameObjects.length;i++){
+        let gameObj = this.instance._gameObjects[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseUp
@@ -76,8 +76,8 @@ Input.prototype.mouseMove = function(e){
     var local = this.instance.render._getRawCursorPosition(e);
     if(local.x < 0 || local.y < 0) return;
     var point = { x: local.x, y: local.y, button: e.which };
-    for(let i=0;i<this.instance.p_uiItems.length;i++){
-        let gameObj = this.instance.p_uiItems[i];
+    for(let i=0;i<this.instance._uiItems.length;i++){
+        let gameObj = this.instance._uiItems[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseMove
@@ -86,8 +86,8 @@ Input.prototype.mouseMove = function(e){
     }
     local = this.instance.render._getCursorPosition(e);
     point = { x: local.x, y: local.y, button: e.which};
-    for(let i=0;i<this.instance.p_gameObjects.length;i++){
-        let gameObj = this.instance.p_gameObjects[i];
+    for(let i=0;i<this.instance._gameObjects.length;i++){
+        let gameObj = this.instance._gameObjects[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseMove
@@ -96,8 +96,8 @@ Input.prototype.mouseMove = function(e){
     }
 };
 Input.prototype.scroll = function(delta){
-    for(let i=0;i<this.instance.p_gameObjects.length;i++){
-        let gameObj = this.instance.p_gameObjects[i];
+    for(let i=0;i<this.instance._gameObjects.length;i++){
+        let gameObj = this.instance._gameObjects[i];
         for(let j=0;j<gameObj.scripts.length;j++){
             let script = gameObj.scripts[j];
             if(script.onMouseScroll) script.onMouseScroll(delta);
@@ -110,6 +110,6 @@ Input.prototype.isDown = function(name){
 Input.prototype.isUp = function(name){
     return this.keysUp.indexOf(name) >= 0;
 };
-Input.prototype.p_clearUpKeys = function(){
+Input.prototype._clearUpKeys = function(){
     this.keysUp = [];
 };

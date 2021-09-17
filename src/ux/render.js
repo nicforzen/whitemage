@@ -26,58 +26,58 @@ Render.prototype.fillCanvas = function(color) {
     this._ctx.fillRect(0, 0, this.screenWidth, this.screenHeight);
 };
 Render.prototype.fillRect = function(x1, y1, x2, y2, color){
-    this.p_renderRect(x1, y1, x2, y2, 1, 0, 0, 0, color, true, 1, 1);
+    this._renderRect(x1, y1, x2, y2, 1, 0, 0, 0, color, true, 1, 1);
 };
 Render.prototype.fillRectAlpha = function(x1, y1, x2, y2, alpha, color) {
-    this.p_renderRect(x1, y1, x2, y2, alpha, 0, 0, 0, color, true, 1, 1);
+    this._renderRect(x1, y1, x2, y2, alpha, 0, 0, 0, color, true, 1, 1);
 };
 Render.prototype.fillRectAlphaRotatedDegrees = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
     angleInDegrees, color){
-    this.p_renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, color, true, 1, 1);
 };
 Render.prototype.fillRectAlphaRotatedRadians = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
     angleInRadians, color){
-    this.p_renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, color, true, 1, 1);
 };
 Render.prototype.fillRectRotatedDegrees = function(x1, y1, x2, y2, anchorXPercent, anchorYPercent,
     angleInDegrees, color) {
-    this.p_renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, color, true, 1, 1);
 };
 Render.prototype.fillRectRotatedRadians = function(x1, y1, x2, y2, anchorXPercent, anchorYPercent,
     angleInRadians, color) {
-    this.p_renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
         angleInRadians, color, true, 1, 1);
 };
 Render.prototype.strokeRect = function(x1, y1, x2, y2, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, 1, 0, 0, 0, color, false, lineWidth, 1);
+    this._renderRect(x1, y1, x2, y2, 1, 0, 0, 0, color, false, lineWidth, 1);
 };
 Render.prototype.strokeRectAlpha = function(x1, y1, x2, y2, alpha, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, alpha, 0, 0, 0, color, false, lineWidth, 1);
+    this._renderRect(x1, y1, x2, y2, alpha, 0, 0, 0, color, false, lineWidth, 1);
 };
 Render.prototype.strokeRectAlphaRotatedDegrees = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
     angleInDegrees, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, color, false, lineWidth, 1);
 };
 Render.prototype.strokeRectAlphaRotatedRadians = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
     angleInRadians, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, color, false, lineWidth, 1);
 };
 Render.prototype.strokeRectRotatedDegrees = function(x1, y1, x2, y2, anchorXPercent, anchorYPercent,
     angleInDegrees, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, color, false, lineWidth, 1);
 };
 Render.prototype.strokeRectRotatedRadians = function(x1, y1, x2, y2, anchorXPercent, anchorYPercent,
     angleInRadians, color, lineWidth) {
-    this.p_renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
+    this._renderRect(x1, y1, x2, y2, 1, anchorXPercent, anchorYPercent,
         angleInRadians, color, false, lineWidth, 1);
 };
-Render.prototype.p_renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent, angleInRadians, color,
+Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, anchorYPercent, angleInRadians, color,
     isFill, lineWidth, scale){
     if (alpha <= 0) return;
 
@@ -121,34 +121,34 @@ Render.prototype.p_renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, 
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
 Render.prototype.fillCircle = function(x, y, r, color){
-    this.p_renderCircle(x, y, r, 1, color, true, 1);
+    this._renderCircle(x, y, r, 1, color, true, 1);
 };
 Render.prototype.fillCircleAlpha = function(x, y, r, alpha, color){
-    this.p_renderCircle(x, y, r, alpha, color, true, 1);
+    this._renderCircle(x, y, r, alpha, color, true, 1);
 };
 Render.prototype.strokeCircle = function(x, y, r, color, lineWidth){
-    this.p_renderCircle(x, y, r, 1, color, false, lineWidth);
+    this._renderCircle(x, y, r, 1, color, false, lineWidth);
 };
 Render.prototype.strokeCircleAlpha = function(x, y, r, alpha, color, lineWidth){
-    this.p_renderCircle(x, y, r, alpha, color, false, lineWidth);
+    this._renderCircle(x, y, r, alpha, color, false, lineWidth);
 };
 Render.prototype.fillArc = function(x, y, r, radianStart, radianEnd, color){
-    this.p_renderArc(x, y, r, 1, color, true, 1, radianStart, radianEnd);
+    this._renderArc(x, y, r, 1, color, true, 1, radianStart, radianEnd);
 };
 Render.prototype.fillArcAlpha = function(x, y, r, radianStart, radianEnd, alpha, color){
-    this.p_renderArc(x, y, r, alpha, color, true, 1, radianStart, radianEnd);
+    this._renderArc(x, y, r, alpha, color, true, 1, radianStart, radianEnd);
 };
 Render.prototype.strokeArc = function(x, y, r, radianStart, radianEnd, color, lineWidth){
-    this.p_renderArc(x, y, r, 1, color, false, lineWidth, radianStart, radianEnd);
+    this._renderArc(x, y, r, 1, color, false, lineWidth, radianStart, radianEnd);
 };
 Render.prototype.strokeArcAlpha = function(x, y, r, radianStart, radianEnd, alpha, color, lineWidth){
-    this.p_renderArc(x, y, r, alpha, color, false, lineWidth, radianStart, radianEnd);
+    this._renderArc(x, y, r, alpha, color, false, lineWidth, radianStart, radianEnd);
 };
-Render.prototype.p_renderCircle = function(x, y, r, alpha, color, isFill, lineWidth){
-    this.p_renderArc(x, y,
+Render.prototype._renderCircle = function(x, y, r, alpha, color, isFill, lineWidth){
+    this._renderArc(x, y,
             r, alpha, color, isFill, lineWidth, 0, 2*Math.PI);
 };
-Render.prototype.p_renderArc = function(x, y, r, alpha, color, isFill, lineWidth, radianStart, radianEnd){
+Render.prototype._renderArc = function(x, y, r, alpha, color, isFill, lineWidth, radianStart, radianEnd){
     if (alpha <= 0) return;
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
@@ -168,7 +168,7 @@ Render.prototype.p_renderArc = function(x, y, r, alpha, color, isFill, lineWidth
     }
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
-Render.prototype.p_renderPolygon = function(x, y, points, alpha, color, isFill, lineWidth){
+Render.prototype._renderPolygon = function(x, y, points, alpha, color, isFill, lineWidth){
     if (alpha <= 0) return;
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     let camera = this.instance.camera;
@@ -198,12 +198,12 @@ Render.prototype.p_renderPolygon = function(x, y, points, alpha, color, isFill, 
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
 Render.prototype.drawLine = function(x1, y1, x2, y2, lineWidth, color){
-    this.p_renderLine(x1, y1, x2, y2, lineWidth, 1, color);
+    this._renderLine(x1, y1, x2, y2, lineWidth, 1, color);
 };
 Render.prototype.drawLineAlpha = function(x1, y1, x2, y2, alpha, lineWidth, color) {
-    this.p_renderLine(x1, y1, x2, y2, lineWidth, alpha, color);
+    this._renderLine(x1, y1, x2, y2, lineWidth, alpha, color);
 };
-Render.prototype.p_renderLine = function(x1, y1, x2, y2, lineWidth, alpha, color){
+Render.prototype._renderLine = function(x1, y1, x2, y2, lineWidth, alpha, color){
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     this._ctx.beginPath();
     this._ctx.moveTo(x1 * this.scaleFactor + this.wingWidthX, 
@@ -216,200 +216,200 @@ Render.prototype.p_renderLine = function(x1, y1, x2, y2, lineWidth, alpha, color
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
 Render.prototype.drawImage = function(name, x, y) {
-    this.p_renderImage(name, x, y, 1, 1, 0, 0, 0, null, false, null, 0, false, false);
+    this._renderImage(name, x, y, 1, 1, 0, 0, 0, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageFiltered = function(name, x, y, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, 0, 0, 0, null, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, 1, 1, 0, 0, 0, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaled = function(name, x, y, scale){
-    this.p_renderImage(name, x, y, scale, 1, 0, 0, 0, null, false, null, 0, false, false);
+    this._renderImage(name, x, y, scale, 1, 0, 0, 0, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledFiltered = function(name, x, y, scale, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, 0, 0, 0, null, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, scale, 1, 0, 0, 0, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageAlpha = function(name, x, y, alpha) {
-    this.p_renderImage(name, x, y, 1, alpha, 0, 0, 0, null, false, null, 0, false, false);
+    this._renderImage(name, x, y, 1, alpha, 0, 0, 0, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageAlphaFiltered = function(name, x, y, alpha, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, alpha, 0, 0, 0, null, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, 1, alpha, 0, 0, 0, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaledAlpha = function(name, x, y, scale, alpha) {
-    this.p_renderImage(name, x, y, scale, alpha, 0, 0, 0, null, false, null, 0, false, false);
+    this._renderImage(name, x, y, scale, alpha, 0, 0, 0, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledAlphaFiltered = function(name, x, y, scale, alpha, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, 0, 0, 0, null, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, scale, alpha, 0, 0, 0, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageRotatedDegrees = function(name, x, y, anchorXPercent, anchorYPercent, angleInDegrees){
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageRotatedDegreesFiltered = function(name, x, y, anchorXPercent, anchorYPercent, angleInDegrees,
     color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageRotatedRadians = function(name, x, y, anchorXPercent, anchorYPercent, angleInRadians) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
         angleInRadians, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageRotatedRadiansFiltered = function(name, x, y, anchorXPercent, anchorYPercent, angleInRadians,
     color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
         angleInRadians, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaledRotatedDegrees = function(name, x, y, scale, anchorXPercent, anchorYPercent,
     angleInDegrees) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent, 
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent, 
         angleInDegrees * Math.PI / 180, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledRotatedDegreesFiltered = function(name, x, y, scale, anchorXPercent, anchorYPercent,
     angleInDegrees, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaledRotatedRadians = function(name, x, y, scale, anchorXPercent, anchorYPercent,
     angleInRadians) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInRadians, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledRotatedRadiansFiltered = function(name, x, y, scale, anchorXPercent, anchorYPercent,
     angleInRadians, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInRadians, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaledAlphaRotatedDegrees = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
     angleInDegrees) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledAlphaRotatedDegreesFiltered = function(name, x, y, scale, alpha, anchorXPercent, 
     anchorYPercent, angleInDegrees, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawImageScaledAlphaRotatedRadians = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
     angleInRadians){
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent, 
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent, 
         angleInRadians, null, null, false, null, 0, false, false);
 };
 Render.prototype.drawImageScaledAlphaRotatedRadiansFiltered = function(name, x, y, scale, alpha, anchorXPercent,
     anchorYPercent, angleInRadians, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, null, null, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImage = function(name, mappingData, x, y) {
-    this.p_renderImage(name, x, y, 1, 1, 0, 0, 0, mappingData, false, null, 0, false, false);
+    this._renderImage(name, x, y, 1, 1, 0, 0, 0, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageFiltered = function(name, mappingData, x, y, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, 1, 1, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaled = function(name, mappingData, x, y, scale) {
-    this.p_renderImage(name, x, y, scale, 1, 0, 0, 0, mappingData, false, null, 0, false, false);
+    this._renderImage(name, x, y, scale, 1, 0, 0, 0, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledFiltered = function(name, mappingData, x, y, scale, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, scale, 1, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageAlpha = function(name, mappingData, x, y, alpha) {
-    this.p_renderImage(name, x, y, 1, alpha, 0, 0, 0, mappingData, false, null, 0, false, false);
+    this._renderImage(name, x, y, 1, alpha, 0, 0, 0, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageAlphaFiltered = function(name, mappingData, x, y, alpha, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, alpha, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
+    this._renderImage(name, x, y, 1, alpha, 0, 0, 0, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaledAlpha = function(name, mappingData, x, y, scale, alpha) {
-    this.p_renderImage(name, x, y, scale, alpha, 0, 0, 0, mappingData, false, null, 0, false, false);
+    this._renderImage(name, x, y, scale, alpha, 0, 0, 0, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledAlphaFiltered = function(name, mappingData, x, y, scale, alpha, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, 0, 0, 0, mappingData, true, color,
+    this._renderImage(name, x, y, scale, alpha, 0, 0, 0, mappingData, true, color,
         colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageRotatedDegrees = function(name, mappingData, x, y, anchorXPercent, anchorYPercent,
     angleInDegrees) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageRotatedDegreesFiltered = function(name, mappingData, x, y, anchorXPercent, anchorYPercent,
     angleInDegrees, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageRotatedRadians = function(name, mappingData, x, y, anchorXPercent, anchorYPercent,
     angleInRadians) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageRotatedRadiansFiltered = function(name, mappingData, x, y, anchorXPercent, anchorYPercent,
     angleInRadians, color, colorAlpha) {
-    this.p_renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, 1, 1, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaledRotatedDegrees = function(name, mappingData, x, y, scale, anchorXPercent,
     anchorYPercent, angleInDegrees) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledRotatedDegreesFiltered = function(name, mappingData, x, y, scale, anchorXPercent,
     anchorYPercent, angleInDegrees, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInDegrees * Math.PI / 180, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaledRotatedRadians = function(name, mappingData, x, y, scale, anchorXPercent,
     anchorYPercent, angleInRadians) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledRotatedRadiansFiltered = function(name, mappingData, x, y, scale, anchorXPercent,
     anchorYPercent, angleInRadians, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, 1, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaledAlphaRotatedDegrees = function(name, mappingData, x, y, scale, alpha, anchorXPercent,
     anchorYPercent, angleInDegrees) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledAlphaRotatedDegreesFiltered = function(name, mappingData, x, y, scale, alpha,
     anchorXPercent, anchorYPercent, angleInDegrees, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent,
         anchorYPercent, angleInDegrees * Math.PI / 180, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.drawMappedImageScaledAlphaRotatedRadians = function(name, mappingData, x, y, scale, alpha, anchorXPercent,
     anchorYPercent, angleInRadians) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, false, null, 0, false, false);
 };
 Render.prototype.drawMappedImageScaledAlphaRotatedRadiansFiltered = function(name, mappingData, x, y, scale, alpha,
     anchorXPercent, anchorYPercent, angleInRadians, color, colorAlpha) {
-    this.p_renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+    this._renderImage(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, mappingData, true, color, colorAlpha, false, false);
 };
 Render.prototype.render = function(r){
     if(!r.isVisible) return;
     if(r instanceof RectangleRenderer) {
-        this.p_renderRect(r.x, r.y, r.x+r.width, r.y+r.height, r.alpha, r.anchorXPercent, r.anchorYPercent,
+        this._renderRect(r.x, r.y, r.x+r.width, r.y+r.height, r.alpha, r.anchorXPercent, r.anchorYPercent,
             r.angleInRadians, r.color, r.isFill, r.lineWidth, r.scale);
     } else if(r instanceof CircleRenderer) {
-        this.p_renderCircle(r.x, r.y, r.r, r.alpha, r.color, r.isFill, r.lineWidth);
+        this._renderCircle(r.x, r.y, r.r, r.alpha, r.color, r.isFill, r.lineWidth);
     } else if(r instanceof ArcRenderer){
-        this.p_renderArc(r.x, r.y, r.r, r.alpha, r.color, r.isFill, r.lineWidth, r.radianStart, r.radianEnd);
+        this._renderArc(r.x, r.y, r.r, r.alpha, r.color, r.isFill, r.lineWidth, r.radianStart, r.radianEnd);
     } else if(r instanceof PolygonRenderer){
-        this.p_renderPolygon(r.x, r.y, r.points, r.alpha, r.color, r.isFill, r.lineWidths);
+        this._renderPolygon(r.x, r.y, r.points, r.alpha, r.color, r.isFill, r.lineWidths);
     } else if(r instanceof TextRenderer){
         this.drawTextNeo(r.font, r.size, r.text, r.color, r.x, r.y, r.scale, r.alignment, r.baseline, r.alpha,
             r.anchorXPercent, r.anchorYPercent, r.angleInRadians);
     }
     else{
-        this.p_renderImage(r.imageName, r.x, r.y, r.scale, r.alpha, r.anchorXPercent, r.anchorYPercent, r.angleInRadians, 
+        this._renderImage(r.imageName, r.x, r.y, r.scale, r.alpha, r.anchorXPercent, r.anchorYPercent, r.angleInRadians, 
         (this.instance.assets.getMappingData(r.imageName)) ? this.instance.assets.getMappingData(r.imageName)[r.spriteName] : null, 
         r.drawSil, r.silColor, r.silAlpha, r.flipX, r.flipY);
     }
 };
-Render.prototype.p_renderImage = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
     angleInRadians, mappingData, drawSil, silColor, silAlpha, flipX, flipY){
     if(alpha <= 0) return;
     if(drawSil){
         let silName = name + SilSuffix;
         if(!this.instance.assets.containsImage(silName)){
-            this.instance.assets.p_createSil(name, silColor);
+            this.instance.assets._createSil(name, silColor);
         }
     }
     if(!this.instance.assets.containsImage(name)){
@@ -498,13 +498,13 @@ Render.prototype.p_renderImage = function(name, x, y, scale, alpha, anchorXPerce
         -this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 };
-Render.prototype.p_render = function(){
+Render.prototype._render = function(){
     if(this.instance.scene.onRender) this.instance.scene.onRender();
-    this.instance.p_gameObjects.sort(
+    this.instance._gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :
             a.renderer.zorder - b.renderer.zorder;});
-    for(let i=0;i<this.instance.p_gameObjects.length;i++){
-        let gameObj = this.instance.p_gameObjects[i];
+    for(let i=0;i<this.instance._gameObjects.length;i++){
+        let gameObj = this.instance._gameObjects[i];
         if(gameObj.renderer) {
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
@@ -516,10 +516,10 @@ Render.prototype.p_render = function(){
 
     this.instance.camera.storeState();
     this.instance.camera.reset();
-    this.instance.p_uiItems.sort(
+    this.instance._uiItems.sort(
         function(a,b){return a.renderer.zorder - b.renderer.zorder;});
-    for(let i=0;i<this.instance.p_uiItems.length;i++){
-        let gameObj = this.instance.p_uiItems[i];
+    for(let i=0;i<this.instance._uiItems.length;i++){
+        let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
@@ -562,13 +562,13 @@ Render.prototype.drawTextScaledAlphaRotatedDegrees = function(font, text, x, y, 
 };
 Render.prototype.drawTextScaledAlphaRotatedRadians = function(font, text, x, y, scale, alpha, anchorXPercent,
     anchorYPercent, angleInRadians) {
-    this.p_renderText(font, text, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+    this._renderText(font, text, x, y, scale, alpha, anchorXPercent, anchorYPercent,
         angleInRadians, 5, -35);
 };
 Render.prototype.drawTextNeo = function(font, size, text, color, x, y, scale, alignment, baseline, alpha, anchorXPercent, anchorYPercent, angleInRadians){
-    this.p_renderText(font, text, size, color, x, y, scale, alpha, anchorXPercent, anchorYPercent, angleInRadians, alignment, baseline, 1, 1);
+    this._renderText(font, text, size, color, x, y, scale, alpha, anchorXPercent, anchorYPercent, angleInRadians, alignment, baseline, 1, 1);
 };
-Render.prototype.p_renderText = function(font, text, size, color, x, y, scale, alpha, anchorXPercent, anchorYPercent,
+Render.prototype._renderText = function(font, text, size, color, x, y, scale, alpha, anchorXPercent, anchorYPercent,
     angleInRadians, alignment, baseline, letterSpacing, lineSpacingDelta){
     if (alpha <= 0) return;
     if(text == null) return;
@@ -672,7 +672,7 @@ Render.prototype.measureUnscaledText = function(font, text, letterSpacing) {
     };
 };
 Render.prototype.renderFrame = function(){
-    requestAnimationFrame(this.p_render.bind(this));
+    requestAnimationFrame(this._render.bind(this));
 };
 Render.prototype._getCursorPosition = function(event) {
     const rect = this._canvas.getBoundingClientRect();

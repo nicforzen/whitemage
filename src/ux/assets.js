@@ -25,7 +25,7 @@ Assets.prototype.loadImage = function(name, url) {
         }); i.src = url;
     });
 };
-Assets.prototype.p_createSil = function(name, color){
+Assets.prototype._createSil = function(name, color){
     var sourceImg = this.getImage(name).source;
     var canvas = document.createElement("canvas");
     var ctx = canvas.getContext('2d');

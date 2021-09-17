@@ -27,8 +27,8 @@ Driver.prototype.start = function(canvas, localStorage) {
 Driver.prototype._start = function() {
     if(this.instance.hadError) clearInterval(this._gameLoopInterval);
     else{
-        this.instance.p_gameLoop();
-        this._gameLoopInterval = setInterval(function(){this.instance.p_gameLoop();}.bind(this),
+        this.instance._gameLoop();
+        this._gameLoopInterval = setInterval(function(){this.instance._gameLoop();}.bind(this),
             1000 / this.fps);
     }
 };

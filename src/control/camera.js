@@ -3,26 +3,26 @@ import { Vector2 } from "../physics/vector.js";
 export function Camera(x, y, scale) {
     this.transform = {
         position: new Vector2()
-    }
+    };
     this.transform.position.x = x;
     this.transform.position.y = y;
     this.scale = scale;
     this.fovX = 0;
     this.fovY = 0;
-    this.p_x = x;
-    this.p_y = y;
-    this.p_fovX = 0;
-    this.p_fovY = 0;
-    this.p_scale = scale;
+    this._x = x;
+    this._y = y;
+    this._fovX = 0;
+    this._fovY = 0;
+    this._scale = scale;
     this.followTarget = null;
 }
 
 Camera.prototype.storeState = function(){
-    this.p_x = this.transform.position.x;
-    this.p_y = this.transform.position.y;
-    this.p_fovX = this.fovX;
-    this.p_fovY = this.fovY;
-    this.p_scale = this.scale;
+    this._x = this.transform.position.x;
+    this._y = this.transform.position.y;
+    this._fovX = this.fovX;
+    this._fovY = this.fovY;
+    this._scale = this.scale;
 };
 Camera.prototype.reset = function(){
     this.transform.position.x = 0;
@@ -32,11 +32,11 @@ Camera.prototype.reset = function(){
     this.scale = 1;
 };
 Camera.prototype.loadState = function(){
-    this.transform.position.x = this.p_x;
-    this.transform.position.y = this.p_y;
-    this.fovX = this.p_fovX;
-    this.fovY = this.p_fovY;
-    this.scale = this.p_scale;
+    this.transform.position.x = this._x;
+    this.transform.position.y = this._y;
+    this.fovX = this._fovX;
+    this.fovY = this._fovY;
+    this.scale = this._scale;
 };
 Camera.prototype.changeScale = function(s){
     if(s > 0) this.scale = s;

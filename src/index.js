@@ -29,3 +29,5 @@ export * from "./ux/sound.js";
 export * from "./ux/soundobject.js";
 export * from "./ux/render.js";
 export * from "./ux/renderer.js";
+
+export * from "./meta/debug.js";

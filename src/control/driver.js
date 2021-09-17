@@ -1,24 +1,26 @@
 
-export function Driver(instance, fps, gameWidth, gameHeight) {
+export function Driver(instance, canvas, localStorage) {
     instance.setDriver(this);
     this.instance = instance;
-    this.fps = fps;
+    this.fps = 60;
+    this._canvas = canvas;
+    this._localStorage = localStorage;
     this._gameLoopInterval = null;
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
+    this.gameWidth = canvas.width;
+    this.gameHeight = canvas.height;
 }
 
-Driver.prototype.start = function(canvas, localStorage) {
+Driver.prototype.start = function() {
     if(!this.instance.initialized){
-        this.instance.initialize(this.gameWidth, this.gameHeight, canvas, localStorage);
-        setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
+        this.instance.initialize(this.gameWidth, this.gameHeight, this._canvas, this._localStorage);
+        setTimeout(function(){this.start();}.bind(this), 10);
     }else{
         if (this.instance.assets._stillLoading > 0) {
-            setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
+            setTimeout(function(){this.start();}.bind(this), 10);
         } else if(!this.instance.scene.initialized){
             this.instance.scene.start();
             this.instance.scene.initialized = true;
-            setTimeout(function(){this.start(canvas, localStorage);}.bind(this), 10);
+            setTimeout(function(){this.start();}.bind(this), 10);
         }else {
             this._start();
         }

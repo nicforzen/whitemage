@@ -105,8 +105,8 @@ export var CollisionUtil = {
         let collision = new Vector(otherObj.transform.position.x + vx / mag * otherRadius,
             otherObj.y + vy / mag * otherRadius);
     
-        let px = gameObj.x + gameObj.rigidbody.velocity.x * timeDilation;
-        let py = gameObj.y + gameObj.rigidbody.velocity.y * timeDilation;
+        let px = gameObj.transform.position.x + gameObj.rigidbody.velocity.x * timeDilation;
+        let py = gameObj.transform.position.y + gameObj.rigidbody.velocity.y * timeDilation;
         console.log("px: " + px);
         if(Math.abs(px - collision.x) < radius) {
             let distance =  Math.abs(collision.x - gameObj.transform.position.x) - radius;

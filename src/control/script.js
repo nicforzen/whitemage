@@ -21,6 +21,6 @@ Script.prototype.initialize = function() {
         if(this.start){
                 this.start();
         }
-        this.p_initialized = true;
+        this._initialized = true;
     }
 };

@@ -18,8 +18,8 @@ export function Camera(x, y, scale) {
 }
 
 Camera.prototype.storeState = function(){
-    this.p_x = this.x;
-    this.p_y = this.y;
+    this.p_x = this.transform.position.x;
+    this.p_y = this.transform.position.y;
     this.p_fovX = this.fovX;
     this.p_fovY = this.fovY;
     this.p_scale = this.scale;

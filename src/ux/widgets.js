@@ -1,8 +1,8 @@
 
 export function Button(text, x, y, width, height, color, font, textColor, textSize, onClick){
     let go = new GameObject("_b");
-    go.x = x;
-    go.y = y;
+    go.transform.position.x = x;
+    go.transform.position.y = y;
     go.renderer = new RectangleRenderer(width, height, color);
     if(onClick){
         go.addCollider(new BoxCollider(0.5, 0.5, width, height, false));
@@ -33,8 +33,8 @@ export function Button(text, x, y, width, height, color, font, textColor, textSi
 
 export function Label(text, x, y, font, textColor, textSize, alignment, baseline){
     let go = new GameObject("_l");
-    go.x = x;
-    go.y = y;
+    go.transform.position.x = x;
+    go.transform.position.y = y;
     go.renderer = new TextRenderer(font, textSize, textColor, text.toString(), 1, alignment, baseline);
     return go;
 }

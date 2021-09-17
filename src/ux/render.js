@@ -92,8 +92,8 @@ Render.prototype.p_renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, 
     let yAnchorFactor = this.scaleFactor * height * anchorYPercent;
 
     this._safeTranslate(this.wingWidthX, this.wingWidthY);
-    this._safeTranslate(this.scaleFactor * ((x1 - camera.x)*camera.scale + camera.fovX),
-        this.scaleFactor * ((y1 - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
+        this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
@@ -114,8 +114,8 @@ Render.prototype.p_renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, 
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(-angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
-    this._safeTranslate(-this.scaleFactor * ((x1 - camera.x)*camera.scale + camera.fovX),
-        -this.scaleFactor * ((y1 - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(-this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
+        -this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
     
     if (alpha != 1) this._ctx.globalAlpha = 1;
@@ -154,8 +154,8 @@ Render.prototype.p_renderArc = function(x, y, r, alpha, color, isFill, lineWidth
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.beginPath();
     let camera = this.instance.camera;
-    let dx = ((x-camera.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
-    let dy = ((y-camera.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
+    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
+    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
     this._ctx.moveTo(dx, dy);
     this._ctx.arc(dx, dy, r * this.scaleFactor * camera.scale, radianStart, radianEnd);
     this._ctx.closePath();
@@ -174,8 +174,8 @@ Render.prototype.p_renderPolygon = function(x, y, points, alpha, color, isFill, 
     let camera = this.instance.camera;
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.beginPath();
-    let dx = ((x-camera.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
-    let dy = ((y-camera.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
+    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
+    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
     this._ctx.moveTo(dx, dy);
     for(var i = 0; i < points.length; i++){
         let p = points[i];
@@ -444,8 +444,8 @@ Render.prototype.p_renderImage = function(name, x, y, scale, alpha, anchorXPerce
     }
 
     this._safeTranslate(this.wingWidthX, this.wingWidthY);
-    this._safeTranslate(this.scaleFactor * ((x - camera.x)*camera.scale + camera.fovX),
-        this.scaleFactor * ((y - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
+        this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     if(flipX) this._ctx.scale(-1, 1);
     if(flipY) this._ctx.scale(1, -1);
     this._safeTranslate(-xOffsetFactor, -yOffsetFactor);
@@ -494,8 +494,8 @@ Render.prototype.p_renderImage = function(name, x, y, scale, alpha, anchorXPerce
     this._safeTranslate(xOffsetFactor, yOffsetFactor);
     if(flipX) this._ctx.scale(-1, 1);
     if(flipY) this._ctx.scale(1, -1);
-    this._safeTranslate(-this.scaleFactor * ((x - camera.x)*camera.scale + camera.fovX),
-        -this.scaleFactor * ((y - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(-this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
+        -this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 };
 Render.prototype.p_render = function(){
@@ -506,8 +506,8 @@ Render.prototype.p_render = function(){
     for(let i=0;i<this.instance.p_gameObjects.length;i++){
         let gameObj = this.instance.p_gameObjects[i];
         if(gameObj.renderer) {
-            gameObj.renderer.x = gameObj.x;
-            gameObj.renderer.y = gameObj.y;
+            gameObj.renderer.x = gameObj.transform.position.x;
+            gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
             gameObj.renderer.angleInRadians = gameObj.angleInRadians;
             this.render(gameObj.renderer);
@@ -521,8 +521,8 @@ Render.prototype.p_render = function(){
     for(let i=0;i<this.instance.p_uiItems.length;i++){
         let gameObj = this.instance.p_uiItems[i];
         if(gameObj.renderer) {
-            gameObj.renderer.x = gameObj.x;
-            gameObj.renderer.y = gameObj.y;
+            gameObj.renderer.x = gameObj.transform.position.x;
+            gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
             gameObj.renderer.angleInRadians = gameObj.angleInRadians;
             this.render(gameObj.renderer);
@@ -590,8 +590,8 @@ Render.prototype.p_renderText = function(font, text, size, color, x, y, scale, a
     var yAnchorFactor = this.scaleFactor * measurement.height * anchorYPercent * scale * camera.scale;
 
     this._safeTranslate(this.wingWidthX, this.wingWidthY);
-    this._safeTranslate(this.scaleFactor * ((x - camera.x)*camera.scale + camera.fovX),
-        this.scaleFactor * ((y - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
+        this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
@@ -608,8 +608,8 @@ Render.prototype.p_renderText = function(font, text, size, color, x, y, scale, a
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(-angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
-    this._safeTranslate(-this.scaleFactor * ((x - camera.x)*camera.scale + camera.fovX),
-        -this.scaleFactor * ((y - camera.y)*camera.scale + camera.fovY));
+    this._safeTranslate(-this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
+        -this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 
     if (alpha != 1) this._ctx.globalAlpha = 1;
@@ -686,7 +686,7 @@ Render.prototype._getCursorPosition = function(event) {
         y > this.gameHeight)
         return {x: null, y: null};
     let camera = this.instance.camera;
-    return { x: x + camera.x - camera.fovX, y: y + camera.y - camera.fovY };
+    return { x: x + camera.transform.position.x - camera.fovX, y: y + camera.transform.position.y - camera.fovY };
 };
 Render.prototype._getRawCursorPosition = function(event){
     const rect = this._canvas.getBoundingClientRect();

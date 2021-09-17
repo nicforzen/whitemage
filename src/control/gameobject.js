@@ -5,7 +5,6 @@ export function GameObject(name){
     this.stationary = false;
     this.renderer = null;
     this.scale = 1;
-    this.angleInRadians = 0;
     this.scripts = [];
     this.colliders = [];
     this.controller = null;
@@ -24,7 +23,13 @@ export function GameObject(name){
     };
     this.transform = {
         position: new Vector2(),
-        localPosition: new Vector2()
+        localPosition: new Vector2(),
+        rotation: {
+            radians: 0
+        },
+        localRotation: {
+            radians: 0
+        }
     };
 }
 

@@ -509,7 +509,7 @@ Render.prototype._render = function(){
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
-            gameObj.renderer.angleInRadians = gameObj.angleInRadians;
+            gameObj.renderer.angleInRadians = gameObj.transform.rotation.radians;
             this.render(gameObj.renderer);
         }
     }
@@ -524,7 +524,7 @@ Render.prototype._render = function(){
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
-            gameObj.renderer.angleInRadians = gameObj.angleInRadians;
+            gameObj.renderer.angleInRadians = gameObj.transform.rotation.radians;
             this.render(gameObj.renderer);
         }
     }

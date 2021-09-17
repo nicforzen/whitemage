@@ -105,18 +105,18 @@ export var CollisionUtil = {
         let collision = new Vector(otherObj.x + vx / mag * otherRadius,
             otherObj.y + vy / mag * otherRadius);
     
-        let px = gameObj.x + gameObj.velocity.x * timeDilation;
-        let py = gameObj.y + gameObj.velocity.y * timeDilation;
+        let px = gameObj.x + gameObj.rigidbody.velocity.x * timeDilation;
+        let py = gameObj.y + gameObj.rigidbody.velocity.y * timeDilation;
         console.log("px: " + px);
         if(Math.abs(px - collision.x) < radius) {
             let distance =  Math.abs(collision.x - gameObj.x) - radius;
             console.log(gameObj.x + " " + distance);
-            gameObj.velocity.x = distance / timeDilation;
+            gameObj.rigidbody.velocity.x = distance / timeDilation;
         }
     
         if(Math.abs(py - collision.y) < radius) {
             let distance =  Math.abs(collision.y - gameObj.y) - radius;
-            gameObj.velocity.y = distance / timeDilation;
+            gameObj.rigidbody.velocity.y = distance / timeDilation;
         }
     
         return collision;
@@ -194,10 +194,10 @@ export var CollisionUtil = {
     },
     isPolygonCircleCollision: function(c1, c2, timeDilation){
         let points = c1.points;
-        let px = c1.x + c1.gameObject.velocity.x * timeDilation;
-        let py = c1.y + c1.gameObject.velocity.y * timeDilation;
-        let cx = c2.x + c2.gameObject.velocity.x * timeDilation;
-        let cy = c2.y + c2.gameObject.velocity.y * timeDilation;
+        let px = c1.x + c1.gameObject.rigidbody.velocity.x * timeDilation;
+        let py = c1.y + c1.gameObject.rigidbody.velocity.y * timeDilation;
+        let cx = c2.x + c2.gameObject.rigidbody.velocity.x * timeDilation;
+        let cy = c2.y + c2.gameObject.rigidbody.velocity.y * timeDilation;
         let cr = c2.r;
     
         var next = 0;
@@ -225,10 +225,10 @@ export var CollisionUtil = {
         return new Point(cx + cr * Math.sin(angle), cy + cr * Math.cos(angle));
     },
     isArcCircleCollision: function(c1, c2, timeDilation){
-        let c1x = c1.x + c1.gameObject.velocity.x * timeDilation;
-        let c1y = c1.y + c1.gameObject.velocity.y * timeDilation;
-        let c2x = c2.x + c2.gameObject.velocity.x * timeDilation;
-        let c2y = c2.y + c2.gameObject.velocity.y * timeDilation;
+        let c1x = c1.x + c1.gameObject.rigidbody.velocity.x * timeDilation;
+        let c1y = c1.y + c1.gameObject.rigidbody.velocity.y * timeDilation;
+        let c2x = c2.x + c2.gameObject.rigidbody.velocity.x * timeDilation;
+        let c2y = c2.y + c2.gameObject.rigidbody.velocity.y * timeDilation;
         let radianStart = c1.radianStart;
         let radianEnd = c1.radianEnd;
         let distance = (c2x-c1x)*(c2x-c1x) + (c2y-c1y)*(c2y-c1y);
@@ -254,18 +254,18 @@ export var CollisionUtil = {
         }else return false;
     },
     isCircleCircleCollision: function(c1, c2, timeDilation){
-        let c1x = c1.x + c1.gameObject.velocity.x * timeDilation;
-        let c1y = c1.y + c1.gameObject.velocity.y * timeDilation;
-        let c2x = c2.x + c2.gameObject.velocity.x * timeDilation;
-        let c2y = c2.y + c2.gameObject.velocity.y * timeDilation;
+        let c1x = c1.x + c1.gameObject.rigidbody.velocity.x * timeDilation;
+        let c1y = c1.y + c1.gameObject.rigidbody.velocity.y * timeDilation;
+        let c2x = c2.x + c2.gameObject.rigidbody.velocity.x * timeDilation;
+        let c2y = c2.y + c2.gameObject.rigidbody.velocity.y * timeDilation;
         return (c2x-c1x)*(c2x-c1x) + (c2y-c1y)*(c2y-c1y) <= (c1.r+c2.r)*(c1.r+c2.r);
     },
     // TODO Change to WILL collide, or do this somewhere else
     isCircleBoxCollision: function(circle,rect,timeDilation){
-        let cx = circle.x + circle.gameObject.velocity.x * timeDilation;
-        let cy = circle.y + circle.gameObject.velocity.y * timeDilation;
-        let rx = rect.x + rect.gameObject.velocity.x * timeDilation;
-        let ry = rect.y + rect.gameObject.velocity.y * timeDilation;
+        let cx = circle.x + circle.gameObject.rigidbody.velocity.x * timeDilation;
+        let cy = circle.y + circle.gameObject.rigidbody.velocity.y * timeDilation;
+        let rx = rect.x + rect.gameObject.rigidbody.velocity.x * timeDilation;
+        let ry = rect.y + rect.gameObject.rigidbody.velocity.y * timeDilation;
         var distX = Math.abs(cx - rx-rect.w/2);
         var distY = Math.abs(cy - ry-rect.h/2);
 
@@ -291,19 +291,19 @@ export var CollisionUtil = {
         var penetrationVector = dist.normalize().multiply(penetrationDepth);
 
         if(Math.abs(penetrationVector.x) > 0){
-            gameObj.velocity.x = (penetrationVector.x + 
+            gameObj.rigidbody.velocity.x = (penetrationVector.x + 
                 (penetrationVector.x < 0) ? 0.00001 : -0.00001) / timeDilation;
         }
         if(Math.abs(penetrationVector.y) > 0){
-            gameObj.velocity.y = (penetrationVector.y +
+            gameObj.rigidbody.rigidbody.velocity.y = (penetrationVector.y +
                 (penetrationVector.y < 0) ? 0.00001 : -0.00001) / timeDilation;
         }
     },
     resolveBoxBoxCollision: function(gameObj, b, otherObj, c, timeDilation){
         let distances = boxCollisionDistances(gameObj.colliders[b], otherObj.colliders[c]);
     
-        let xvel = gameObj.velocity.x;
-        let yvel = gameObj.velocity.y;
+        let xvel = gameObj.rigidbody.rigidbody.velocity.x;
+        let yvel = gameObj.rigidbody.velocity.y;
         // TODO test this with the == 0 changes
         let xsign = xvel==0?0:xvel<0?-1:1;
         let ysign = yvel==0?0:yvel<0?-1:1;
@@ -312,22 +312,22 @@ export var CollisionUtil = {
     
         var shortesttime = 0;
         if(xvel != 0 && yvel == 0){
-            gameObj.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
+            gameObj.rigidbody.rigidbody.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
         } else if (xvel == 0 && yvel != 0){
-            gameObj.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
+            gameObj.rigidbody.rigidbody.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
         } else if(xtimecollide == 0){
-            gameObj.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
+            gameObj.rigidbody.rigidbody.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
         } else if(ytimecollide == 0){
-            gameObj.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
+            gameObj.rigidbody.rigidbody.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
         }else {
             shortesttime = Math.min(xtimecollide, ytimecollide);
     
             if(xtimecollide < ytimecollide){
-                gameObj.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
-                gameObj.velocity.y = 0;
+                gameObj.rigidbody.rigidbody.velocity.x = Math.abs(distances.x / timeDilation) * xsign;
+                gameObj.rigidbody.rigidbody.velocity.y = 0;
             }else {
-                gameObj.velocity.x = 0;
-                gameObj.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
+                gameObj.rigidbody.rigidbody.velocity.x = 0;
+                gameObj.rigidbody.rigidbody.velocity.y = Math.abs(distances.y / timeDilation) * ysign;
             }
         }
     },
@@ -358,10 +358,10 @@ export var CollisionUtil = {
     },
     isBoxCollision: function(c1, c2, timeDilation)
     {
-        let x1 = c1.x + c1.gameObject.velocity.x * timeDilation;
-        let x2 = c2.x + c2.gameObject.velocity.x * timeDilation;
-        let y1 = c1.y + c1.gameObject.velocity.y * timeDilation;
-        let y2 = c2.y + c2.gameObject.velocity.y * timeDilation;
+        let x1 = c1.x + c1.gameObject.rigidbody.rigidbody.velocity.x * timeDilation;
+        let x2 = c2.x + c2.gameObject.rigidbody.rigidbody.velocity.x * timeDilation;
+        let y1 = c1.y + c1.gameObject.rigidbody.rigidbody.velocity.y * timeDilation;
+        let y2 = c2.y + c2.gameObject.rigidbody.rigidbody.velocity.y * timeDilation;
         return x1 < x2 + c2.w &&
             x1 + c1.w > x2 &&
             y1 < y2 + c2.h &&

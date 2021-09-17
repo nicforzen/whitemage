@@ -330,8 +330,8 @@ Instance.prototype.p_processMovement = function(timeDilation) {
         if(gameObj.parent) continue;
         if(gameObj.stationary) continue;
 
-        gameObj.x += gameObj.velocity.x * timeDilation;
-        gameObj.y += gameObj.velocity.y * timeDilation;
+        gameObj.x += gameObj.rigidbody.velocity.x * timeDilation;
+        gameObj.y += gameObj.rigidbody.velocity.y * timeDilation;
         for(let a=0;a<gameObj.colliders.length;a++){
             let collider = gameObj.colliders[a];
             collider.x = gameObj.x - collider.getWidth() * collider.offsetx;

@@ -1,8 +1,9 @@
+import { Vector } from "../physics/vector.js";
+
 export function GameObject(name){
     this.name = name;
     this.stationary = false;
     this.renderer = null;
-    this.velocity = {x: 0.0, y: 0.0};
     this.x = 0;
     this.y = 0;
     this.scale = 1;
@@ -20,6 +21,11 @@ export function GameObject(name){
     this.animator = null;
     this.p_initialized = false;
     this.id = 0;
+
+    this.rigidbody = {
+        velocity: new Vector(),
+        mass: 1
+    }
 }
 
 GameObject.prototype.addScript = function(script){

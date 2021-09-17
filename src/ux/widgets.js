@@ -1,4 +1,10 @@
 
+import { GameObject } from "../control/gameobject.js";
+import { RectangleRenderer } from "../ux/renderer.js";
+import { BoxCollider } from "../physics/collider.js";
+import { TextRenderer } from "../ux/renderer.js";
+import { Script } from "../control/script.js";
+
 export function Button(text, x, y, width, height, color, font, textColor, textSize, onClick){
     let go = new GameObject("_b");
     go.transform.position.x = x;

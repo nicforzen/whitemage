@@ -1,10 +1,12 @@
+import { Vector2 } from "../physics/vector";
+
 export function CharacterController(isPlayerControlled, speed) {
     let script = new Script();
     script.update = function() {
         this.gameObject.rigidbody.velocity.x = 0;
         this.gameObject.rigidbody.velocity.y = 0;
 
-        var direction = new Vector(0,0);
+        var direction = new Vector2();
 
         let instance = this.gameObject.instance;
         let input = instance.input;

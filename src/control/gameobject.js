@@ -1,4 +1,4 @@
-import { Vector } from "../physics/vector.js";
+import { Vector2 } from "../physics/vector.js";
 
 export function GameObject(name){
     this.name = name;
@@ -21,11 +21,11 @@ export function GameObject(name){
     this.id = 0;
 
     this.rigidbody = {
-        velocity: new Vector(),
+        velocity: new Vector2(),
         mass: 1
     }
     this.transform = {
-        position: new Vector()
+        position: new Vector2()
     }
 }
 

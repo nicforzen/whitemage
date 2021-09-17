@@ -1,4 +1,4 @@
-import { Vector } from '../physics/vector.js';
+import { Vector2 } from '../physics/vector.js';
 
 function PlayerController(x, y){
     this.moveTarget = null;
@@ -15,7 +15,7 @@ PlayerController.prototype.clearMoveTarget = function(){
     this.moveTarget = null;
 };
 PlayerController.prototype.getTargetDirectionVector = function(x, y){
-    let direction = new Vector(0,0);
+    let direction = new Vector2();
     if(this.moveTarget){
         direction.x = this.moveTarget.x - x;
         direction.y = this.moveTarget.y - y;

@@ -1,8 +1,8 @@
-import { Vector } from "../physics/vector.js";
+import { Vector2 } from "../physics/vector.js";
 
 export function Camera(x, y, scale) {
     this.transform = {
-        position: new Vector()
+        position: new Vector2()
     }
     this.transform.position.x = x;
     this.transform.position.y = y;

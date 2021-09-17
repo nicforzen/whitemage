@@ -1,5 +1,5 @@
 
-import {Vector} from './vector.js';
+import { Vector2 } from './vector.js';
 import { Point } from './point.js';
 import { Util } from '../util/util.js';
 
@@ -102,7 +102,7 @@ export var CollisionUtil = {
         let vx = gameObj.transform.position.x - otherObj.transform.position.x;
         let vy = gameObj.transform.position.y - otherObj.transform.position.y;
         let mag = Math.sqrt(vx*vx + vy*vy);
-        let collision = new Vector(otherObj.transform.position.x + vx / mag * otherRadius,
+        let collision = new Vector2(otherObj.transform.position.x + vx / mag * otherRadius,
             otherObj.y + vy / mag * otherRadius);
     
         let px = gameObj.transform.position.x + gameObj.rigidbody.velocity.x * timeDilation;
@@ -286,7 +286,7 @@ export var CollisionUtil = {
         var NearestX = Math.max(rectCollider.x, Math.min(circleCollider.x, rectCollider.x + rectCollider.w));
         var NearestY = Math.max(rectCollider.y, Math.min(circleCollider.y, rectCollider.y + rectCollider.h));
 
-        var dist = new Vector(circleCollider.x - NearestX, circleCollider.y - NearestY);
+        var dist = new Vector2(circleCollider.x - NearestX, circleCollider.y - NearestY);
         var penetrationDepth = circleCollider.r - dist.length();
         var penetrationVector = dist.normalize().multiply(penetrationDepth);
 

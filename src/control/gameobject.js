@@ -13,8 +13,6 @@ export function GameObject(name){
     this.instance = null;
     this.parent = null;
     this.subObjects = [];
-    this.localX = 0;
-    this.localY = 0;
     this.localScale = 1;
     this.animator = null;
     this._initialized = false;
@@ -25,7 +23,8 @@ export function GameObject(name){
         mass: 1
     };
     this.transform = {
-        position: new Vector2()
+        position: new Vector2(),
+        localPosition: new Vector2()
     };
 }
 
@@ -55,8 +54,8 @@ GameObject.prototype.setAnimator = function(animator){
 GameObject.prototype.addSubobject = function(obj){
     obj.parent = this;
     obj.instance = this.instance;
-    obj.transform.position.x = this.transform.position.x + obj.localX*this.scale;
-    obj.transform.position.y = this.transform.position.y + obj.localY*this.scale;
+    obj.transform.position.x = this.transform.position.x + obj.transform.localPosition.x*this.scale;
+    obj.transform.position.y = this.transform.position.y + obj.transform.localPosition.y*this.scale;
     obj.scale = this.scale;
     this.subObjects.push(obj);
 };

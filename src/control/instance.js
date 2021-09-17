@@ -346,8 +346,8 @@ Instance.prototype._processMovement = function(timeDilation) {
         if(gameObj.stationary) continue;
         
         gameObj.scale = gameObj.localScale * gameObj.parent.scale;
-        gameObj.transform.position.x = gameObj.parent.transform.position.x + gameObj.localX*gameObj.parent.scale;
-        gameObj.transform.position.y = gameObj.parent.transform.position.y + gameObj.localY*gameObj.parent.scale;
+        gameObj.transform.position.x = gameObj.parent.transform.position.x + gameObj.transform.localPosition.x*gameObj.parent.scale;
+        gameObj.transform.position.y = gameObj.parent.transform.position.y + gameObj.transform.localPosition.y*gameObj.parent.scale;
         for(let a=0;a<gameObj.colliders.length;a++){
             let collider = gameObj.colliders[a];
             collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;

@@ -1,4 +1,5 @@
 import { Vector2 } from "../physics/vector";
+import { Script } from "../control/script";
 
 export function CharacterController(isPlayerControlled, speed) {
     let script = new Script();

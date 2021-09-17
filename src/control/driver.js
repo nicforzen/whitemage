@@ -32,15 +32,15 @@ Driver.prototype._start = function() {
             1000 / this.fps);
     }
 };
-Driver.prototype.changeScene = function() {
-    if(!this.instance.isServer){
-        this.instance.destroy();
-        this.instance = new Instance(false, new TestScene(), new Input(), new Render(),
-            new Assets(), getClientSocket(true), new Sound());
-        clearInterval(this._gameLoopInterval);
-        this.start(document.getElementById('canvas'), window.localStorage);            
-    }
-};
+// Driver.prototype.changeScene = function() {
+//     if(!this.instance.isServer){
+//         this.instance.destroy();
+//         this.instance = new Instance(false, new TestScene(), new Input(), new Render(),
+//             new Assets(), getClientSocket(true), new Sound());
+//         clearInterval(this._gameLoopInterval);
+//         this.start(document.getElementById('canvas'), window.localStorage);            
+//     }
+// };
 
 ///RESET method? To reinit instance? Reload? That makes it sound like it's going in fresh
 // Reinitialize?

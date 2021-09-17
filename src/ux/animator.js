@@ -1,3 +1,6 @@
+
+import { ImageRenderer } from "./renderer";
+
 export function Animator(onCalculateAnimation) {
     this.gameObject = null;
     this.onCalculateAnimation = onCalculateAnimation;

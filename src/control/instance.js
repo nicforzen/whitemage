@@ -7,6 +7,7 @@ import { Input } from "../input/input.js";
 import { Assets } from "../ux/assets.js";
 import { Sound } from "../ux/sound.js";
 import { Render } from "../ux/render.js";
+import { Util } from '../util/util.js';
 
 export function Instance(scene) {
     this._objId = 0;
@@ -123,7 +124,7 @@ Instance.prototype.destroyObject = function(gameObj){
         let script = gameObj.scripts[j];
         if(script.onDestroy) script.onDestroy();
     }
-    _removeArray(gameObj, this._gameObjects);
+    Util.removeFromArray(gameObj, this._gameObjects);
 };
 Instance.prototype.destroyObjectByName = function(name){
     for (let i = 0; i < this._gameObjects.length; i++) {
@@ -172,7 +173,7 @@ Instance.prototype.destroyUiItem = function(gameObj){
         let script = gameObj.scripts[j];
         if(script.onDestroy) script.onDestroy();
     }
-    _removeArray(gameObj, this._uiItems);
+    Util.removeFromArray(gameObj, this._uiItems);
 };
 Instance.prototype.destroyUiItemByName = function(name){
     for (let i = 0; i < this._uiItems.length; i++) {

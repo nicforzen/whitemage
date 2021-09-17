@@ -73,6 +73,7 @@ GameObject.prototype.setInstance = function(instance){
 GameObject.prototype.collidesAt = function(x, y){
     for(var i = 0; i < this.colliders.length; i++){
         let collider = this.colliders[i];
+        console.log(x+" "+y+collider.toString());
         // TODO fix
         // if(collider.type == "b"){
         //     if(boxColliderPointCollision(x, y, collider)) return true;

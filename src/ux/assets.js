@@ -1,3 +1,5 @@
+import { Util } from "../util/util.js";
+
 export function Assets() {
     this.sounds = {};
     this.images = {};
@@ -10,7 +12,7 @@ export function Assets() {
 Assets.prototype.loadAudio = function(name, url) {
     this._stillLoading += 1;
     var audio = new Audio(url);
-    audio.addEventListener("canplaythrough", function(e) {
+    audio.addEventListener("canplaythrough", function() {
         this._stillLoading -= 1;
         this.sounds[name] = audio;
     }.bind(this));
@@ -42,7 +44,7 @@ Assets.prototype._createSil = function(name, color){
 Assets.prototype.loadFont = function(name, url, mappingUrl) {
     this._stillLoading += 1;
     this.loadImage(name, url);
-    _httpGet(mappingUrl, function (s) {
+    Util.httpGet(mappingUrl, function (s) {
         var lines = s.split("\n");
         for (var i = 0; i < lines.length; i++) {
             if (lines[i].startsWith("common ")) {
@@ -73,7 +75,7 @@ Assets.prototype.loadSpriteSheet = function(name, url, mappingUrl){
 };
 Assets.prototype.loadMapping = function(name, mappingUrl){
     this._stillLoading += 1;
-    _httpGet(mappingUrl, function (s) {
+    Util.httpGet(mappingUrl, function (s) {
         var lines = s.split("\n");
         var returnObject = {};
         for (var i = 0; i < lines.length; i++) {
@@ -105,23 +107,23 @@ Assets.prototype.getImage = function(name) {
     return this.images[name];
 };
 Assets.prototype.containsImage = function(name){
-    return _indexOf(name, Object.keys(this.images)) >= 0;
+    return Util.indexOf(name, Object.keys(this.images)) >= 0;
 };
 Assets.prototype.getSound = function(name){
     return this.sounds[name];
 };
 Assets.prototype.containsSound = function(name) {
-    return _indexOf(name, Object.keys(this.sounds)) >= 0;
+    return Util.indexOf(name, Object.keys(this.sounds)) >= 0;
 };
 Assets.prototype.getFontData = function(name){
     return this.fontData[name];
 };
 Assets.prototype.containsFontData = function(name) {
-    return _indexOf(name, this.fontData) >= 0;
+    return Util.indexOf(name, this.fontData) >= 0;
 };
 Assets.prototype.getMappingData = function(name){
     return this.mappingData[name];
 };
 Assets.prototype.containsMappingData = function(name) {
-    return _indexOf(name, this.mappingData) >= 0;
+    return Util.indexOf(name, this.mappingData) >= 0;
 };

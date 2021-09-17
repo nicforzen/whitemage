@@ -1,11 +1,11 @@
 import { Vector2 } from '../physics/vector.js';
 
-function PlayerController(x, y){
+function PlayerController(){
     this.moveTarget = null;
 }
 
 PlayerController.prototype.setMoveTarget = function(x, y){
-    if(this.moveTarget == null) this.moveTarget = {x: Math.floor(x), y: Math.floor(y)};
+    if(this.moveTarget == null) this.moveTarget = new Vector2(Math.floor(x), Math.floor(y));
     else{
         this.moveTarget.x = Math.floor(x);
         this.moveTarget.y = Math.floor(y);

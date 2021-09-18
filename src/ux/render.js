@@ -697,7 +697,8 @@ Render.prototype._getCursorPosition = function(event) {
         y > this.gameHeight)
         return {x: null, y: null};
     let camera = this.instance.camera;
-    return { x: x + camera.transform.position.x - camera.fovX, y: y + camera.transform.position.y - camera.fovY };
+    return { x: (x + camera.transform.position.x - camera.fovX) / camera._scale,
+        y: (y + camera.transform.position.y - camera.fovY) / camera._scale };
 };
 Render.prototype._getRawCursorPosition = function(event){
     const rect = this._canvas.getBoundingClientRect();

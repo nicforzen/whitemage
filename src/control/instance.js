@@ -59,13 +59,7 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         // Calculate scale factor
         this.render.scaleFactor = canvas.height / gameHeight;
 
-        // Calculate wing widths
-        if(canvas.width > canvas.height){
-            this.render.wingWidthX = (canvas.width - gameWidth * this.render.scaleFactor) / 2;
-        }else if(canvas.height > canvas.width){
-            this.render.scaleFactor = canvas.width / gameWidth;
-            this.render.wingWidthY = (canvas.height - gameHeight * this.render.scaleFactor) / 2;
-        }
+        this.render.calculateWings(canvas, gameWidth, gameHeight);
 
         window.addEventListener('keydown', this.input.onKeyDown.bind(this.input), false);
         window.addEventListener('keyup', this.input.onKeyUp.bind(this.input), false);

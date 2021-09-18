@@ -545,6 +545,15 @@ Render.prototype._render = function(){
             this.screenHeight);
     }
 };
+Render.prototype.calculateWings = function(canvas, gameWidth, gameHeight){
+        // Calculate wing widths
+        if(canvas.width > canvas.height){
+            this.wingWidthX = (canvas.width - gameWidth * this.scaleFactor) / 2;
+        }else if(canvas.height > canvas.width){
+            this.scaleFactor = canvas.width / gameWidth;
+            this.wingWidthY = (canvas.height - gameHeight * this.scaleFactor) / 2;
+        }
+};
 Render.prototype.drawText = function(font, text, x, y){
     this.drawTextScaledAlphaRotatedRadians(font, text, x, y, 1, 1);
 };

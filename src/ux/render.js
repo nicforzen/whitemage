@@ -3,6 +3,7 @@ import { ArcRenderer } from "./renderer.js";
 import { CircleRenderer } from "./renderer.js";
 import { PolygonRenderer } from "./renderer.js";
 import { TextRenderer } from "./renderer.js";
+import { Color } from "./color.js"
 
 export function Render() {
     this.scaleFactor = 1;
@@ -14,6 +15,7 @@ export function Render() {
     this.wingWidthX = 0;
     this.wingWidthY = 0;
     this.instance = null;
+    this.wingColor = Color.BLACK;
     this._ctx = null;
     this._canvas = null;
 }
@@ -531,13 +533,13 @@ Render.prototype._render = function(){
     this.instance.camera.loadState();
 
     if (this.wingWidthX > 0) {
-        this._ctx.fillStyle = "#000000";
+        this._ctx.fillStyle = this.wingColor.hexString;
         this._ctx.fillRect(0, 0, this.wingWidthX, this.screenHeight);
         this._ctx.fillRect(this.screenWidth - this.wingWidthX, 0, this.screenWidth,
             this.screenHeight);
     }
     if (this.wingWidthY > 0){
-        this._ctx.fillStyle = "#000000";
+        this._ctx.fillStyle = this.wingColor.hexString;
         this._ctx.fillRect(0, 0, this.screenWidth, this.wingWidthY);
         this._ctx.fillRect(0, this.screenHeight - this.wingWidthY, this.screenWidth,
             this.screenHeight);

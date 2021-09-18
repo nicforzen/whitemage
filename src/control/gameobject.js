@@ -1,5 +1,7 @@
 import { Vector2 } from "../physics/vector.js";
 
+import * as planck from 'planck';
+
 export function GameObject(name){
     this.name = name;
     this.stationary = false;
@@ -19,7 +21,8 @@ export function GameObject(name){
 
     this.rigidbody = {
         velocity: new Vector2(),
-        mass: 1
+        mass: 1,
+        _b2Body: null
     };
     this.transform = {
         position: new Vector2(),
@@ -82,12 +85,34 @@ GameObject.prototype.collidesAt = function(x, y){
     return false;
 };
 GameObject.prototype.initialize = function(){
+    // MAKE COMPONENTS HAVE OWN INITIALIZATION, USE DIRTY VARIABLE FOR LESS LOOP CHECKS
     if(!this._initialized){
         for(let a=0;a<this.colliders.length;a++){
             let collider = this.colliders[a];
             collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
             collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
         }
+
+        let bodyDef = {
+            type: 'dynamic',
+            position: planck.Vec2(0.0, 0.0),
+        }
+        this.rigidbody._b2Body = this.instance._b2World.createBody(bodyDef);
+
+        // Define another box shape for our dynamic body.
+        var dynamicBox = planck.Box(0.5, 0.5);
+
+        // Define the dynamic body fixture.
+        var fixtureDef = {
+            shape: dynamicBox,
+            // Set the box density to be non-zero, so it will be dynamic.
+            density: 1.0,
+            // Override the default friction.
+            friction: 0.3,
+            restitution: 0.5
+        };
+        this.rigidbody._b2Body.createFixture(fixtureDef);
+
         this._initialized = true;
     }
 };

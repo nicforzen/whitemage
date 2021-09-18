@@ -9,6 +9,8 @@ import { Sound } from "../ux/sound.js";
 import { Render } from "../ux/render.js";
 import { Util } from '../util/util.js';
 
+import * as planck from 'planck';
+
 export function Instance(scene) {
     this._objId = 0;
     this.driver = null;
@@ -37,6 +39,19 @@ export function Instance(scene) {
     if(this.scene){ 
         this.scene.setInstance(this);
     }
+
+    this._positionIterations = 2;
+    this._velocityIterations = 5;
+    this._b2World = planck.World(planck.Vec2(0, 10));
+
+    // Define the ground body.
+    var groundBodyDef = {
+        position: planck.Vec2(0.0, 5.0)
+    };
+    
+    var groundBody = this._b2World.createBody(groundBodyDef);
+    var groundBox = planck.Box(50.0, 0.0);
+    groundBody.createFixture(groundBox, 0.0);
 }
 
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
@@ -214,10 +229,11 @@ Instance.prototype._gameLoop = function() {
 
     let time = new Date().getTime();
     this.deltaTime = (time - this.lastTime) / 1000;
+    this._updatePhysics();
     this._update();
     this._postUpdate();
-    this._dispatchCollisions();
-    this._processMovement(this.deltaTime);
+    //this._dispatchCollisions();
+    //this._processMovement(this.deltaTime);
     this._updateUi();
     this._postUpdateUi();
     if(this.camera.followTarget){
@@ -227,6 +243,26 @@ Instance.prototype._gameLoop = function() {
     this.render.renderFrame();
     this.lastTime = time;
     if(this.input) this.input._clearUpKeys();
+};
+Instance.prototype._updatePhysics = function(){
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
+        gameObj.initialize();
+        gameObj.rigidbody._b2Body.setPosition(planck.Vec2(gameObj.transform.position.x, gameObj.transform.position.y));
+        gameObj.rigidbody._b2Body.setLinearVelocity(planck.Vec2(gameObj.rigidbody.velocity.x, gameObj.rigidbody.velocity.y));
+        gameObj.rigidbody._b2Body.setAngle(gameObj.transform.rotation.radians);
+    }
+    this._b2World.step(this.deltaTime, this._velocityIterations, this._positionIterations);
+    for(let i=0;i<this._gameObjects.length;i++){
+        let gameObj = this._gameObjects[i];
+        let position = gameObj.rigidbody._b2Body.getPosition();
+        gameObj.transform.position.x = position.x;
+        gameObj.transform.position.y = position.y;
+        let velocity = gameObj.rigidbody._b2Body.getLinearVelocity();
+        gameObj.rigidbody.velocity.x = velocity.x;
+        gameObj.rigidbody.velocity.y = velocity.y;
+        gameObj.transform.rotation.radians = gameObj.rigidbody._b2Body.getAngle();
+    }
 };
 Instance.prototype._update = function() {
     for(let i=0;i<this._gameObjects.length;i++){

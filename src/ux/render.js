@@ -96,11 +96,11 @@ Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, a
     this._safeTranslate(this.wingWidthX, this.wingWidthY);
     this._safeTranslate(this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
         this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
+    this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
 
-    this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
     if(isFill){
         this._ctx.fillStyle = color.hexString;
         this._ctx.fillRect(0, 0, width * this.scaleFactor,
@@ -111,11 +111,11 @@ Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, a
         this._ctx.strokeRect(0, 0, width * this.scaleFactor,
             height * this.scaleFactor);
     }
-    this._safeTranslate(xAnchorFactor, yAnchorFactor);
 
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._ctx.rotate(-angleInRadians);
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
+    this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._safeTranslate(-this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
         -this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);

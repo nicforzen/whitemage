@@ -38,6 +38,6 @@ Camera.prototype.loadState = function(){
     this.fovY = this._fovY;
     this.scale = this._scale;
 };
-Camera.prototype.changeScale = function(s){
+Camera.prototype.setScale = function(s){
     if(s > 0) this.scale = s;
 };

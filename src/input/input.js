@@ -1,3 +1,5 @@
+import { Script } from "../control/script";
+
 export function Input() {
     this.keysDown = [];
     this.keysUp = [];
@@ -26,8 +28,9 @@ Input.prototype.mouseDown = function(e){
     var point = { x: local.x, y: local.y, button: e.which};
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseDown
                 && point.x != null && point.y != null){
                     let handled = script.onMouseDown(point);
@@ -39,8 +42,9 @@ Input.prototype.mouseDown = function(e){
     point = { x: local.x, y: local.y, button: e.which};
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseDown
                 && point.x != null && point.y != null) script.onMouseDown(point);
         }
@@ -52,8 +56,9 @@ Input.prototype.mouseUp = function(e){
     var point = { x: local.x, y: local.y, button: e.which };
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseUp
                 && point.x != null && point.y != null) {
                     let handled = script.onMouseUp(point);
@@ -65,8 +70,9 @@ Input.prototype.mouseUp = function(e){
     point = { x: local.x, y: local.y, button: e.which};
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseUp
                 && point.x != null && point.y != null) script.onMouseUp(point);
         }
@@ -78,8 +84,9 @@ Input.prototype.mouseMove = function(e){
     var point = { x: local.x, y: local.y, button: e.which };
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseMove
                 && point.x != null && point.y != null) script.onMouseMove(point);
         }
@@ -88,8 +95,9 @@ Input.prototype.mouseMove = function(e){
     point = { x: local.x, y: local.y, button: e.which};
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseMove
                 && point.x != null && point.y != null) script.onMouseMove(point);
         }
@@ -98,8 +106,9 @@ Input.prototype.mouseMove = function(e){
 Input.prototype.scroll = function(delta){
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.onMouseScroll) script.onMouseScroll(delta);
         }
     }

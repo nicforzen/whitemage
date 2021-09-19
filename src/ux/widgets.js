@@ -25,7 +25,7 @@ export function Button(text, x, y, width, height, color, font, textColor, textSi
             }
             return false;
         };
-        go.addScript(script);
+        go.addComponent(script);
     }
 
     if(text){

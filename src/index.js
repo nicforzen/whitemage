@@ -2,7 +2,9 @@ export * from "./util/util.js";
 
 export * from "./physics/point.js";
 export * from "./physics/vector.js";
-export * from "./physics/collider.js";
+//export * from "./physics/collider.js";
+export * from "./physics/rigidbody.js";
+export * from "./physics/boxcollider.js";
 
 export * from "./input/charactercontroller.js";
 export * from "./input/input.js";

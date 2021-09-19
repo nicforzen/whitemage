@@ -19,7 +19,7 @@ export function Script(){
 Script.prototype.initialize = function() {
     if(!this._initialized){
         if(this.start){
-                this.start();
+            this.start();
         }
         this._initialized = true;
     }

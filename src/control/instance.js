@@ -8,8 +8,10 @@ import { Assets } from "../ux/assets.js";
 import { Sound } from "../ux/sound.js";
 import { Render } from "../ux/render.js";
 import { Util } from '../util/util.js';
+import { Script } from './script.js';
 
 import * as planck from 'planck';
+import { Rigidbody } from '../physics/rigidbody.js';
 
 export function Instance(scene) {
     this._objId = 0;
@@ -129,9 +131,12 @@ Instance.prototype.destroyObject = function(gameObj){
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyObject(gameObj.subObjects[i]);
     }
-    for(let j=0;j<gameObj.scripts.length;j++){
-        let script = gameObj.scripts[j];
-        if(script.onDestroy) script.onDestroy();
+    if(gameObj.rigidbody){
+        this._b2World.destroyBody(gameObj.rigidbody._b2Body);
+    }
+    for(let j=0;j<gameObj.components.length;j++){
+        let component = gameObj.components[j];
+        if(component instanceof Script && component.onDestroy) component.onDestroy();
     }
     Util.removeFromArray(gameObj, this._gameObjects);
 };
@@ -142,9 +147,9 @@ Instance.prototype.destroyObjectByName = function(name){
             for(let k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyObject(gameObj.subObjects[k]);
             }
-            for(let j=0;j<gameObj.scripts.length;j++){
-                let script = gameObj.scripts[j];
-                if(script.onDestroy) script.onDestroy();
+            for(let j=0;j<gameObj.components.length;j++){
+                let component = gameObj.components[j];
+                if(component instanceof Script && component.onDestroy) component.onDestroy();
             }
             this._gameObjects.splice(i, 1);
             i -= 1;
@@ -158,9 +163,9 @@ Instance.prototype.destroyObjectById = function(id){
             for(var k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyObject(gameObj.subObjects[k]);
             }
-            for(let j=0;j<gameObj.scripts.length;j++){
-                let script = gameObj.scripts[j];
-                if(script.onDestroy) script.onDestroy();
+            for(let j=0;j<gameObj.components.length;j++){
+                let component = gameObj.components[j];
+                if(component instanceof Script && component.onDestroy) component.onDestroy();
             }
             this._gameObjects.splice(i, 1);
             i -= 1;
@@ -178,9 +183,9 @@ Instance.prototype.destroyUiItem = function(gameObj){
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyUiItem(gameObj.subObjects[i]);
     }
-    for(let j=0;j<gameObj.scripts.length;j++){
-        let script = gameObj.scripts[j];
-        if(script.onDestroy) script.onDestroy();
+    for(let j=0;j<gameObj.components.length;j++){
+        let component = gameObj.components[j];
+        if(component instanceof Script && component.onDestroy) component.onDestroy();
     }
     Util.removeFromArray(gameObj, this._uiItems);
 };
@@ -191,9 +196,9 @@ Instance.prototype.destroyUiItemByName = function(name){
             for(let k = 0; k < gameObj.subObjects.length; k++){
                 this.destroyUiItem(gameObj.subObjects[k]);
             }
-            for(let j=0;j<gameObj.scripts.length;j++){
-                let script = gameObj.scripts[j];
-                if(script.onDestroy) script.onDestroy();
+            for(let j=0;j<gameObj.components.length;j++){
+                let component = gameObj.components[j];
+                if(component instanceof Script && component.onDestroy) component.onDestroy();
             }
             this._uiItems.splice(i, 1);
             i -= 1;
@@ -248,6 +253,7 @@ Instance.prototype._updatePhysics = function(){
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
         gameObj.initialize();
+        if(!gameObj.rigidbody) continue;
         gameObj.rigidbody._b2Body.setPosition(planck.Vec2(gameObj.transform.position.x, gameObj.transform.position.y));
         gameObj.rigidbody._b2Body.setLinearVelocity(planck.Vec2(gameObj.rigidbody.velocity.x, gameObj.rigidbody.velocity.y));
         gameObj.rigidbody._b2Body.setAngle(gameObj.transform.rotation.radians);
@@ -255,6 +261,7 @@ Instance.prototype._updatePhysics = function(){
     this._b2World.step(this.deltaTime, this._velocityIterations, this._positionIterations);
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
+        if(!gameObj.rigidbody) continue;
         let position = gameObj.rigidbody._b2Body.getPosition();
         gameObj.transform.position.x = position.x;
         gameObj.transform.position.y = position.y;
@@ -268,9 +275,9 @@ Instance.prototype._update = function() {
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
         gameObj.initialize();
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
-            script.initialize();
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.update) script.update();
         }
     }
@@ -279,9 +286,9 @@ Instance.prototype._postUpdate = function() {
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
         gameObj.initialize();
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
-            script.initialize();
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.lateupdate) script.lateupdate();
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
@@ -291,9 +298,9 @@ Instance.prototype._updateUi = function() {
     for(let i=0;i<this._uiItems.length;i++){
         let gameObj = this._uiItems[i];
         gameObj.initialize();
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
-            script.initialize();
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.update) script.update();
         }
     }
@@ -302,9 +309,9 @@ Instance.prototype._postUpdateUi = function() {
     for(let i=0;i<this._uiItems.length;i++){
         let gameObj = this._uiItems[i];
         gameObj.initialize();
-        for(let j=0;j<gameObj.scripts.length;j++){
-            let script = gameObj.scripts[j];
-            script.initialize();
+        for(let j=0;j<gameObj.components.length;j++){
+            let script = gameObj.components[j];
+            if(!(script instanceof Script)) continue;
             if(script.lateupdate) script.lateupdate();
         }
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
@@ -385,40 +392,40 @@ Instance.prototype._processMovement = function(timeDilation) {
         }
     }
 };
-Instance.prototype._dispatchCollisions = function() {
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
-        if(gameObj.stationary) continue;
+// Instance.prototype._dispatchCollisions = function() {
+//     for(let i=0;i<this._gameObjects.length;i++){
+//         let gameObj = this._gameObjects[i];
+//         if(gameObj.stationary) continue;
 
-        // Skip checking colliders if there aren't any on this object
-        if(gameObj.colliders.length==0) continue;
+//         // Skip checking colliders if there aren't any on this object
+//         if(gameObj.colliders.length==0) continue;
 
-        // Check against other objects
-        for(let a=0;a<this._gameObjects.length;a++){
-            // Skip same object
-            if(i==a) continue;
+//         // Check against other objects
+//         for(let a=0;a<this._gameObjects.length;a++){
+//             // Skip same object
+//             if(i==a) continue;
 
-            let otherObj = this._gameObjects[a];
-            // Skip checking colliders if there aren't any
-            if(otherObj.colliders.length==0) continue;
+//             let otherObj = this._gameObjects[a];
+//             // Skip checking colliders if there aren't any
+//             if(otherObj.colliders.length==0) continue;
 
-            // Iterate over colliders
-            for(b=0;b<gameObj.colliders.length;b++){
-                // ... and other object colliders
-                for(c=0;c<otherObj.colliders.length;c++){
-                    // Check collision
-                    if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], this.deltaTime)){
-                        // Iterate over scripts and look for collision functions
-                        for(let j=0;j<gameObj.scripts.length;j++){
-                            let script = gameObj.scripts[j];
-                            if(script.onCollisionDetected) script.onCollisionDetected(otherObj);
-                        }
-                    }
-                }
-            }
-        }
-    }
-};
+//             // Iterate over colliders
+//             for(b=0;b<gameObj.colliders.length;b++){
+//                 // ... and other object colliders
+//                 for(c=0;c<otherObj.colliders.length;c++){
+//                     // Check collision
+//                     if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], this.deltaTime)){
+//                         // Iterate over scripts and look for collision functions
+//                         for(let j=0;j<gameObj.components.length;j++){
+//                             let script = gameObj.components[j];
+//                             if(script instanceof Script && script.onCollisionDetected) script.onCollisionDetected(otherObj);
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// };
 Instance.prototype.destroy = function(){
     canvas.outerHTML = canvas.outerHTML;
     window.outerHTML = window.outerHTML;

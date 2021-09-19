@@ -20,6 +20,6 @@ export function SoundObject(instance, audioName, x, y, intensity){
         let volume = (scalar > 1) ? 1 : scalar;
         audio.setVolume(volume);
     };
-    obj.addScript(script);
+    obj.addComponent(script);
     return obj;
 }

@@ -45,15 +45,6 @@ export function Instance(scene) {
     this._positionIterations = 2;
     this._velocityIterations = 5;
     this._b2World = planck.World(planck.Vec2(0, 10));
-
-    // Define the ground body.
-    var groundBodyDef = {
-        position: planck.Vec2(0.0, 5.0)
-    };
-    
-    var groundBody = this._b2World.createBody(groundBodyDef);
-    var groundBox = planck.Box(50.0, 0.0);
-    groundBody.createFixture(groundBox, 0.0);
 }
 
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {

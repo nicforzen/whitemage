@@ -6,6 +6,7 @@ export * from "./physics/vector.js";
 export * from "./physics/rigidbody.js";
 export * from "./physics/boxcollider.js";
 export * from "./physics/circlecollider.js";
+export * from "./physics/rigidbodytype.js";
 
 export * from "./input/charactercontroller.js";
 export * from "./input/input.js";

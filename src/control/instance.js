@@ -79,6 +79,30 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
             const delta = Math.sign(e.deltaY);
             this.input.scroll(delta);
         }.bind(this));
+        this._b2World.on('pre-solve', function(contact) {
+            let obj1 = contact.getFixtureA().getBody().getUserData();
+            let obj2 = contact.getFixtureB().getBody().getUserData();
+            if(obj1.name == "pipe" && obj2.name == "floor" || obj1.name == "floor" && obj2.name == "pipe") contact.setEnabled(false);
+            //console.log("Contact: " + obj1.name + " " + obj2.name);
+            for (let i = 0; i < this._gameObjects.length; i++) {
+                let gameObj = this._gameObjects[i];
+                if(gameObj === obj1){
+                    for(let j=0;j<gameObj.components.length;j++){
+                        let component = gameObj.components[j];
+                        if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj2);
+                    }
+                }
+            }
+            for (let i = 0; i < this._gameObjects.length; i++) {
+                let gameObj = this._gameObjects[i];
+                if(gameObj === obj2){
+                    for(let j=0;j<gameObj.components.length;j++){
+                        let component = gameObj.components[j];
+                        if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj1);
+                    }
+                }
+            }
+        }.bind(this));
     }
 
     if(this.scene.loadAssets) this.scene.loadAssets();
@@ -135,14 +159,16 @@ Instance.prototype.destroyObjectByName = function(name){
     for (let i = 0; i < this._gameObjects.length; i++) {
         let gameObj = this._gameObjects[i];
         if(gameObj.name == name){
-            for(let k = 0; k < gameObj.subObjects.length; k++){
-                this.destroyObject(gameObj.subObjects[k]);
-            }
-            for(let j=0;j<gameObj.components.length;j++){
-                let component = gameObj.components[j];
-                if(component instanceof Script && component.onDestroy) component.onDestroy();
-            }
-            this._gameObjects.splice(i, 1);
+            // for(let k = 0; k < gameObj.subObjects.length; k++){
+            //     this.destroyObject(gameObj.subObjects[k]);
+            // }
+            // for(let j=0;j<gameObj.components.length;j++){
+            //     let component = gameObj.components[j];
+            //     if(component instanceof Script && component.onDestroy) component.onDestroy();
+            // }
+            // this._gameObjects.splice(i, 1);
+            // i -= 1;
+            this.destroyObject(gameObj);
             i -= 1;
         }
     }
@@ -308,81 +334,81 @@ Instance.prototype._postUpdateUi = function() {
         if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
     }
 };
-Instance.prototype._processMovement = function(timeDilation) {
-    // Reconfigure velocities based on collisions
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
-        if(gameObj.stationary) continue;
+// Instance.prototype._processMovement = function(timeDilation) {
+//     // Reconfigure velocities based on collisions
+//     for(let i=0;i<this._gameObjects.length;i++){
+//         let gameObj = this._gameObjects[i];
+//         if(gameObj.stationary) continue;
 
-        // Skip checking colliders if there aren't any on this object
-        if(gameObj.colliders.length==0) continue;
+//         // Skip checking colliders if there aren't any on this object
+//         if(gameObj.colliders.length==0) continue;
 
-        // Check against other objects
-        for(let a=0;a<this._gameObjects.length;a++){
-            // Skip same object
-            if(i==a) continue;
+//         // Check against other objects
+//         for(let a=0;a<this._gameObjects.length;a++){
+//             // Skip same object
+//             if(i==a) continue;
 
-            let otherObj = this._gameObjects[a];
-            // Skip all but stationary
-            if(!otherObj.stationary) continue;
+//             let otherObj = this._gameObjects[a];
+//             // Skip all but stationary
+//             if(!otherObj.stationary) continue;
 
-            // Skip checking colliders if there aren't any
-            if(otherObj.colliders.length==0) continue;
+//             // Skip checking colliders if there aren't any
+//             if(otherObj.colliders.length==0) continue;
 
-            // Iterate over colliders
-            for(b=0;b<gameObj.colliders.length;b++){
-                if(!gameObj.colliders[b].solid) continue;
-                // ... and other object colliders
-                for(c=0;c<otherObj.colliders.length;c++){
+//             // Iterate over colliders
+//             for(b=0;b<gameObj.colliders.length;b++){
+//                 if(!gameObj.colliders[b].solid) continue;
+//                 // ... and other object colliders
+//                 for(c=0;c<otherObj.colliders.length;c++){
 
-                    // Check collision
-                    if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation)){
-                        // Resolve
-                        if(gameObj.colliders[b].type == "b" && otherObj.colliders[c].type == "b"){
-                            CollisionUtil.resolveBoxBoxCollision(gameObj, b, otherObj, c, timeDilation);
-                        }else if(gameObj.colliders[b].type == "b" && otherObj.colliders[c].type == "c") {
-                            CollisionUtil.resolveBoxCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation);
-                        }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "b") {
-                            CollisionUtil.resolveBoxCircleCollision(otherObj.colliders[c], gameObj.colliders[b], timeDilation);
-                        }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "c") {
-                            CollisionUtil.resolveCircleCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation);
-                        }
-                    }
-                }
-            }
-        }
-    }
+//                     // Check collision
+//                     if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation)){
+//                         // Resolve
+//                         if(gameObj.colliders[b].type == "b" && otherObj.colliders[c].type == "b"){
+//                             CollisionUtil.resolveBoxBoxCollision(gameObj, b, otherObj, c, timeDilation);
+//                         }else if(gameObj.colliders[b].type == "b" && otherObj.colliders[c].type == "c") {
+//                             CollisionUtil.resolveBoxCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation);
+//                         }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "b") {
+//                             CollisionUtil.resolveBoxCircleCollision(otherObj.colliders[c], gameObj.colliders[b], timeDilation);
+//                         }else if(gameObj.colliders[b].type == "c" && otherObj.colliders[c].type == "c") {
+//                             CollisionUtil.resolveCircleCircleCollision(gameObj.colliders[b], otherObj.colliders[c], timeDilation);
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
 
-    // Finally, move objects
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
-        if(gameObj.parent) continue;
-        if(gameObj.stationary) continue;
+//     // Finally, move objects
+//     for(let i=0;i<this._gameObjects.length;i++){
+//         let gameObj = this._gameObjects[i];
+//         if(gameObj.parent) continue;
+//         if(gameObj.stationary) continue;
 
-        gameObj.transform.position.x += gameObj.rigidbody.velocity.x * timeDilation;
-        gameObj.transform.position.y += gameObj.rigidbody.velocity.y * timeDilation;
-        for(let a=0;a<gameObj.colliders.length;a++){
-            let collider = gameObj.colliders[a];
-            collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
-            collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
-        }
-    }
-    // Move subobjects
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
-        if(!gameObj.parent) continue;
-        if(gameObj.stationary) continue;
+//         gameObj.transform.position.x += gameObj.rigidbody.velocity.x * timeDilation;
+//         gameObj.transform.position.y += gameObj.rigidbody.velocity.y * timeDilation;
+//         for(let a=0;a<gameObj.colliders.length;a++){
+//             let collider = gameObj.colliders[a];
+//             collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
+//             collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
+//         }
+//     }
+//     // Move subobjects
+//     for(let i=0;i<this._gameObjects.length;i++){
+//         let gameObj = this._gameObjects[i];
+//         if(!gameObj.parent) continue;
+//         if(gameObj.stationary) continue;
         
-        gameObj.scale = gameObj.localScale * gameObj.parent.scale;
-        gameObj.transform.position.x = gameObj.parent.transform.position.x + gameObj.transform.localPosition.x*gameObj.parent.scale;
-        gameObj.transform.position.y = gameObj.parent.transform.position.y + gameObj.transform.localPosition.y*gameObj.parent.scale;
-        for(let a=0;a<gameObj.colliders.length;a++){
-            let collider = gameObj.colliders[a];
-            collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
-            collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
-        }
-    }
-};
+//         gameObj.scale = gameObj.localScale * gameObj.parent.scale;
+//         gameObj.transform.position.x = gameObj.parent.transform.position.x + gameObj.transform.localPosition.x*gameObj.parent.scale;
+//         gameObj.transform.position.y = gameObj.parent.transform.position.y + gameObj.transform.localPosition.y*gameObj.parent.scale;
+//         for(let a=0;a<gameObj.colliders.length;a++){
+//             let collider = gameObj.colliders[a];
+//             collider.x = gameObj.transform.position.x - collider.getWidth() * collider.offsetx;
+//             collider.y = gameObj.transform.position.y - collider.getHeight() * collider.offsety;
+//         }
+//     }
+// };
 // Instance.prototype._dispatchCollisions = function() {
 //     for(let i=0;i<this._gameObjects.length;i++){
 //         let gameObj = this._gameObjects[i];

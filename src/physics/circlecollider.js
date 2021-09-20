@@ -8,6 +8,7 @@ export function CircleCollider(radius){
 
     this.bounce = 0;
     this.friction = 0.2;
+    this.isTrigger = false;
 
     this._initialized = false;
     this._b2Fixture = null;
@@ -23,7 +24,8 @@ CircleCollider.prototype.initialize = function(){
                 shape: dynamic,
                 density: density,
                 friction: this.friction,
-                restitution: this.bounce
+                restitution: this.bounce,
+                isSensor: this.isTrigger
             };
             this._b2Fixture = this.gameObject.rigidbody._b2Body.createFixture(fixtureDef);    
             this._initialized = true;

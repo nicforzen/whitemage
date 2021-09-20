@@ -9,6 +9,7 @@ export function Rigidbody(){
     this.mass = 1; // TODO use this
 
     this.bodyType = RigidbodyType.DYNAMIC;
+    this.gravityScale = 1;
 
     this._initialized = false;
     this._b2Body = null;
@@ -22,9 +23,10 @@ Rigidbody.prototype.initialize = function() {
         let bodyDef = {
             type: type,
             position: planck.Vec2(0.0, 0.0),
+            gravityScale: this.gravityScale
         }
         this._b2Body = this.gameObject.instance._b2World.createBody(bodyDef);
-        this._b2Body.userData = this.gameObject;
+        this._b2Body.setUserData(this.gameObject);
 
         this._initialized = true;
     }

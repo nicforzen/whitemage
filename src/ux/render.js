@@ -583,6 +583,7 @@ Render.prototype._renderText = function(font, text, size, color, x, y, scale, al
     angleInRadians, alignment, baseline, letterSpacing, lineSpacingDelta){
     if (alpha <= 0) return;
     if(text == null) return;
+    text = text.toString();
     
     // Initial variables
     let img = this.instance.assets.getImage(font);

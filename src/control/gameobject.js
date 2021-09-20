@@ -3,7 +3,6 @@ import { Rigidbody } from "../physics/rigidbody.js";
 
 export function GameObject(name){
     this.name = name;
-    this.stationary = false;
     this.renderer = null;
     this.scale = 1;
     this.components = [];

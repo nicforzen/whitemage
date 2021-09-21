@@ -12,6 +12,7 @@ import { Script } from './script.js';
 
 import * as planck from 'planck';
 import { Rigidbody } from '../physics/rigidbody.js';
+import { Time } from '../util/time.js';
 
 export function Instance(scene) {
     this._objId = 0;
@@ -22,7 +23,6 @@ export function Instance(scene) {
     if(this.input) this.input.setInstance(this);
     this.render = new Render();
     if(this.render) this.render.setInstance(this);
-    this.deltaTime = 0;
     this.lastTime = new Date().getTime();
     this.assets = new Assets();
     this.sound = new Sound();
@@ -71,6 +71,9 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
 
         window.addEventListener('keydown', this.input.onKeyDown.bind(this.input), false);
         window.addEventListener('keyup', this.input.onKeyUp.bind(this.input), false);
+        canvas.addEventListener('touchstart', this.input.mouseDown.bind(this.input));
+        canvas.addEventListener('touchend', this.input.mouseUp.bind(this.input));
+        canvas.addEventListener('touchmove', this.input.mouseMove.bind(this.input));
         canvas.addEventListener('mousedown', this.input.mouseDown.bind(this.input));
         canvas.addEventListener('mouseup', this.input.mouseUp.bind(this.input));
         canvas.addEventListener('mousemove', this.input.mouseMove.bind(this.input));
@@ -250,12 +253,12 @@ Instance.prototype._gameLoop = function() {
     // #END
 
     let time = new Date().getTime();
-    this.deltaTime = (time - this.lastTime) / 1000;
+    Time.deltaTime = (time - this.lastTime) / 1000;
     this._updatePhysics();
     this._update();
     this._postUpdate();
     //this._dispatchCollisions();
-    //this._processMovement(this.deltaTime);
+    //this._processMovement(Time.deltaTime);
     this._updateUi();
     this._postUpdateUi();
     if(this.camera.followTarget){
@@ -275,7 +278,7 @@ Instance.prototype._updatePhysics = function(){
         gameObj.rigidbody._b2Body.setLinearVelocity(planck.Vec2(gameObj.rigidbody.velocity.x, gameObj.rigidbody.velocity.y));
         gameObj.rigidbody._b2Body.setAngle(gameObj.transform.rotation.radians);
     }
-    this._b2World.step(this.deltaTime, this._velocityIterations, this._positionIterations);
+    this._b2World.step(Time.deltaTime, this._velocityIterations, this._positionIterations);
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
         if(!gameObj.rigidbody) continue;
@@ -308,7 +311,7 @@ Instance.prototype._postUpdate = function() {
             if(!(script instanceof Script)) continue;
             if(script.lateupdate) script.lateupdate();
         }
-        if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
+        if(gameObj.animator) gameObj.animator.advance(Time.deltaTime);
     }
 };
 Instance.prototype._updateUi = function() {
@@ -331,7 +334,7 @@ Instance.prototype._postUpdateUi = function() {
             if(!(script instanceof Script)) continue;
             if(script.lateupdate) script.lateupdate();
         }
-        if(gameObj.animator) gameObj.animator.advance(this.deltaTime);
+        if(gameObj.animator) gameObj.animator.advance(Time.deltaTime);
     }
 };
 // Instance.prototype._processMovement = function(timeDilation) {
@@ -431,7 +434,7 @@ Instance.prototype._postUpdateUi = function() {
 //                 // ... and other object colliders
 //                 for(c=0;c<otherObj.colliders.length;c++){
 //                     // Check collision
-//                     if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], this.deltaTime)){
+//                     if(CollisionUtil.isCollision(gameObj.colliders[b], otherObj.colliders[c], Time.deltaTime)){
 //                         // Iterate over scripts and look for collision functions
 //                         for(let j=0;j<gameObj.components.length;j++){
 //                             let script = gameObj.components[j];

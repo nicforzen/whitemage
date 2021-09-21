@@ -24,6 +24,7 @@ Input.prototype.onKeyUp = function(e){
     }
 };
 Input.prototype.mouseDown = function(e){
+    e.preventDefault();
     var local = this.instance.render._getRawCursorPosition(e);
     var point = { x: local.x, y: local.y, button: e.which};
     for(let i=0;i<this.instance._uiItems.length;i++){
@@ -79,6 +80,7 @@ Input.prototype.mouseUp = function(e){
     }
 };
 Input.prototype.mouseMove = function(e){
+    e.preventDefault();
     var local = this.instance.render._getRawCursorPosition(e);
     if(local.x < 0 || local.y < 0) return;
     var point = { x: local.x, y: local.y, button: e.which };

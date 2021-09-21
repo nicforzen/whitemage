@@ -1,4 +1,5 @@
 export * from "./util/util.js";
+export * from "./util/time.js";
 
 export * from "./physics/point.js";
 export * from "./physics/vector.js";

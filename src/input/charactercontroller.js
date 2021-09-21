@@ -1,5 +1,6 @@
-import { Vector2 } from "../physics/vector";
-import { Script } from "../control/script";
+import { Vector2 } from "../physics/vector.js";
+import { Script } from "../control/script.js";
+import { Time } from "../util/time.js";
 
 export function CharacterController(isPlayerControlled, speed) {
     let script = new Script();
@@ -49,21 +50,21 @@ export function CharacterController(isPlayerControlled, speed) {
             let target = controller.moveTarget;
             if(target){
                 if(this.gameObject.transform.position.x < target.x && this.gameObject.transform.position.x +
-                    this.gameObject.rigidbody.velocity.x * instance.deltaTime > target.x
+                    this.gameObject.rigidbody.velocity.x * Time.deltaTime > target.x
                     || this.gameObject.transform.position.x > target.x && this.gameObject.transform.position.x +
-                    this.gameObject.rigidbody.velocity.x * instance.deltaTime < target.x){
-                        this.gameObject.rigidbody.velocity.x = (target.x - this.gameObject.transform.position.x) / instance.deltaTime;
+                    this.gameObject.rigidbody.velocity.x * Time.deltaTime < target.x){
+                        this.gameObject.rigidbody.velocity.x = (target.x - this.gameObject.transform.position.x) / Time.deltaTime;
                 }
                 if(this.gameObject.transform.position.y < target.y && this.gameObject.transform.position.y +
-                    this.gameObject.rigidbody.velocity.y * instance.deltaTime > target.y
+                    this.gameObject.rigidbody.velocity.y * Time.deltaTime > target.y
                     || this.gameObject.transform.position.y > target.y && this.gameObject.transform.position.y +
-                    this.gameObject.rigidbody.velocity.y * instance.deltaTime < target.y){
-                    this.gameObject.rigidbody.velocity.y = (target.y - this.gameObject.transform.position.y) / instance.deltaTime;
+                    this.gameObject.rigidbody.velocity.y * Time.deltaTime < target.y){
+                    this.gameObject.rigidbody.velocity.y = (target.y - this.gameObject.transform.position.y) / Time.deltaTime;
                 }
             }
 
-            let nextX = this.gameObject.transform.position.x + this.gameObject.rigidbody.velocity.x * instance.deltaTime;
-            let nextY = this.gameObject.transform.position.y + this.gameObject.rigidbody.velocity.y * instance.deltaTime;
+            let nextX = this.gameObject.transform.position.x + this.gameObject.rigidbody.velocity.x * Time.deltaTime;
+            let nextY = this.gameObject.transform.position.y + this.gameObject.rigidbody.velocity.y * Time.deltaTime;
             controller.setMoveTarget(nextX, nextY);
         }
     };

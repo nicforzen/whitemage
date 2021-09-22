@@ -1,20 +1,34 @@
 
-export function PlayerPrefs () {
-    this._prefs = null;
-}
-
-PlayerPrefs.prototype._setPrefs = function(localStorage){
-    this._prefs = localStorage;
-};
-PlayerPrefs.prototype.set = function(name, value){
-    this._prefs.setItem(name, value);
-};
-PlayerPrefs.prototype.get = function(name){
-    return this._prefs.getItem(name);
-};
-PlayerPrefs.prototype.clear = function(name){
-    this._prefs.removeItem(name);
-};
-PlayerPrefs.prototype.clearAll = function(){
-    this._prefs.clear();
+export var PlayerPrefs = {
+    _tempPrefs: {},
+    _prefs: null,
+    _setPrefs(localStorage){
+        this._prefs = localStorage;
+        for ( let i = 0, len = localStorage.length; i < len; i++ ) {
+            let key = localStorage.key(i);
+            this._tempPrefs[key] = localStorage[key];
+        }
+    },
+    set(name, value){
+        this._tempPrefs[name] = value;
+    },
+    get(name){
+        return this._tempPrefs[name];
+    },
+    deleteAll(){
+        this._tempPrefs = {};
+    },
+    deleteKey(name){
+        delete this._tempPrefs[name];
+    },
+    hasKey(name){
+        return this._tempPrefs[name] != null;
+    },
+    save(){
+        let keys = Object.keys(this._tempPrefs);
+        this._prefs.clear();
+        for(let i = 0; i < keys.length; i++){
+            this._prefs.setItem(key, this._tempPrefs[key]);
+        }
+    }
 };

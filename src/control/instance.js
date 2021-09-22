@@ -51,8 +51,7 @@ export function Instance(scene) {
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
     this.initialized = true;
     if(!this.isServer){
-        this.prefs = new PlayerPrefs();
-        this.prefs._setPrefs(localStorage);
+        PlayerPrefs._setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
         this.render._ctx.imageSmoothingEnabled = false;

@@ -1,3 +1,5 @@
+import { AudioListener } from "../audio/audiolistener";
+
 export function Sound() {
     this.instance = null;
 }
@@ -15,6 +17,7 @@ Sound.prototype._getAudioObject = function(name, isInstance){
     var source = this.instance.assets.getSound(name);
     if(isInstance) source = source.cloneNode();
     return {
+        _localVolume: 1,
         _src: source,
         repeat: false,
         stopped: true,
@@ -22,6 +25,7 @@ Sound.prototype._getAudioObject = function(name, isInstance){
             this.stopped = false;
             var stopped = this.stopped;
             var repeat = this.repeat;
+            this._src.volume = this._localVolume * AudioListener.volume;
             this._src.addEventListener('ended', function () {
                 if (repeat == true && stopped == false) {
                     this.currentTime = 0;
@@ -40,11 +44,12 @@ Sound.prototype._getAudioObject = function(name, isInstance){
             this._src.currentTime = 0;
         },
         setVolume(v){
+            this._localVolume = v;
             this._src.volume = v;
             return this;
         },
         getVolume(){
-            return this._src.volume;
+            return this._localVolume;
         },
         setRepeat(v){
             this.repeat = v;

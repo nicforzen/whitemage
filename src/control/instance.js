@@ -13,6 +13,7 @@ import { Script } from './script.js';
 import * as planck from 'planck';
 import { Rigidbody } from '../physics/rigidbody.js';
 import { Time } from '../util/time.js';
+import { Physics } from '../physics/physics.js';
 
 export function Instance(scene) {
     this._objId = 0;
@@ -44,7 +45,7 @@ export function Instance(scene) {
 
     this._positionIterations = 2;
     this._velocityIterations = 5;
-    this._b2World = planck.World(planck.Vec2(0, 10));
+    this._b2World = planck.World(planck.Vec2(Physics.gravity.x, Physics.gravity.y));
 }
 
 Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
@@ -59,8 +60,6 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this.render.gameHeight = gameHeight;
         this.camera.fovX = gameWidth/2;
         this.camera.fovY = gameHeight/2;
-        //this.camera.fovX = 0;
-        //this.camera.fovY = 0;
         this.render.screenWidth = canvas.width;
         this.render.screenHeight = canvas.height;
         // TODO Make this smarter so you can scale down and still have v wings
@@ -85,8 +84,10 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this._b2World.on('pre-solve', function(contact) {
             let obj1 = contact.getFixtureA().getBody().getUserData();
             let obj2 = contact.getFixtureB().getBody().getUserData();
-            if(obj1.name == "pipe" && obj2.name == "floor" || obj1.name == "floor" && obj2.name == "pipe") contact.setEnabled(false);
-            //console.log("Contact: " + obj1.name + " " + obj2.name);
+            if(Physics.getIgnoreLayerCollision(obj1.layer, obj2.layer)){
+                contact.setEnabled(false);
+                return;
+            }
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
                 if(gameObj === obj1){

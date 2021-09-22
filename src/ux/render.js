@@ -504,7 +504,7 @@ Render.prototype._render = function(){
     if(this.instance.scene.onRender) this.instance.scene.onRender();
     this.instance._gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :
-            a.renderer.zorder - b.renderer.zorder;});
+            a.renderer.sortingOrder - b.renderer.sortingOrder;});
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
         if(gameObj.renderer) {
@@ -519,7 +519,7 @@ Render.prototype._render = function(){
     this.instance.camera.storeState();
     this.instance.camera.reset();
     this.instance._uiItems.sort(
-        function(a,b){return a.renderer.zorder - b.renderer.zorder;});
+        function(a,b){return a.renderer.sortingOrder - b.renderer.sortingOrder;});
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {

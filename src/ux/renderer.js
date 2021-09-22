@@ -14,7 +14,7 @@ export function ImageRenderer(name) {
         this.flipX = false;
         this.flipY = false;
         this.isVisible = true;
-        this.zorder = 0;
+        this.sortingOrder = 0;
 }
 
 export function RectangleRenderer(width, height, color) {
@@ -33,7 +33,7 @@ export function RectangleRenderer(width, height, color) {
     this.flipX = false;
     this.flipY = false;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }
 
 export function CircleRenderer(r, color){
@@ -50,7 +50,7 @@ export function CircleRenderer(r, color){
     this.flipX = false;
     this.flipY = false;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }
 
 export function ArcRenderer(r, radianStart, radianEnd, color){
@@ -69,7 +69,7 @@ export function ArcRenderer(r, radianStart, radianEnd, color){
     this.flipX = false;
     this.flipY = false;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }
 
 export function PolygonRenderer(points, color) {
@@ -86,7 +86,7 @@ export function PolygonRenderer(points, color) {
     this.flipX = false;
     this.flipY = false;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }
 
 export function BitmapTextRenderer(font, text, scale) {
@@ -98,7 +98,7 @@ export function BitmapTextRenderer(font, text, scale) {
     this.anchorXPercent = 0.5;
     this.anchorYPercent = 0.5;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }
 
 export function TextRenderer(font, size, color, text, scale, alignment, baseline) {
@@ -115,5 +115,5 @@ export function TextRenderer(font, size, color, text, scale, alignment, baseline
     this.alignment = alignment;
     this.baseline = baseline;
     this.isVisible = true;
-    this.zorder = 0;
+    this.sortingOrder = 0;
 }

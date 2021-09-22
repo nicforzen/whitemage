@@ -26,6 +26,7 @@ Sound.prototype._getAudioObject = function(name, isInstance){
             var stopped = this.stopped;
             var repeat = this.repeat;
             this._src.volume = this._localVolume * AudioListener.volume;
+            if(this._src.volume <= 0) return;
             this._src.addEventListener('ended', function () {
                 if (repeat == true && stopped == false) {
                     this.currentTime = 0;

@@ -70,9 +70,9 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
 
         window.addEventListener('keydown', this.input.onKeyDown.bind(this.input), false);
         window.addEventListener('keyup', this.input.onKeyUp.bind(this.input), false);
-        canvas.addEventListener('touchstart', this.input.mouseDown.bind(this.input));
-        canvas.addEventListener('touchend', this.input.mouseUp.bind(this.input));
-        canvas.addEventListener('touchmove', this.input.mouseMove.bind(this.input));
+        canvas.addEventListener('touchstart', this.input.touchStart.bind(this.input));
+        canvas.addEventListener('touchend', this.input.touchEnd.bind(this.input));
+        canvas.addEventListener('touchmove', this.input.touchMove.bind(this.input));
         canvas.addEventListener('mousedown', this.input.mouseDown.bind(this.input));
         canvas.addEventListener('mouseup', this.input.mouseUp.bind(this.input));
         canvas.addEventListener('mousemove', this.input.mouseMove.bind(this.input));

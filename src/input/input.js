@@ -23,6 +23,17 @@ Input.prototype.onKeyUp = function(e){
         this.keysUp.push(key);
     }
 };
+Input.prototype.touchStart = function(te){
+    te.preventDefault();
+    let touch = te.touches[0];
+    let obj = {
+        which: 1,
+        preventDefault(){},
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    }
+    this.mouseDown(obj);
+};
 Input.prototype.mouseDown = function(e){
     e.preventDefault();
     var local = this.instance.render._getRawCursorPosition(e);
@@ -47,9 +58,23 @@ Input.prototype.mouseDown = function(e){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
             if(script.onMouseDown
-                && point.x != null && point.y != null) script.onMouseDown(point);
+                && point.x != null && point.y != null){
+                    script.onMouseDown(point);
+            }
         }
     }
+};
+Input.prototype.touchEnd = function(te){
+    te.preventDefault();
+    // TODO fix up location
+    //let touch = te.touches[0];
+    let obj = {
+        which: 1,
+        preventDefault(){},
+        clientX: 0,
+        clientY: 0
+    }
+    this.mouseUp(obj);
 };
 Input.prototype.mouseUp = function(e){
     e.preventDefault();
@@ -78,6 +103,17 @@ Input.prototype.mouseUp = function(e){
                 && point.x != null && point.y != null) script.onMouseUp(point);
         }
     }
+};
+Input.prototype.touchMove = function(te){
+    te.preventDefault();
+    let touch = te.touches[0];
+    let obj = {
+        which: 1,
+        preventDefault(){},
+        clientX: touch.clientX,
+        clientY: touch.clientY
+    }
+    this.mouseMove(obj);
 };
 Input.prototype.mouseMove = function(e){
     e.preventDefault();

@@ -253,16 +253,19 @@ Instance.prototype._gameLoop = function() {
         let deltaTime = (time - this.lastTime) / 1000;
         let countdownTime = deltaTime + Time._lastPhysicsLeftover;
         Time.deltaTime = Time.fixedDeltaTime;
+        Time.deltaTime *= Time.timeScale;
         
         // Physics loop
-        while(countdownTime >= Time.fixedDeltaTime){
-            countdownTime -= Time.fixedDeltaTime;
-            this._fixedUpdate();
-            this._fixedUpdateUi();
-            this._updatePhysics();
+        if(Time.deltaTime > 0){
+            while(countdownTime >= Time.fixedDeltaTime){
+                countdownTime -= Time.fixedDeltaTime;
+                this._fixedUpdate();
+                this._fixedUpdateUi();
+                this._updatePhysics();
+            }
+            Time._lastPhysicsLeftover = countdownTime;
+            Time.deltaTime = deltaTime * Time.timeScale;
         }
-        Time._lastPhysicsLeftover = countdownTime;
-        Time.deltaTime = deltaTime;
 
         // Process mouse and keyboard/controller events
         Input._processEvents(this);

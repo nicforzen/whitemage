@@ -28,6 +28,7 @@ Assets.prototype.loadImage = function(name, url) {
     });
 };
 Assets.prototype._createSil = function(name, color){
+    let SilSuffix = ":_SIL";
     var sourceImg = this.getImage(name).source;
     var canvas = document.createElement("canvas");
     var ctx = canvas.getContext('2d');
@@ -45,16 +46,16 @@ Assets.prototype.loadFont = function(name, url, mappingUrl) {
     this._stillLoading += 1;
     this.loadImage(name, url);
     Util.httpGet(mappingUrl, function (s) {
-        var lines = s.split("\n");
-        for (var i = 0; i < lines.length; i++) {
+        let lines = s.split("\n");
+        for (let i = 0; i < lines.length; i++) {
             if (lines[i].startsWith("common ")) {
-                var chunks = lines[i].split(" ");
+                let chunks = lines[i].split(" ");
                 let lineHeight = parseInt(chunks[1].substring(chunks[1].indexOf("=") + 1));
                 this.fontData[name + "_LH"] = lineHeight;
             } else if (lines[i].startsWith("char ")) {
-                var chunks = lines[i].split(" ");
+                let chunks = lines[i].split(" ");
                 let ascii = chunks[1].substring(chunks[1].indexOf("=") + 1);
-                var data = {
+                let data = {
                     ascii: parseInt(ascii),
                     x: parseInt(chunks[2].substring(chunks[2].indexOf("=") + 1)),
                     y: parseInt(chunks[3].substring(chunks[3].indexOf("=") + 1)),

@@ -32,10 +32,10 @@ export var Input = {
         return this._keysDown.indexOf(button) >= 0;
     },
     getKey(button){
-
+        return this._keysDown.indexOf(button) >= 0;
     },
     getKeyUp(button){
-        return this.keysUp.indexOf(button) >= 0;
+        return this._keysUp.indexOf(button) >= 0;
     },
     getAxis(){
 

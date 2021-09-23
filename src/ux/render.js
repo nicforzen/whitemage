@@ -407,6 +407,7 @@ Render.prototype.render = function(r){
 };
 Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
     angleInRadians, mappingData, drawSil, silColor, silAlpha, flipX, flipY){
+    let SilSuffix = ":_SIL";
     if(alpha <= 0) return;
     if(drawSil){
         let silName = name + SilSuffix;
@@ -588,10 +589,11 @@ Render.prototype._renderText = function(font, text, size, color, x, y, scale, al
     text = text.toString();
     
     // Initial variables
-    let img = this.instance.assets.getImage(font);
-    var xdelta = 0;
-    var ydelta = 0;
-    let lineHeight = this.instance.assets.getLineHeight(font);
+    // TODO clean this
+    // let img = this.instance.assets.getImage(font);
+    // var xdelta = 0;
+    // var ydelta = 0;
+    // let lineHeight = this.instance.assets.getLineHeight(font);
     if (alpha != 1) this._ctx.globalAlpha = alpha;
 
     let camera = this.instance.camera;

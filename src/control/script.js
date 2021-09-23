@@ -9,7 +9,7 @@ export function Script(){
     this.update = null;
     this.onCollisionEnter = null;
     this.onTriggerEnter = null;
-    this.onMouseMove = null;
+    this.onMouseOver = null;
     this.onMouseDown = null;
     this.onMouseUp = null;
     this.onMouseScroll = null;

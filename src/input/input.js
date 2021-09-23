@@ -17,6 +17,7 @@ export var Input = {
     _miceUp: [false, false, false],
     _mouseDownBuffer: [],
     _mouseUpBuffer: [],
+    _mouseMoveBuffer: [],
     _mouseLeftBuffer: false,
     getMouseButtonDown(button){
         return this._miceDown[button];
@@ -66,12 +67,13 @@ export var Input = {
         this._keysDown = [];
     },
     _onMouseLeave(){
-        console.log("ON MOUSE LEAVE");
         this._mouseLeftBuffer = true;
     },
     _processMouseLeftBuffer(){
         if(this._mouseLeftBuffer){
+            this._miceDown = [false, false, false];
             this._miceHeld = [false, false, false];
+            this._miceUp = [false, false, false];
         }
     },
     _onMouseDown(e){
@@ -79,16 +81,26 @@ export var Input = {
     },
     _processOnMouseDown(e, instance){
         e.preventDefault();
-        this._miceDown[e.which-1] = true;
-        this._miceHeld[e.which-1] = true;
-        let handled = false;
 
         // TODO SORT AND HANDLE
 
-        // Look through UI items and try to match the click point to their colliders
-        // if they have a script attached with onMouseDown
         var local = instance.render._getRawCursorPosition(e);
         var point = { x: local.x, y: local.y, button: e.which};
+
+        // Store static input values
+        if(point.x != null && point.y != null){
+            this._miceDown[e.which-1] = true;
+            this._miceHeld[e.which-1] = true;
+        }else{ //Mouse has left available area
+            this._mouseDown = [false, false, false];
+            this._miceHeld = [false, false, false];
+            this._mouseUp = [false, false, false];
+            return;
+        }
+
+        // Look through UI items and try to match the click point to their colliders
+        // if they have a script attached with onMouseDown
+        let handled = false;
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
                 let gameObj = instance._uiItems[i];
@@ -149,18 +161,27 @@ export var Input = {
     },
     _processOnMouseUp(e, instance){
         e.preventDefault();
-        this._miceUp[e.which-1] = true;
-        this._miceDown[e.which-1] = false;
-        this._miceHeld[e.which-1] = false;
         let handled = false;
 
         // TODO SORT AND HANDLE
-        // TODO ONLY ADD TO INPUT OBJECT IF IN BOUNDS
+
+        var local = instance.render._getRawCursorPosition(e);
+        var point = { x: local.x, y: local.y, button: e.which};
+
+        // Store static input values
+        if(point.x != null && point.y != null){
+            this._miceUp[e.which-1] = true;
+            this._miceDown[e.which-1] = false;
+            this._miceHeld[e.which-1] = false;
+        }else{ //Mouse has left available area
+            this._mouseDown = [false, false, false];
+            this._miceHeld = [false, false, false];
+            this._mouseUp = [false, false, false];
+            return;
+        }
 
         // Look through UI items and try to match the click point to their colliders
         // if they have a script attached with onMouseUp
-        var local = instance.render._getRawCursorPosition(e);
-        var point = { x: local.x, y: local.y, button: e.which};
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
                 let gameObj = instance._uiItems[i];
@@ -216,18 +237,101 @@ export var Input = {
             }
         }
     },
+    _onMouseMove(e){
+        this._mouseMoveBuffer.push(e);
+    },
+    _processOnMouseMove(e, instance){
+        e.preventDefault();
+        let handled = false;
+
+        // TODO SORT AND HANDLE
+
+        var local = instance.render._getRawCursorPosition(e);
+        var point = { x: local.x, y: local.y, button: e.which};
+
+        // Store static input values
+        if(point.x != null && point.y != null){
+            this._miceHeld[e.which-1] = true;
+        }else{ //Mouse has left available area
+            this._mouseDown = [false, false, false];
+            this._miceHeld = [false, false, false];
+            this._mouseUp = [false, false, false];
+            return;
+        }
+
+        // Look through UI items and try to match the click point to their colliders
+        // if they have a script attached with onMouseOver
+        if(point.x != null && point.y != null){
+            for(let i=0;i<instance._uiItems.length;i++){
+                let gameObj = instance._uiItems[i];
+                let colliders = [];
+                let hasMouseDown = false;
+                for(let j=0;j<gameObj.components.length;j++){
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseOver)
+                        hasMouseDown = true;
+                    if(gameObj.components[j] instanceof BoxCollider ||
+                        gameObj.components[j] instanceof CircleCollider)
+                        colliders.push(gameObj.components[j]);
+                }
+                if(!hasMouseDown) continue;
+                for(let j=0;j<gameObj.components.length;j++){
+                    let script = gameObj.components[j];
+                    if(!(script instanceof Script) || !script.onMouseOver) continue;
+                    for(let k = 0; k < colliders.length; k++){
+                        if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
+                            handled = true;
+                            script.onMouseOver(point);
+                        }
+                    }
+                }
+            }
+        }
+
+        if(handled) return;
+
+        // Look through GameObjects and try to match the click point to their colliders
+        // if they have a script attached with onMouseOver
+        local = instance.render._getCursorPosition(e);
+        point = { x: local.x, y: local.y, button: e.which};
+        if(point.x != null && point.y != null){
+            for(let i=0;i<instance._gameObjects.length;i++){
+                let gameObj = instance._gameObjects[i];
+                let colliders = [];
+                let hasMouseDown = false;
+                for(let j=0;j<gameObj.components.length;j++){
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseOver)
+                        hasMouseDown = true;
+                    if(gameObj.components[j] instanceof BoxCollider ||
+                        gameObj.components[j] instanceof CircleCollider)
+                        colliders.push(gameObj.components[j]);
+                }
+                if(!hasMouseDown) continue;
+                for(let j=0;j<gameObj.components.length;j++){
+                    let script = gameObj.components[j];
+                    if(!(script instanceof Script) || !script.onMouseOver) continue;
+                    for(let k = 0; k < colliders.length; k++){
+                        if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))) script.onMouseOver(point);
+                    }
+                }
+            }
+        }
+    },
     _processEvents(instance){
-        this._processMouseLeftBuffer();
         for(let i = 0; i < this._mouseDownBuffer.length; i++){
             this._processOnMouseDown(this._mouseDownBuffer[i], instance);
         }
         for(let i = 0; i < this._mouseUpBuffer.length; i++){
             this._processOnMouseUp(this._mouseUpBuffer[i], instance);
         }
+        for(let i = 0; i < this._mouseMoveBuffer.length; i++){
+            this._processOnMouseMove(this._mouseMoveBuffer[i], instance);
+        }
+        this._processMouseLeftBuffer();
 
         this._mouseLeftBuffer = false;
         this._mouseDownBuffer = [];
         this._mouseUpBuffer = [];
+        this._mouseMoveBuffer = [];
     }
 };
 

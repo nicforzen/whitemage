@@ -71,11 +71,11 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         // canvas.addEventListener('touchmove', this.input.touchMove.bind(this.input));
         canvas.addEventListener('mousedown', Input._onMouseDown.bind(Input));
         canvas.addEventListener('mouseup', Input._onMouseUp.bind(Input));
+        canvas.addEventListener('mousemove', Input._onMouseMove.bind(Input));
         canvas.addEventListener('mouseout', Input._onMouseLeave.bind(Input));
         canvas.addEventListener('mouseleave', Input._onMouseLeave.bind(Input));
         canvas.addEventListener('blur', Input._onMouseLeave.bind(Input));
-        // canvas.addEventListener('mousemove', this.input.mouseMove.bind(this.input));
-        // canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
         // canvas.addEventListener("wheel", function(e) {
         //     const delta = Math.sign(e.deltaY);
         //     this.input.scroll(delta);
@@ -123,9 +123,6 @@ Instance.prototype.error = function(message){
     console.error("ERROR: " + message);
     console.error(message.stack);
     this.hadError = true;
-    this.onMouseMove = null;
-    this.onMouseDown = null;
-    this.onMouseUp = null;
 };
 Instance.prototype.addObject = function(gameObj){
     if(!gameObj) return;

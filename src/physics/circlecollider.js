@@ -31,4 +31,8 @@ CircleCollider.prototype.initialize = function(){
             this._initialized = true;
         }
     }
-}
+};
+CircleCollider.prototype.overlapPoint = function(point){
+    if(!this._initialized) return false;
+    return this._b2Fixture.testPoint(new planck.Vec2(point.x, point.y));
+};

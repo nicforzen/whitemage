@@ -3,7 +3,7 @@ import { ArcRenderer } from "./renderer.js";
 import { CircleRenderer } from "./renderer.js";
 import { PolygonRenderer } from "./renderer.js";
 import { TextRenderer } from "./renderer.js";
-import { Color } from "./color.js"
+import { Color } from "./color.js";
 
 export function Render() {
     this.scaleFactor = 1;
@@ -505,6 +505,7 @@ Render.prototype._render = function(){
     this.instance._gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :
             a.renderer.sortingOrder - b.renderer.sortingOrder;});
+    this._ctx.translate(0.5, 0.5); // Hack for smoother tiles
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
         if(gameObj.renderer) {
@@ -515,6 +516,7 @@ Render.prototype._render = function(){
             this.render(gameObj.renderer);
         }
     }
+    this._ctx.translate(-0.5, -0.5); // Hack for smoother tiles
 
     this.instance.camera.storeState();
     this.instance.camera.reset();

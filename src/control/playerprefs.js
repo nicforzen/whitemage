@@ -28,6 +28,7 @@ export var PlayerPrefs = {
         let keys = Object.keys(this._tempPrefs);
         this._prefs.clear();
         for(let i = 0; i < keys.length; i++){
+            let key = keys[i];
             this._prefs.setItem(key, this._tempPrefs[key]);
         }
     }

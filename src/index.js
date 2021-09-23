@@ -9,6 +9,7 @@ export * from "./physics/boxcollider.js";
 export * from "./physics/circlecollider.js";
 export * from "./physics/rigidbodytype.js";
 export * from "./physics/physics";
+export * from "./physics/forcemode";
 
 export * from "./input/charactercontroller.js";
 export * from "./input/input.js";
@@ -38,4 +39,4 @@ export * from "./ux/renderer.js";
 
 export * from "./meta/debug.js";
 
-export * from "./audio/audiolistener.js"
+export * from "./audio/audiolistener.js";

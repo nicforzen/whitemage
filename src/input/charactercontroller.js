@@ -11,6 +11,7 @@ export function CharacterController(isPlayerControlled, speed) {
         var direction = new Vector2();
 
         let instance = this.gameObject.instance;
+        // TODO this is broken
         let input = instance.input;
         let controller = this.gameObject.controller;
 

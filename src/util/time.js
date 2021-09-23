@@ -1,4 +1,6 @@
 
 export var Time = {
-    deltaTime: 0
-}
+    _lastPhysicsLeftover: 0,
+    deltaTime: 0,
+    fixedDeltaTime: 0.02
+};

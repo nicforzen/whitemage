@@ -54,12 +54,12 @@ GameObject.prototype.removeComponentById = function(id){
         }
     }
 };
-GameObject.prototype.addCollider = function(collider){
-    collider.gameObject = this;
-    collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
-    collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
-    this.colliders.push(collider);
-};
+// GameObject.prototype.addCollider = function(collider){
+//     collider.gameObject = this;
+//     collider.x = this.transform.position.x - collider.getWidth() * collider.offsetx;
+//     collider.y = this.transform.position.y - collider.getHeight() * collider.offsety;
+//     this.colliders.push(collider);
+// };
 GameObject.prototype.setAnimator = function(animator){
     animator.gameObject = this;
     this.animator = animator;
@@ -78,19 +78,19 @@ GameObject.prototype.setInstance = function(instance){
         this.subObjects[i].setInstance(instance);
     }
 };
-GameObject.prototype.collidesAt = function(x, y){
-    for(var i = 0; i < this.colliders.length; i++){
-        let collider = this.colliders[i];
-        console.log(x+" "+y+collider.toString());
-        // TODO fix
-        // if(collider.type == "b"){
-        //     if(boxColliderPointCollision(x, y, collider)) return true;
-        // }
-    }
-    return false;
-};
+// GameObject.prototype.collidesAt = function(x, y){
+//     for(var i = 0; i < this.colliders.length; i++){
+//         let collider = this.colliders[i];
+//         console.log(x+" "+y+collider.toString());
+//         // TODO fix
+//         // if(collider.type == "b"){
+//         //     if(boxColliderPointCollision(x, y, collider)) return true;
+//         // }
+//     }
+//     return false;
+// };
 GameObject.prototype.initialize = function(){
-    // MAKE COMPONENTS HAVE OWN INITIALIZATION, USE DIRTY VARIABLE FOR LESS LOOP CHECKS
+    // TODO MAKE COMPONENTS HAVE OWN INITIALIZATION, USE DIRTY VARIABLE FOR LESS LOOP CHECKS
     if(!this._initialized){
         for (var i = 0; i < this.components.length; i++) {
             let component = this.components[i];

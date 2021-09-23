@@ -302,8 +302,9 @@ Instance.prototype._processObjectBuffers = function(){
     this._gameObjectsAddBuffer = [];
 };
 Instance.prototype._updatePhysics = function(){
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
+    let allObjects = this._gameObjects.concat(this._uiItems);
+    for(let i=0;i<allObjects.length;i++){
+        let gameObj = allObjects[i];
         gameObj.initialize();
         if(!gameObj.rigidbody) continue;
         gameObj.rigidbody._b2Body.setPosition(planck.Vec2(gameObj.transform.position.x, gameObj.transform.position.y));
@@ -311,8 +312,8 @@ Instance.prototype._updatePhysics = function(){
         gameObj.rigidbody._b2Body.setAngle(gameObj.transform.rotation.radians);
     }
     this._b2World.step(Time.deltaTime, this._velocityIterations, this._positionIterations);
-    for(let i=0;i<this._gameObjects.length;i++){
-        let gameObj = this._gameObjects[i];
+    for(let i=0;i<allObjects.length;i++){
+        let gameObj = allObjects[i];
         if(!gameObj.rigidbody) continue;
         let position = gameObj.rigidbody._b2Body.getPosition();
         gameObj.transform.position.x = position.x;

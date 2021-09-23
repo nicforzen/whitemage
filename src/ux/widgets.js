@@ -1,9 +1,10 @@
 
 import { GameObject } from "../control/gameobject.js";
 import { RectangleRenderer } from "../ux/renderer.js";
-import { BoxCollider } from "../physics/collider.js";
+import { BoxCollider } from "../physics/boxcollider";
 import { TextRenderer } from "../ux/renderer.js";
 import { Script } from "../control/script.js";
+import { Rigidbody } from "../physics/rigidbody.js";
 
 export function Button(text, x, y, width, height, color, font, textColor, textSize, onClick){
     let go = new GameObject("_b");
@@ -11,26 +12,22 @@ export function Button(text, x, y, width, height, color, font, textColor, textSi
     go.transform.position.y = y;
     go.renderer = new RectangleRenderer(width, height, color);
     if(onClick){
-        go.addCollider(new BoxCollider(0.5, 0.5, width, height, false));
+        let rb = new Rigidbody();
+        rb.gravityScale = 0;
+        go.addComponent(rb);
+        go.addComponent(new BoxCollider(width, height));
         let script = new Script();
-        script.onMouseDown = function(e) {
-            return go.collidesAt(e.x, e.y);
-        };
-        script.onMouseUp = function(e) {
-            if(go.collidesAt(e.x, e.y)){
-                if(onClick){ 
-                    onClick(go);
-                    return true;
-                }
+        script.onMouseUp = function() {
+            if(onClick){ 
+                onClick.call(this);
             }
-            return false;
         };
         go.addComponent(script);
     }
 
     if(text){
         let unamePlate = new GameObject("_t");
-        unamePlate.renderer = new TextRenderer(font, textSize, textColor, text, 1, "center", "middle");
+        unamePlate.renderer = new TextRenderer(font, textSize, textColor, text.toString(), 1, "center", "middle");
         go.addSubobject(unamePlate);
     }
 

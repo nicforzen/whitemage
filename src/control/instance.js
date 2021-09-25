@@ -309,12 +309,6 @@ Instance.prototype._gameLoop = function() {
         Input._clearUpKeys();
         this.lastTime = time;
 
-        // TODO fix this, shouldn't be here
-        if(this.camera.followTarget){
-            this.camera.transform.position.x = this.camera.followTarget.transform.position.x;
-            this.camera.transform.position.y = this.camera.followTarget.transform.position.y;
-        }
-
         // Render the frame on the screen
         this.render.renderFrame();
     }catch(err){

@@ -519,8 +519,8 @@ Render.prototype._render = function(){
     }
     this._ctx.translate(-0.5, -0.5); // Hack for smoother tiles
 
-    this.instance.camera.storeState();
-    this.instance.camera.reset();
+    this.instance.camera._storeState();
+    this.instance.camera._reset();
     this.instance._uiItems.sort(
         function(a,b){return a.renderer.sortingOrder - b.renderer.sortingOrder;});
     for(let i=0;i<this.instance._uiItems.length;i++){
@@ -533,7 +533,7 @@ Render.prototype._render = function(){
             this.render(gameObj.renderer);
         }
     }
-    this.instance.camera.loadState();
+    this.instance.camera._loadState();
 
     if (this.wingWidthX > 0) {
         this._ctx.fillStyle = this.wingColor.hexString;

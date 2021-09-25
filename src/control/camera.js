@@ -1,11 +1,13 @@
 import { Vector2 } from "../physics/vector.js";
+import { Color } from "../ux/color.js";
 
-// Need Background color
 // Need orthographic Size
+// Use gameobject's transform as this transform
 
 export function Camera(scale) {
     this._initialized = false;
     this.gameObject = null;
+    this.backgroundColor = Color.fromHexString("#191970");
 
     this.transform = {
         position: new Vector2()

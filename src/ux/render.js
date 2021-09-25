@@ -503,6 +503,7 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 };
 Render.prototype._render = function(){
+    if(this.instance.camera.backgroundColor) this.fillCanvas(this.instance.camera.backgroundColor);
     if(this.instance.scene.onRender) this.instance.scene.onRender();
     this.instance._gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :

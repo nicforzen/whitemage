@@ -1,6 +1,6 @@
 # whitemage
 
-A Unity-inspired game engine that shares client/server code.
+A Unity-inspired 2D Javascript game engine that can share client/server code.
 
 ## Description
 
@@ -19,5 +19,7 @@ Nic Forzen
 
 ## Version History
 
-* 0.1
-    * This is upcoming!
+* 0.1.0
+    * Coming!
+* 0.0.1
+    * Ported over from a previous project I made ad hoc. Not refined!

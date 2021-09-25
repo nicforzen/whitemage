@@ -1,3 +1,5 @@
+import { Mathf } from "../core/mathf";
+
 export function Vector2(x, y) {
 	this.x = x || 0;
 	this.y = y || 0;
@@ -115,4 +117,7 @@ Vector2.dot = function(a, b) {
 };
 Vector2.cross = function(a, b) {
 	return a.x * b.y - a.y * b.x;
+};
+Vector2.lerp = function(a, b, t) {
+	return new Vector2( Mathf.lerp(a.x, b.x, t), Mathf.lerp(a.y, b.y, t) );
 };

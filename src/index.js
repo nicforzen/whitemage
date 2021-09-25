@@ -1,3 +1,5 @@
+export * from "./core/mathf";
+
 export * from "./util/util.js";
 export * from "./util/time.js";
 

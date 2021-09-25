@@ -5,21 +5,18 @@ import { PolygonRenderer } from "./renderer.js";
 import { TextRenderer } from "./renderer.js";
 import { Color } from "./color.js";
 import { Camera } from "../control/camera.js";
+import { Screen } from "../core/screen";
 
 export function Render() {
     this.scaleFactor = 1;
-    this.aspectRatio = 0;
-    this.gameWidth = 0;
-    this.gameHeight = 0;
-    this.screenWidth = 0;
-    this.screenHeight = 0;
-    this.wingWidthX = 0;
-    this.wingWidthY = 0;
     this.instance = null;
     this.wingColor = Color.BLACK;
     this._ctx = null;
     this._canvas = null;
     this._uiCamera = new Camera();
+
+    this._wingWidthX = 0;
+    this._wingWidthY = 0;
 }
 
 Render.prototype.setInstance = function(instance){
@@ -27,7 +24,7 @@ Render.prototype.setInstance = function(instance){
 };
 Render.prototype.fillCanvas = function(color) {
     this._ctx.fillStyle = color.hexString;
-    this._ctx.fillRect(0, 0, this.screenWidth, this.screenHeight);
+    this._ctx.fillRect(0, 0, Screen.currentResolution.width, Screen.currentResolution.height);
 };
 Render.prototype.fillRect = function(x1, y1, x2, y2, color){
     this._renderRect(x1, y1, x2, y2, 1, 0, 0, 0, color, true, 1, 1);
@@ -95,7 +92,7 @@ Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, a
     let xAnchorFactor = this.scaleFactor * width * anchorXPercent;
     let yAnchorFactor = this.scaleFactor * height * anchorYPercent;
 
-    this._safeTranslate(this.wingWidthX, this.wingWidthY);
+    this._safeTranslate(this._wingWidthX, this._wingWidthY);
     this._safeTranslate(this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
         this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
@@ -120,7 +117,7 @@ Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, a
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
     this._safeTranslate(-this.scaleFactor * ((x1 - camera.transform.position.x)*camera.scale + camera.fovX),
         -this.scaleFactor * ((y1 - camera.transform.position.y)*camera.scale + camera.fovY));
-    this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
+    this._safeTranslate(-this._wingWidthX, -this._wingWidthY);
     
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
@@ -158,8 +155,8 @@ Render.prototype._renderArc = function(x, y, r, alpha, color, isFill, lineWidth,
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.beginPath();
     let camera = this.instance.camera;
-    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
-    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
+    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this._wingWidthX;
+    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this._wingWidthY;
     this._ctx.moveTo(dx, dy);
     this._ctx.arc(dx, dy, r * this.scaleFactor * camera.scale, radianStart, radianEnd);
     this._ctx.closePath();
@@ -178,8 +175,8 @@ Render.prototype._renderPolygon = function(x, y, points, alpha, color, isFill, l
     let camera = this.instance.camera;
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.beginPath();
-    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this.wingWidthX;
-    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this.wingWidthY;
+    let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this._wingWidthX;
+    let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this._wingWidthY;
     this._ctx.moveTo(dx, dy);
     for(var i = 0; i < points.length; i++){
         let p = points[i];
@@ -210,10 +207,10 @@ Render.prototype.drawLineAlpha = function(x1, y1, x2, y2, alpha, lineWidth, colo
 Render.prototype._renderLine = function(x1, y1, x2, y2, lineWidth, alpha, color){
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     this._ctx.beginPath();
-    this._ctx.moveTo(x1 * this.scaleFactor + this.wingWidthX, 
-        y1 * this.scaleFactor + this.wingWidthY);
-    this._ctx.lineTo(x2 * this.scaleFactor + this.wingWidthX,
-        y2 * this.scaleFactor + this.wingWidthY);
+    this._ctx.moveTo(x1 * this.scaleFactor + this._wingWidthX, 
+        y1 * this.scaleFactor + this._wingWidthY);
+    this._ctx.lineTo(x2 * this.scaleFactor + this._wingWidthX,
+        y2 * this.scaleFactor + this._wingWidthY);
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.strokeStyle = color.hexString;
     this._ctx.stroke();
@@ -449,7 +446,7 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
         yOffsetFactor = mappingData.yoffset * drawHeight;
     }
 
-    this._safeTranslate(this.wingWidthX, this.wingWidthY);
+    this._safeTranslate(this._wingWidthX, this._wingWidthY);
     this._safeTranslate(this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
         this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     if(flipX) this._ctx.scale(-1, 1);
@@ -502,9 +499,18 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
     if(flipY) this._ctx.scale(1, -1);
     this._safeTranslate(-this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
         -this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
-    this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
+    this._safeTranslate(-this._wingWidthX, -this._wingWidthY);
 };
 Render.prototype._render = function(){
+    // Fill black and return if no camera
+    if(!this.instance.camera){
+        this.fillCanvas(Color.BLACK);
+        return;
+    }
+
+    // TODO only change when camera changes or height changes
+    this._calculateScalars();
+
     // Fill background color
     if(this.instance.camera.backgroundColor) this.fillCanvas(this.instance.camera.backgroundColor);
 
@@ -556,27 +562,40 @@ Render.prototype._render = function(){
     this.instance.camera = oldCamera;
 
     // Render wings
-    if (this.wingWidthX > 0) {
+    if (this._wingWidthX > 0) {
         this._ctx.fillStyle = this.wingColor.hexString;
-        this._ctx.fillRect(0, 0, this.wingWidthX, this.screenHeight);
-        this._ctx.fillRect(this.screenWidth - this.wingWidthX, 0, this.screenWidth,
-            this.screenHeight);
+        this._ctx.fillRect(0, 0, this._wingWidthX, Screen.currentResolution.height);
+        this._ctx.fillRect(Screen.currentResolution.width - this._wingWidthX, 0, Screen.currentResolution.width,
+            Screen.currentResolution.height);
     }
-    if (this.wingWidthY > 0){
+    if (this._wingWidthY > 0){
         this._ctx.fillStyle = this.wingColor.hexString;
-        this._ctx.fillRect(0, 0, this.screenWidth, this.wingWidthY);
-        this._ctx.fillRect(0, this.screenHeight - this.wingWidthY, this.screenWidth,
-            this.screenHeight);
+        this._ctx.fillRect(0, 0, Screen.currentResolution.width, this._wingWidthY);
+        this._ctx.fillRect(0, Screen.currentResolution.height - this._wingWidthY, Screen.currentResolution.width,
+            Screen.currentResolution.height);
     }
 };
-Render.prototype.calculateWings = function(canvas, gameWidth, gameHeight){
-        // Calculate wing widths
-        if(canvas.width > canvas.height){
-            this.wingWidthX = (canvas.width - gameWidth * this.scaleFactor) / 2;
-        }else if(canvas.height > canvas.width){
-            this.scaleFactor = canvas.width / gameWidth;
-            this.wingWidthY = (canvas.height - gameHeight * this.scaleFactor) / 2;
-        }
+Render.prototype._calculateScalars = function(){
+
+    let camera = this.instance.camera;
+    if(Screen.currentResolution.width > Screen.currentResolution.height){
+        this.scaleFactor = Screen.currentResolution.height / (this.instance.camera.orthographicSize + this.instance.camera.orthographicSize);
+
+        this._wingWidthX = (Screen.currentResolution.width - 
+            (camera.orthographicSize + camera.orthographicSize) * camera.aspect * this.scaleFactor)/2;
+    }else if(Screen.currentResolution.width < Screen.currentResolution.height){
+        let expectedWidth = Screen.currentResolution.width;
+        let expectedHeight = expectedWidth / camera.aspect; // TODO no div, store inverse?
+        this._wingWidthY = (Screen.currentResolution.height - expectedHeight) / 2;
+        this.scaleFactor = expectedHeight / (this.instance.camera.orthographicSize + this.instance.camera.orthographicSize);
+
+
+        // this.scaleFactor = Screen.currentResolution.width / (this.instance.camera.orthographicSize + this.instance.camera.orthographicSize) * camera.aspect;
+
+        // this._wingWidthY = (Screen.currentResolution.height - 
+        //     (camera.orthographicSize + camera.orthographicSize) * this.scaleFactor)/2;
+    }
+
 };
 Render.prototype.drawText = function(font, text, x, y){
     this.drawTextScaledAlphaRotatedRadians(font, text, x, y, 1, 1);
@@ -626,7 +645,7 @@ Render.prototype._renderText = function(font, text, size, color, x, y, scale, al
     var xAnchorFactor = this.scaleFactor * measurement.width * anchorXPercent * scale * camera.scale;
     var yAnchorFactor = this.scaleFactor * measurement.height * anchorYPercent * scale * camera.scale;
 
-    this._safeTranslate(this.wingWidthX, this.wingWidthY);
+    this._safeTranslate(this._wingWidthX, this._wingWidthY);
     this._safeTranslate(this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
         this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
     this._safeTranslate(xAnchorFactor, yAnchorFactor);
@@ -647,7 +666,7 @@ Render.prototype._renderText = function(font, text, size, color, x, y, scale, al
     this._safeTranslate(-xAnchorFactor, -yAnchorFactor);
     this._safeTranslate(-this.scaleFactor * ((x - camera.transform.position.x)*camera.scale + camera.fovX),
         -this.scaleFactor * ((y - camera.transform.position.y)*camera.scale + camera.fovY));
-    this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
+    this._safeTranslate(-this._wingWidthX, -this._wingWidthY);
 
     if (alpha != 1) this._ctx.globalAlpha = 1;
 };
@@ -709,19 +728,16 @@ Render.prototype.measureUnscaledText = function(font, text, letterSpacing) {
     };
 };
 Render.prototype.renderFrame = function(){
-    if(!this.instance.camera) return;
     requestAnimationFrame(this._render.bind(this));
 };
 Render.prototype._getCursorPosition = function(event) {
     const rect = this._canvas.getBoundingClientRect();
-    let x = parseInt(((event.clientX - rect.left) - this.wingWidthX) / this.scaleFactor);
-    //x = _clamp(x, 0, this.gameWidth);
-    let y = parseInt(((event.clientY - rect.top) - this.wingWidthY) / this.scaleFactor);
-    //y = _clamp(y, 0, this.gameHeight);
+    let x = parseInt(((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
+    let y = parseInt(((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
     if (x < 0 ||
-        x > this.gameWidth ||
+        x > Screen.currentResolution.width ||
         y < 0 ||
-        y > this.gameHeight)
+        y > Screen.currentResolution.height)
         return {x: null, y: null};
     let camera = this.instance.camera;
     if(camera){
@@ -731,14 +747,12 @@ Render.prototype._getCursorPosition = function(event) {
 };
 Render.prototype._getRawCursorPosition = function(event){
     const rect = this._canvas.getBoundingClientRect();
-    let x = parseInt(((event.clientX - rect.left) - this.wingWidthX) / this.scaleFactor);
-    //x = _clamp(x, 0, this.gameWidth);
-    let y = parseInt(((event.clientY - rect.top) - this.wingWidthY) / this.scaleFactor);
-    //y = _clamp(y, 0, this.gameHeight);
+    let x = parseInt(((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
+    let y = parseInt(((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
     if (x < 0 ||
-        x > this.gameWidth ||
+        x > Screen.currentResolution.width||
         y < 0 ||
-        y > this.gameHeight)
+        y > Screen.currentResolution.height)
         return {x: null, y: null};
     return { x: x, y: y };
 };

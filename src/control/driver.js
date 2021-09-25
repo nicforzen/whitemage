@@ -1,18 +1,22 @@
+import { Application } from "../core/application";
+import { Resolution } from "../core/resolution";
+import { Screen } from "../core/screen";
 
 export function Driver(instance, canvas, localStorage) {
     instance.setDriver(this);
     this.instance = instance;
-    this.fps = 60;
     this._canvas = canvas;
     this._localStorage = localStorage;
     this._gameLoopInterval = null;
     this.gameWidth = canvas.width;
     this.gameHeight = canvas.height;
+
+    Screen.currentResolution = new Resolution(canvas.width, canvas.height, 60); // TODO fix refresh
 }
 
 Driver.prototype.start = function() {
     if(!this.instance.initialized){
-        this.instance.initialize(this.gameWidth, this.gameHeight, this._canvas, this._localStorage);
+        this.instance.initialize(this._canvas, this._localStorage);
         setTimeout(function(){this.start();}.bind(this), 10);
     }else{
         if (this.instance.assets._stillLoading > 0) {
@@ -31,7 +35,7 @@ Driver.prototype._start = function() {
     else{
         this.instance._gameLoop();
         this._gameLoopInterval = setInterval(function(){this.instance._gameLoop();}.bind(this),
-            1000 / this.fps);
+            1000 / Application.targetFrameRate);
     }
 };
 // Driver.prototype.changeScene = function() {

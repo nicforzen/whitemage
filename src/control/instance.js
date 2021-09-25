@@ -45,25 +45,15 @@ export function Instance(scene) {
     this._b2World = planck.World(planck.Vec2(Physics.gravity.x, Physics.gravity.y));
 }
 
-Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localStorage) {
+Instance.prototype.initialize = function(canvas, localStorage) {
     this.initialized = true;
     if(!this.isServer){
         PlayerPrefs._setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
         this.render._ctx.imageSmoothingEnabled = false;
-        this.render.gameWidth = gameWidth;
-        this.render.gameHeight = gameHeight;
-        // this.camera.fovX = gameWidth/2;
-        // this.camera.fovY = gameHeight/2;
-        this.render.screenWidth = canvas.width;
-        this.render.screenHeight = canvas.height;
-        // TODO Make this smarter so you can scale down and still have v wings
-        // Calculate scale factor
-        this.render.scaleFactor = canvas.height / gameHeight;
 
-        this.render.calculateWings(canvas, gameWidth, gameHeight);
-
+        
         // window.addEventListener('keydown', this.input.onKeyDown.bind(this.input), false);
         // window.addEventListener('keyup', this.input.onKeyUp.bind(this.input), false);
         // canvas.addEventListener('touchstart', this.input.touchStart.bind(this.input));

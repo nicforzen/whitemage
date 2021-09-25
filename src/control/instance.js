@@ -83,10 +83,14 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this._b2World.on('pre-solve', function(contact) {
             let obj1 = contact.getFixtureA().getBody().getUserData();
             let obj2 = contact.getFixtureB().getBody().getUserData();
-            if(Physics.getIgnoreLayerCollision(obj1.layer, obj2.layer)){
+            if(obj1.isUiItem || obj2.isUiItem || Physics.getIgnoreLayerCollision(obj1.layer, obj2.layer)){
                 contact.setEnabled(false);
                 return;
             }
+        }.bind(this));
+        this._b2World.on('begin-contact', function(contact) {
+            let obj1 = contact.getFixtureA().getBody().getUserData();
+            let obj2 = contact.getFixtureB().getBody().getUserData();
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
                 if(gameObj === obj1){
@@ -95,13 +99,29 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
                         if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj2);
                     }
                 }
-            }
-            for (let i = 0; i < this._gameObjects.length; i++) {
-                let gameObj = this._gameObjects[i];
                 if(gameObj === obj2){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
                         if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj1);
+                    }
+                }
+            }
+        }.bind(this));
+        this._b2World.on('end-contact', function(contact) {
+            let obj1 = contact.getFixtureA().getBody().getUserData();
+            let obj2 = contact.getFixtureB().getBody().getUserData();
+            for (let i = 0; i < this._gameObjects.length; i++) {
+                let gameObj = this._gameObjects[i];
+                if(gameObj === obj1){
+                    for(let j=0;j<gameObj.components.length;j++){
+                        let component = gameObj.components[j];
+                        if(component instanceof Script && component.onCollisionExit) component.onCollisionExit(obj2);
+                    }
+                }
+                if(gameObj === obj2){
+                    for(let j=0;j<gameObj.components.length;j++){
+                        let component = gameObj.components[j];
+                        if(component instanceof Script && component.onCollisionExit) component.onCollisionExit(obj1);
                     }
                 }
             }
@@ -136,6 +156,7 @@ Instance.prototype.addObject = function(gameObj){
 Instance.prototype.addUiItem = function(gameObj){
     if(!gameObj) return;
     gameObj.setInstance(this);
+    gameObj.isUiItem = true;
     this._uiItems.push(gameObj);
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this._uiItems.push(gameObj.subObjects[i]);

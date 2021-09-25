@@ -24,7 +24,7 @@ export function Instance(scene) {
     this.assets = new Assets();
     this.sound = new Sound();
     if(this.sound) this.sound.setInstance(this);
-    this.camera = new Camera(0, 0, 1);
+    this.camera = null;
 
     this._gameObjects = [];
     this._gameObjectsAddBuffer = [];
@@ -54,8 +54,8 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this.render._ctx.imageSmoothingEnabled = false;
         this.render.gameWidth = gameWidth;
         this.render.gameHeight = gameHeight;
-        this.camera.fovX = gameWidth/2;
-        this.camera.fovY = gameHeight/2;
+        // this.camera.fovX = gameWidth/2;
+        // this.camera.fovY = gameHeight/2;
         this.render.screenWidth = canvas.width;
         this.render.screenHeight = canvas.height;
         // TODO Make this smarter so you can scale down and still have v wings

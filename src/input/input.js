@@ -132,6 +132,7 @@ export var Input = {
         // Look through GameObjects and try to match the click point to their colliders
         // if they have a script attached with onMouseDown
         local = instance.render._getCursorPosition(e);
+        if(!local) return;
         point = { x: local.x, y: local.y, button: e.which};
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){
@@ -213,6 +214,7 @@ export var Input = {
         // Look through GameObjects and try to match the click point to their colliders
         // if they have a script attached with onMouseUp
         local = instance.render._getCursorPosition(e);
+        if(!local) return;
         point = { x: local.x, y: local.y, button: e.which};
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){
@@ -292,6 +294,7 @@ export var Input = {
         // Look through GameObjects and try to match the click point to their colliders
         // if they have a script attached with onMouseOver
         local = instance.render._getCursorPosition(e);
+        if(!local) return;
         point = { x: local.x, y: local.y, button: e.which};
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){

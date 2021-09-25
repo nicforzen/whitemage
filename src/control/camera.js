@@ -3,25 +3,34 @@ import { Vector2 } from "../physics/vector.js";
 // Need Background color
 // Need orthographic Size
 
-export function Camera(x, y) {
+export function Camera(scale) {
+    this._initialized = false;
     this.gameObject = null;
 
     this.transform = {
         position: new Vector2()
     };
-    this.transform.position.x = x;
-    this.transform.position.y = y;
-    this.scale = 1;
+    this.transform.position.x = 0;
+    this.transform.position.y = 0;
+    this.scale = scale;
 
     this.fovX = 0;
     this.fovY = 0;
 
-    this._x = x;
-    this._y = y;
+    this._x = 0;
+    this._y = 0;
     this._fovX = 0;
     this._fovY = 0;
     this._scale = this.scale;
 }
+Camera.prototype.initialize = function() {
+    if(!this._initialized){
+        this.gameObject.instance.camera = this;
+        this.fovX = this.gameObject.instance.render.gameWidth/2;
+        this.fovY = this.gameObject.instance.render.gameHeight/2;
+        this._initialized = true;
+    }
+};
 
 Camera.prototype._storeState = function(){
     this._x = this.transform.position.x;

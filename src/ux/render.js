@@ -422,6 +422,7 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
     let img = this.instance.assets.getImage(name);
 
     let camera = this.instance.camera;
+    if(!camera) return;
 
     var xAnchorFactor = this.scaleFactor * img.width * anchorXPercent * scale * camera.scale;
     var yAnchorFactor = this.scaleFactor * img.height * anchorYPercent * scale * camera.scale;
@@ -688,6 +689,7 @@ Render.prototype.measureUnscaledText = function(font, text, letterSpacing) {
     };
 };
 Render.prototype.renderFrame = function(){
+    if(!this.instance.camera) return;
     requestAnimationFrame(this._render.bind(this));
 };
 Render.prototype._getCursorPosition = function(event) {
@@ -702,8 +704,10 @@ Render.prototype._getCursorPosition = function(event) {
         y > this.gameHeight)
         return {x: null, y: null};
     let camera = this.instance.camera;
-    return { x: (x + camera.transform.position.x - camera.fovX) / camera._scale,
-        y: (y + camera.transform.position.y - camera.fovY) / camera._scale };
+    if(camera){
+        return { x: (x + camera.transform.position.x - camera.fovX) / camera._scale,
+            y: (y + camera.transform.position.y - camera.fovY) / camera._scale };
+    }else return null;
 };
 Render.prototype._getRawCursorPosition = function(event){
     const rect = this._canvas.getBoundingClientRect();

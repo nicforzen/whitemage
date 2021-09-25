@@ -1,5 +1,6 @@
 import { Vector2 } from "../physics/vector.js";
 import { Rigidbody } from "../physics/rigidbody.js";
+import { Camera } from "./camera.js";
 
 export function GameObject(name){
     this.name = name;

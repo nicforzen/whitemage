@@ -18,6 +18,7 @@ export function GameObject(name){
     this.id = 0;
     this.layer = 0;
     this.isUiItem = false;
+    this._isDestroyed = false;
 
     this.rigidbody = null;
     this.transform = {

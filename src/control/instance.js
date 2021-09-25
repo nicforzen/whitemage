@@ -28,7 +28,7 @@ export function Instance(scene) {
 
     this._gameObjects = [];
     this._gameObjectsAddBuffer = [];
-    this._gameObjectsDeleteBuffer = [];
+    this._cullCount = 0;
     this._uiItems = [];
     this._socket = null;
 
@@ -163,8 +163,20 @@ Instance.prototype.addUiItem = function(gameObj){
     }
     return gameObj;
 };
+Instance.prototype._cullDestroyedObjects = function(){
+    if(this._cullCount == 0) return;
+    this._cullCount = 0;
+    for(let i = 0; i < this._gameObjects.length; i++){
+        if(this._gameObjects[i]._isDestroyed){
+            this._gameObjects.splice(i, 1);
+            i -= 1;
+        }
+    }
+};
 Instance.prototype.destroyObject = function(gameObj){
     if(!gameObj) return;
+    gameObj._isDestroyed = true;
+    this._cullCount += 1;
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyObject(gameObj.subObjects[i]);
     }
@@ -175,21 +187,11 @@ Instance.prototype.destroyObject = function(gameObj){
         let component = gameObj.components[j];
         if(component instanceof Script && component.onDestroy) component.onDestroy();
     }
-    Util.removeFromArray(gameObj, this._gameObjects);
 };
 Instance.prototype.destroyObjectByName = function(name){
     for (let i = 0; i < this._gameObjects.length; i++) {
         let gameObj = this._gameObjects[i];
         if(gameObj.name == name){
-            // for(let k = 0; k < gameObj.subObjects.length; k++){
-            //     this.destroyObject(gameObj.subObjects[k]);
-            // }
-            // for(let j=0;j<gameObj.components.length;j++){
-            //     let component = gameObj.components[j];
-            //     if(component instanceof Script && component.onDestroy) component.onDestroy();
-            // }
-            // this._gameObjects.splice(i, 1);
-            // i -= 1;
             this.destroyObject(gameObj);
             i -= 1;
         }
@@ -199,14 +201,7 @@ Instance.prototype.destroyObjectById = function(id){
     for (let i = 0; i < this._gameObjects.length; i++) {
         let gameObj = this._gameObjects[i];
         if(gameObj.id == id){
-            for(var k = 0; k < gameObj.subObjects.length; k++){
-                this.destroyObject(gameObj.subObjects[k]);
-            }
-            for(let j=0;j<gameObj.components.length;j++){
-                let component = gameObj.components[j];
-                if(component instanceof Script && component.onDestroy) component.onDestroy();
-            }
-            this._gameObjects.splice(i, 1);
+            this.destroyObject(gameObj);
             i -= 1;
         }
     }
@@ -232,14 +227,7 @@ Instance.prototype.destroyUiItemByName = function(name){
     for (let i = 0; i < this._uiItems.length; i++) {
         let gameObj = this._uiItems[i];
         if(gameObj.name == name){
-            for(let k = 0; k < gameObj.subObjects.length; k++){
-                this.destroyUiItem(gameObj.subObjects[k]);
-            }
-            for(let j=0;j<gameObj.components.length;j++){
-                let component = gameObj.components[j];
-                if(component instanceof Script && component.onDestroy) component.onDestroy();
-            }
-            this._uiItems.splice(i, 1);
+            this.destroyUiItem(gameObj);
             i -= 1;
         }
     }
@@ -281,6 +269,7 @@ Instance.prototype._gameLoop = function() {
             while(countdownTime >= Time.fixedDeltaTime){
                 countdownTime -= Time.fixedDeltaTime;
                 this._fixedUpdate();
+                this._cullDestroyedObjects();
                 this._fixedUpdateUi();
                 this._updatePhysics();
             }
@@ -293,12 +282,14 @@ Instance.prototype._gameLoop = function() {
 
         // Update objects
         this._update();
+        this._cullDestroyedObjects();
         this._updateUi();
 
         // Animation updates should go here, see lifecycle
 
         // Late Update objects
         this._postUpdate();
+        this._cullDestroyedObjects();
         this._postUpdateUi();
 
         // Process objects that were added or destroyed and clean up

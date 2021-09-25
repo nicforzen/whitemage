@@ -4,6 +4,7 @@ import { CircleRenderer } from "./renderer.js";
 import { PolygonRenderer } from "./renderer.js";
 import { TextRenderer } from "./renderer.js";
 import { Color } from "./color.js";
+import { Camera } from "../control/camera.js";
 
 export function Render() {
     this.scaleFactor = 1;
@@ -18,6 +19,7 @@ export function Render() {
     this.wingColor = Color.BLACK;
     this._ctx = null;
     this._canvas = null;
+    this._uiCamera = new Camera();
 }
 
 Render.prototype.setInstance = function(instance){
@@ -503,15 +505,27 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
     this._safeTranslate(-this.wingWidthX, -this.wingWidthY);
 };
 Render.prototype._render = function(){
+    // Fill background color
     if(this.instance.camera.backgroundColor) this.fillCanvas(this.instance.camera.backgroundColor);
+
+    // Render scene's render function
+    // TODO remove
     if(this.instance.scene.onRender) this.instance.scene.onRender();
+
+    // Sort the game objects by sort order
+    // TODO sort by layer also
+    // TODO if this never changed, why keep sorting?
     this.instance._gameObjects.sort(
         function(a,b){return (!a.renderer || !b.renderer) ? 0 :
             a.renderer.sortingOrder - b.renderer.sortingOrder;});
+    
     this._ctx.translate(0.5, 0.5); // Hack for smoother tiles
+
+    // Render each object
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
         if(gameObj.renderer) {
+            // TODO can't I just use gameObject values? Why duplicate values?
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
@@ -519,15 +533,19 @@ Render.prototype._render = function(){
             this.render(gameObj.renderer);
         }
     }
+
     this._ctx.translate(-0.5, -0.5); // Hack for smoother tiles
 
-    this.instance.camera._storeState();
-    this.instance.camera._reset();
+    // Render UI
+    // UI needs to be rendered with no transformations, so use UI camera
+    let oldCamera = this.instance.camera;
+    this.instance.camera = this._uiCamera;
     this.instance._uiItems.sort(
         function(a,b){return a.renderer.sortingOrder - b.renderer.sortingOrder;});
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {
+            // TODO same as above, why duplicate values?
             gameObj.renderer.x = gameObj.transform.position.x;
             gameObj.renderer.y = gameObj.transform.position.y;
             gameObj.renderer.scale = gameObj.scale;
@@ -535,8 +553,9 @@ Render.prototype._render = function(){
             this.render(gameObj.renderer);
         }
     }
-    this.instance.camera._loadState();
+    this.instance.camera = oldCamera;
 
+    // Render wings
     if (this.wingWidthX > 0) {
         this._ctx.fillStyle = this.wingColor.hexString;
         this._ctx.fillRect(0, 0, this.wingWidthX, this.screenHeight);

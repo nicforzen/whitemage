@@ -9,6 +9,7 @@ export function Script(){
     this.update = null;
     this.onCollisionEnter = null;
     this.onCollisionExit = null;
+    this.onCollisionStay = null;
     this.onTriggerEnter = null;
     this.onMouseOver = null;
     this.onMouseDown = null;

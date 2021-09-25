@@ -83,7 +83,8 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this._b2World.on('pre-solve', function(contact) {
             let obj1 = contact.getFixtureA().getBody().getUserData();
             let obj2 = contact.getFixtureB().getBody().getUserData();
-            if(obj1.isUiItem || obj2.isUiItem || Physics.getIgnoreLayerCollision(obj1.layer, obj2.layer)){
+            if(obj1.isUiItem || obj2.isUiItem || obj1._isDestroyed || obj2._isDestroyed ||
+                Physics.getIgnoreLayerCollision(obj1.layer, obj2.layer)){
                 contact.setEnabled(false);
                 return;
             }
@@ -91,6 +92,12 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this._b2World.on('begin-contact', function(contact) {
             let obj1 = contact.getFixtureA().getBody().getUserData();
             let obj2 = contact.getFixtureB().getBody().getUserData();
+            if(obj1._isDestroyed || obj2._isDestroyed) return;
+
+            // Add to stay bodies
+            if(obj1.rigidbody) obj1.rigidbody._collisionStayBodies.push(obj2);
+            if(obj2.rigidbody) obj2.rigidbody._collisionStayBodies.push(obj1);
+
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
                 if(gameObj === obj1){
@@ -110,6 +117,12 @@ Instance.prototype.initialize = function(gameWidth, gameHeight, canvas, localSto
         this._b2World.on('end-contact', function(contact) {
             let obj1 = contact.getFixtureA().getBody().getUserData();
             let obj2 = contact.getFixtureB().getBody().getUserData();
+            if(obj1._isDestroyed || obj2._isDestroyed) return;
+
+            // Remove from stay bodies
+            if(obj1.rigidbody) Util.removeFromArray(obj2, obj1.rigidbody._collisionStayBodies);
+            if(obj2.rigidbody) Util.removeFromArray(obj1, obj2.rigidbody._collisionStayBodies);
+
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
                 if(gameObj === obj1){
@@ -193,7 +206,6 @@ Instance.prototype.destroyObjectByName = function(name){
         let gameObj = this._gameObjects[i];
         if(gameObj.name == name){
             this.destroyObject(gameObj);
-            i -= 1;
         }
     }
 };
@@ -202,7 +214,6 @@ Instance.prototype.destroyObjectById = function(id){
         let gameObj = this._gameObjects[i];
         if(gameObj.id == id){
             this.destroyObject(gameObj);
-            i -= 1;
         }
     }
 };
@@ -272,6 +283,7 @@ Instance.prototype._gameLoop = function() {
                 this._cullDestroyedObjects();
                 this._fixedUpdateUi();
                 this._updatePhysics();
+                this._dispatchCollisionStayEvents();
             }
             Time._lastPhysicsLeftover = countdownTime;
             Time.deltaTime = deltaTime * Time.timeScale;
@@ -315,6 +327,26 @@ Instance.prototype._processObjectBuffers = function(){
     }
 
     this._gameObjectsAddBuffer = [];
+};
+Instance.prototype._dispatchCollisionStayEvents = function(){
+    for(let i = 0; i < this._gameObjects.length; i++){
+        let o = this._gameObjects[i];
+        if(!o.rigidbody) continue;
+        if(o.rigidbody._collisionStayBodies.length == 0) continue;
+        let sBuffer = [];
+        // Find all scripts in this object with onCollisionStay
+        for(let j = 0; j < o.components.length; j++){
+            let script = o.components[j];
+            if(!(script instanceof Script)) continue;
+            if(script.onCollisionStay) sBuffer.push(script);
+        }
+        // Execute script on all stay bodies
+        for(let j = 0; j < o.rigidbody._collisionStayBodies.length; j++){
+            for(let k = 0; k < sBuffer.length; k++){
+                sBuffer[k].onCollisionStay(o.rigidbody._collisionStayBodies[j]);
+            }
+        }
+    }
 };
 Instance.prototype._updatePhysics = function(){
     let allObjects = this._gameObjects.concat(this._uiItems);

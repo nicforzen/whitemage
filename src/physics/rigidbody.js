@@ -13,6 +13,7 @@ export function Rigidbody(){
 
     this._initialized = false;
     this._b2Body = null;
+    this._collisionStayBodies = [];
 }
 
 Rigidbody.prototype.initialize = function() {

@@ -10,6 +10,7 @@ export const Color = {
     LIGHTGREY: _fromHexString("#666666"),
     MAGENTA: _fromHexString("#FF00FF"),
     ORANGE: _fromHexString("#FFA500"),
+    TRANSPARENT: _fromHexString("#FF000000")
 };
 
 function _fromHexString(hexColor) {

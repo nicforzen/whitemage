@@ -736,8 +736,8 @@ Render.prototype.renderFrame = function(){
 };
 Render.prototype._getCursorPosition = function(event) {
     const rect = this._canvas.getBoundingClientRect();
-    let x = parseInt(((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
-    let y = parseInt(((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
+    let x = (((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
+    let y = (((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
     if (x < 0 ||
         x > Screen.currentResolution.width ||
         y < 0 ||
@@ -745,14 +745,14 @@ Render.prototype._getCursorPosition = function(event) {
         return {x: null, y: null};
     let camera = this.instance.camera;
     if(camera){
-        return { x: (x + camera.transform.position.x - camera.fovX) / camera._scale,
-            y: (y + camera.transform.position.y - camera.fovY) / camera._scale };
+        return { x: (x + camera.transform.position.x - camera.fovX) / camera.scale,
+            y: (y + camera.transform.position.y - camera.fovY) / camera.scale };;
     }else return null;
 };
 Render.prototype._getRawCursorPosition = function(event){
     const rect = this._canvas.getBoundingClientRect();
-    let x = parseInt(((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
-    let y = parseInt(((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
+    let x = (((event.clientX - rect.left) - this._wingWidthX) / this.scaleFactor);
+    let y = (((event.clientY - rect.top) - this._wingWidthY) / this.scaleFactor);
     if (x < 0 ||
         x > Screen.currentResolution.width||
         y < 0 ||

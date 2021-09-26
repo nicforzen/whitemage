@@ -536,10 +536,10 @@ Render.prototype._render = function(){
         let gameObj = this.instance._gameObjects[i];
         if(gameObj.renderer) {
             // TODO can't I just use gameObject values? Why duplicate values?
-            gameObj.renderer.x = gameObj.transform.position.x;
-            gameObj.renderer.y = gameObj.transform.position.y;
+            gameObj.renderer.x = gameObj.transform._calculatedPosition.x;
+            gameObj.renderer.y = gameObj.transform._calculatedPosition.y;
             gameObj.renderer.scale = gameObj.scale;
-            gameObj.renderer.angleInRadians = gameObj.transform.rotation.radians;
+            gameObj.renderer.angleInRadians = gameObj.transform._calculatedRotation.radians;
             this.render(gameObj.renderer);
         }
     }

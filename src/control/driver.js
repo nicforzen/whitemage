@@ -1,6 +1,7 @@
 import { Application } from "../core/application";
 import { Resolution } from "../core/resolution";
 import { Screen } from "../core/screen";
+import { SceneManager } from "./scenemanager";
 
 export function Driver(instance, canvas, localStorage) {
     instance.setDriver(this);
@@ -21,11 +22,10 @@ Driver.prototype.start = function() {
     }else{
         if (this.instance.assets._stillLoading > 0) {
             setTimeout(function(){this.start();}.bind(this), 10);
-        } else if(!this.instance.scene.initialized){
-            if(this.instance.scene.start) this.instance.scene.start();
-            this.instance.scene.initialized = true;
-            setTimeout(function(){this.start();}.bind(this), 10);
         }else {
+            SceneManager._instance = this.instance;
+            SceneManager._canvas = this._canvas;
+            SceneManager._localStorage = this._localStorage;
             this._start();
         }
     }
@@ -38,15 +38,3 @@ Driver.prototype._start = function() {
             1000 / Application.targetFrameRate);
     }
 };
-// Driver.prototype.changeScene = function() {
-//     if(!this.instance.isServer){
-//         this.instance.destroy();
-//         this.instance = new Instance(false, new TestScene(), new Input(), new Render(),
-//             new Assets(), getClientSocket(true), new Sound());
-//         clearInterval(this._gameLoopInterval);
-//         this.start(document.getElementById('canvas'), window.localStorage);            
-//     }
-// };
-
-///RESET method? To reinit instance? Reload? That makes it sound like it's going in fresh
-// Reinitialize?

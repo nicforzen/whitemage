@@ -101,6 +101,7 @@ export var Input = {
         // Look through UI items and try to match the click point to their colliders
         // if they have a script attached with onMouseDown
         let handled = false;
+        console.log("Point: " + point.x + " " + point.y);
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
                 let gameObj = instance._uiItems[i];
@@ -114,6 +115,7 @@ export var Input = {
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
+                console.log("O pos: " + gameObj.transform.position.x + " " + gameObj.transform.position.y);
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
                     if(!(script instanceof Script) || !script.onMouseDown) continue;

@@ -16,6 +16,7 @@ Assets.prototype.loadAudio = function(name, url) {
         this._stillLoading -= 1;
         this.sounds[name] = audio;
     }.bind(this));
+    audio.load();
 };
 Assets.prototype.loadImage = function(name, url) {
     this._stillLoading += 1;

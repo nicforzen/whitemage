@@ -27,6 +27,7 @@ export * from "./control/playercontroller";
 export * from "./control/playerprefs";
 export * from "./control/driver";
 export * from "./control/instance";
+export * from "./control/scenemanager";
 
 export * from "./ux/color";
 export * from "./ux/frame";

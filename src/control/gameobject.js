@@ -1,6 +1,5 @@
 import { Vector2 } from "../physics/vector.js";
 import { Rigidbody } from "../physics/rigidbody.js";
-import { Camera } from "./camera.js";
 
 export function GameObject(name){
     this.name = name;
@@ -25,6 +24,10 @@ export function GameObject(name){
     this.transform = {
         position: new Vector2(),
         localPosition: new Vector2(),
+        _calculatedPosition: new Vector2(),
+        _calculatedRotation: {
+            radians: 0
+        },
         rotation: {
             radians: 0
         },
@@ -70,8 +73,6 @@ GameObject.prototype.setAnimator = function(animator){
 GameObject.prototype.addSubobject = function(obj){
     obj.parent = this;
     obj.instance = this.instance;
-    obj.transform.position.x = this.transform.position.x + obj.transform.localPosition.x*this.scale;
-    obj.transform.position.y = this.transform.position.y + obj.transform.localPosition.y*this.scale;
     obj.scale = this.scale;
     this.subObjects.push(obj);
 };

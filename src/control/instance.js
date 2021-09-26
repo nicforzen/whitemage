@@ -1,6 +1,5 @@
 
 
-import { Camera } from './camera.js';
 import { PlayerPrefs } from './playerprefs.js';
 import { Input } from "../input/input.js";
 import { Assets } from "../ux/assets.js";
@@ -36,15 +35,29 @@ export function Instance(scene) {
     this.initialized = false;
     this.bgm = null;
 
+    this._positionIterations = 2;
+    this._velocityIterations = 5;
+    this.setScene(scene);
+}
+
+Instance.prototype.setScene = function(scene){
+    delete this._b2World;
+
+    // TODO clean from constructor
+
+    this.scene = scene;
+    this.camera = null;
+
+    // TODO clear assets and sound
+    this.hadError = false;
+    this.initialized = false;
+
     if(this.scene){ 
         this.scene.setInstance(this);
     }
 
-    this._positionIterations = 3;
-    this._velocityIterations = 8;
     this._b2World = planck.World(planck.Vec2(Physics.gravity.x, Physics.gravity.y));
-}
-
+};
 Instance.prototype.initialize = function(canvas, localStorage) {
     this.initialized = true;
     if(!this.isServer){
@@ -257,6 +270,12 @@ Instance.prototype._gameLoop = function() {
         this.error("Instance must be initialized before running");
     }
 
+    if(!this.scene.initialized){
+        if(this.scene.start) this.scene.start();
+        this.scene.initialized = true;
+        return;
+    }
+
     try{
         // Get the times since last frame
         let time = new Date().getTime();
@@ -299,12 +318,38 @@ Instance.prototype._gameLoop = function() {
         Input._clearUpKeys();
         this.lastTime = time;
 
+        // Sync transforms
+        this._syncCalculatedTransforms();
+
         // Render the frame on the screen
         this.render.renderFrame();
     }catch(err){
         this.error(err);
     }
 };
+Instance.prototype._syncCalculatedTransforms = function() {
+    // TODO SYNC SCALE
+    // TODO SYNC RADIANS
+
+    for(let i = 0; i < this._gameObjects.length; i++){
+        let o = this._gameObjects[i];
+        // TODO aren't pos and localPos the same in Unity if not parented?
+        o.transform._calculatedPosition.x = o.transform.position.x + o.transform.localPosition.x;
+        o.transform._calculatedPosition.y = o.transform.position.y + o.transform.localPosition.y;
+        o.transform._calculatedRotation.radians = o.transform.rotation.radians + o.transform.localRotation.radians;
+        // TODO fix parent positioning
+        if(o.parent){
+            o.transform._calculatedPosition.x += o.parent.transform._calculatedPosition.x;
+            o.transform._calculatedPosition.y += o.parent.transform._calculatedPosition.y;
+
+            // TODO don't do this, way too expensive
+            if(o.parent.transform._calculatedRotation.radians != 0){
+                //Temporary
+                o.transform._calculatedRotation.radians += o.parent.transform._calculatedRotation.radians
+            }
+        }
+    }
+}
 Instance.prototype._processObjectBuffers = function(){
     for(let i = 0; i < this._gameObjectsAddBuffer.length; i++){
         this._gameObjects.push(this._gameObjectsAddBuffer[i]);
@@ -424,7 +469,6 @@ Instance.prototype._postUpdateUi = function() {
     }
 };
 Instance.prototype.destroy = function(){
-    // TODO what should this do?
-    // canvas.outerHTML = canvas.outerHTML;
-    // window.outerHTML = window.outerHTML;
+    this._gameObjects = [];
+    this._uiItems = [];
 };

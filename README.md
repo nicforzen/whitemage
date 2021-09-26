@@ -20,6 +20,13 @@ Nic Forzen
 ## Version History
 
 * 0.1.0
-    * Coming!
+    * Large improvements to parity with Unity's structure.
+    * Redone camera calculations and properties
+    * Redone mouse event handling
+    * Redone collision handling
+    * Redone component system
+    * box2d library integration
+    * Many bug fixes
+    * Much much more
 * 0.0.1
     * Ported over from a previous project I made ad hoc. Not refined!

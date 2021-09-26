@@ -30,7 +30,6 @@ export * from "./control/instance";
 
 export * from "./ux/color";
 export * from "./ux/frame";
-export * from "./ux/sprite";
 export * from "./ux/animator";
 export * from "./ux/animation";
 export * from "./ux/assets";
@@ -43,3 +42,5 @@ export * from "./ux/renderer";
 export * from "./meta/debug";
 
 export * from "./audio/audiolistener";
+
+export * from "./graphics/sprite";

@@ -3,6 +3,7 @@ import { ArcRenderer } from "./renderer.js";
 import { CircleRenderer } from "./renderer.js";
 import { PolygonRenderer } from "./renderer.js";
 import { TextRenderer } from "./renderer.js";
+import { SpriteRenderer } from "./renderer";
 import { Color } from "./color.js";
 import { Camera } from "../control/camera.js";
 import { Screen } from "../core/screen";
@@ -398,15 +399,18 @@ Render.prototype.render = function(r){
         this.drawTextNeo(r.font, r.size, r.text, r.color, r.x, r.y, r.scale, r.alignment, r.baseline, r.alpha,
             r.anchorXPercent, r.anchorYPercent, r.angleInRadians);
     }
-    else{
-        this._renderImage(r.imageName, r.x, r.y, r.scale, r.alpha, r.anchorXPercent, r.anchorYPercent, r.angleInRadians, 
-        (this.instance.assets.getMappingData(r.imageName)) ? this.instance.assets.getMappingData(r.imageName)[r.spriteName] : null, 
-        r.drawSil, r.silColor, r.silAlpha, r.flipX, r.flipY);
+    else if(r instanceof SpriteRenderer){
+        this._renderImage(r.sprite.texture, r.x, r.y, r.scale, r.alpha, r.anchorXPercent, r.anchorYPercent, r.angleInRadians, 
+        (this.instance.assets.getMappingData(r.sprite.texture)) ? this.instance.assets.getMappingData(r.sprite.texture)[r.spriteName] : null, 
+        r.drawSil, r.silColor, r.silAlpha, r.flipX, r.flipY, r.sprite._inversePixelsPerUnit);
+    }else{
+        this.instance.error("Unsupported Renderer type!");
     }
 };
 Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercent, anchorYPercent,
-    angleInRadians, mappingData, drawSil, silColor, silAlpha, flipX, flipY){
+    angleInRadians, mappingData, drawSil, silColor, silAlpha, flipX, flipY, inversePpu){
     let SilSuffix = ":_SIL";
+    inversePpu = inversePpu || 1;
     if(alpha <= 0) return;
     if(drawSil){
         let silName = name + SilSuffix;
@@ -423,14 +427,14 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
     let camera = this.instance.camera;
     if(!camera) return;
 
-    var xAnchorFactor = this.scaleFactor * img.width * anchorXPercent * scale * camera.scale;
-    var yAnchorFactor = this.scaleFactor * img.height * anchorYPercent * scale * camera.scale;
+    var drawWidth = this.scaleFactor * img.width * scale * camera.scale * inversePpu;
+    var drawHeight = this.scaleFactor * img.height * scale * camera.scale * inversePpu;
+    var xAnchorFactor = anchorXPercent * drawWidth;
+    var yAnchorFactor = anchorYPercent * drawHeight;
     var mapX = 0;
     var mapY = 0;
     var mapWidth = img.width;
     var mapHeight = img.height;
-    var drawWidth = this.scaleFactor * img.width * scale * camera.scale;
-    var drawHeight = this.scaleFactor * img.height * scale * camera.scale;
     var xOffsetFactor = 0.5 * drawWidth;
     var yOffsetFactor = 0.5 * drawHeight;
     if (mappingData != null) {

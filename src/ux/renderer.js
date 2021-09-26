@@ -15,6 +15,25 @@ export function ImageRenderer(name) {
         this.flipY = false;
         this.isVisible = true;
         this.sortingOrder = 0;
+} // TODO remove when sprite sheets supported in sprite renderer
+
+export function SpriteRenderer(sprite) {
+    this.sprite = sprite,
+    this.x = 0;
+    this.y = 0;
+    this.scale = 1;
+    this.alpha = 1;
+    this.anchorXPercent = 0.5;
+    this.anchorYPercent = 0.5;
+    this.angleInRadians = 0;
+    this.spriteName = null;
+    this.drawSil = false;
+    this.silColor = null;
+    this.silAlpha = 0;
+    this.flipX = false;
+    this.flipY = false;
+    this.isVisible = true;
+    this.sortingOrder = 0;
 }
 
 export function RectangleRenderer(width, height, color) {

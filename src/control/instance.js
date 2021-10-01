@@ -70,9 +70,9 @@ Instance.prototype.initialize = function(canvas, localStorage) {
         window.addEventListener('keydown', Input._onKeyDown.bind(Input), false);
         window.addEventListener('keyup', Input._onKeyUp.bind(Input), false);
         window.addEventListener('blur', Input._onLostFocus.bind(Input));
-        // canvas.addEventListener('touchstart', this.input.touchStart.bind(this.input));
-        // canvas.addEventListener('touchend', this.input.touchEnd.bind(this.input));
-        // canvas.addEventListener('touchmove', this.input.touchMove.bind(this.input));
+        canvas.addEventListener('touchstart', Input._touchStart.bind(Input));
+        canvas.addEventListener('touchend', Input._touchEnd.bind(Input));
+        canvas.addEventListener('touchmove', Input._touchMove.bind(Input));
         canvas.addEventListener('mousedown', Input._onMouseDown.bind(Input));
         canvas.addEventListener('mouseup', Input._onMouseUp.bind(Input));
         canvas.addEventListener('mousemove', Input._onMouseMove.bind(Input));

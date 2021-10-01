@@ -3,12 +3,6 @@ import { BoxCollider } from "../physics/boxcollider";
 import { CircleCollider } from "../physics/circlecollider";
 import { Vec2 } from "planck";
 
-// export function Input() {
-//     this.keysDown = [];
-//     this.keysUp = [];
-//     this.instance = null;
-// }
-
 export var Input = {
     _keysDown: [],
     _keysHeld: [],
@@ -335,6 +329,40 @@ export var Input = {
             }
         }
     },
+    _touchStart(te){
+        te.preventDefault();
+        let touch = te.touches[0];
+        let obj = {
+            which: 1,
+            preventDefault(){},
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        };
+        this._onMouseDown(obj);
+    },
+    _touchEnd(te){
+        te.preventDefault();
+        let touch = te.touches[0];
+        let obj = {
+            which: 1,
+            preventDefault(){},
+            clientX: 0,
+            clientY: 0
+        };
+        // TODO shouldn't be 0, 0
+        this._onMouseUp(obj);
+    },
+    _touchMove(te){
+        te.preventDefault();
+        let touch = te.touches[0];
+        let obj = {
+            which: 1,
+            preventDefault(){},
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        }
+        this._onMouseMove(obj);
+    },
     _processEvents(instance){
         for(let i = 0; i < this._keysDownBuffer.length; i++){
             this._processOnKeyDown(this._keysDownBuffer[i]);
@@ -379,17 +407,6 @@ export var Input = {
 //     if (this.keysUp.indexOf(key) < 0) {
 //         this.keysUp.push(key);
 //     }
-// };
-// Input.prototype.touchStart = function(te){
-//     te.preventDefault();
-//     let touch = te.touches[0];
-//     let obj = {
-//         which: 1,
-//         preventDefault(){},
-//         clientX: touch.clientX,
-//         clientY: touch.clientY
-//     }
-//     this.mouseDown(obj);
 // };
 // Input.prototype.mouseDown = function(e){
 //     e.preventDefault();

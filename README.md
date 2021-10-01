@@ -28,5 +28,6 @@ Nic Forzen
     * box2d library integration
     * Many bug fixes
     * Much much more
+
 * 0.0.1
     * Ported over from a previous project I made ad hoc. Not refined!

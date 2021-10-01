@@ -11,10 +11,13 @@ import { Vec2 } from "planck";
 
 export var Input = {
     _keysDown: [],
+    _keysHeld: [],
     _keysUp: [],
     _miceDown: [false, false, false],
     _miceHeld: [false, false, false],
     _miceUp: [false, false, false],
+    _keysDownBuffer: [],
+    _keysUpBuffer: [],
     _mouseDownBuffer: [],
     _mouseUpBuffer: [],
     _mouseMoveBuffer: [],
@@ -32,7 +35,7 @@ export var Input = {
         return this._keysDown.indexOf(button) >= 0;
     },
     getKey(button){
-        return this._keysDown.indexOf(button) >= 0;
+        return this._keysHeld.indexOf(button) >= 0;
     },
     getKeyUp(button){
         return this._keysUp.indexOf(button) >= 0;
@@ -47,24 +50,37 @@ export var Input = {
 
     },
     _onKeyDown(e){
+        if (e.repeat) { return };
         var key = String.fromCharCode(e.keyCode);
-        if(this._keysDown.indexOf(key) < 0){
-            this._keysDown.push(key);
+        if(this._keysDownBuffer.indexOf(key) < 0){
+            this._keysDownBuffer.push(key);
         }
+    },
+    _processOnKeyDown(key){
+        this._keysDown.push(key);
+        this._keysHeld.push(key);
     },
     _onKeyUp(e){
         var key = String.fromCharCode(e.keyCode);
-        let index = this._keysDown.indexOf(key);
-        if(index > -1) this._keysDown.splice(index, 1);
-        if (this._keysUp.indexOf(key) < 0) {
-            this._keysUp.push(key);
+        if (this._keysDownBuffer.indexOf(key) < 0) {
+            this._keysUpBuffer.push(key);
         }
+    },
+    _processOnKeyUp(key){
+        let index = this._keysHeld.indexOf(key);
+        if(index > -1) this._keysHeld.splice(index, 1);
+        this._keysUp.push(key);
     },
     _clearUpKeys(){
         this._miceDown = [false, false, false];
         this._miceUp = [false, false, false];
         this._keysUp = [];
         this._keysDown = [];
+    },
+    _onLostFocus(){
+        this._keysHeld = [];
+        this._keysDownBuffer = [];
+        this._mouseLeftBuffer = true;
     },
     _onMouseLeave(){
         this._mouseLeftBuffer = true;
@@ -320,6 +336,13 @@ export var Input = {
         }
     },
     _processEvents(instance){
+        for(let i = 0; i < this._keysDownBuffer.length; i++){
+            this._processOnKeyDown(this._keysDownBuffer[i]);
+        }
+        for(let i = 0; i < this._keysUpBuffer.length; i++){
+            this._processOnKeyUp(this._keysUpBuffer[i]);
+        }
+
         for(let i = 0; i < this._mouseDownBuffer.length; i++){
             this._processOnMouseDown(this._mouseDownBuffer[i], instance);
         }
@@ -331,6 +354,8 @@ export var Input = {
         }
         this._processMouseLeftBuffer();
 
+        this._keysDownBuffer = [];
+        this._keysUpBuffer = [];
         this._mouseLeftBuffer = false;
         this._mouseDownBuffer = [];
         this._mouseUpBuffer = [];

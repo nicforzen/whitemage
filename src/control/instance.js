@@ -67,8 +67,9 @@ Instance.prototype.initialize = function(canvas, localStorage) {
         this.render._ctx.imageSmoothingEnabled = false;
 
         
-        // window.addEventListener('keydown', this.input.onKeyDown.bind(this.input), false);
-        // window.addEventListener('keyup', this.input.onKeyUp.bind(this.input), false);
+        window.addEventListener('keydown', Input._onKeyDown.bind(Input), false);
+        window.addEventListener('keyup', Input._onKeyUp.bind(Input), false);
+        window.addEventListener('blur', Input._onLostFocus.bind(Input));
         // canvas.addEventListener('touchstart', this.input.touchStart.bind(this.input));
         // canvas.addEventListener('touchend', this.input.touchEnd.bind(this.input));
         // canvas.addEventListener('touchmove', this.input.touchMove.bind(this.input));
@@ -77,8 +78,8 @@ Instance.prototype.initialize = function(canvas, localStorage) {
         canvas.addEventListener('mousemove', Input._onMouseMove.bind(Input));
         canvas.addEventListener('mouseout', Input._onMouseLeave.bind(Input));
         canvas.addEventListener('mouseleave', Input._onMouseLeave.bind(Input));
-        canvas.addEventListener('blur', Input._onMouseLeave.bind(Input));
         canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        canvas.focus();
         // canvas.addEventListener("wheel", function(e) {
         //     const delta = Math.sign(e.deltaY);
         //     this.input.scroll(delta);

@@ -746,7 +746,7 @@ Render.prototype._getCursorPosition = function(event) {
     let camera = this.instance.camera;
     if(camera){
         return { x: (x + camera.transform.position.x - camera.fovX) / camera.scale,
-            y: (y + camera.transform.position.y - camera.fovY) / camera.scale };;
+            y: (y + camera.transform.position.y - camera.fovY) / camera.scale };
     }else return null;
 };
 Render.prototype._getRawCursorPosition = function(event){

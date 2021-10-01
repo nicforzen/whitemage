@@ -44,7 +44,7 @@ export var Input = {
 
     },
     _onKeyDown(e){
-        if (e.repeat) { return };
+        if (e.repeat) { return; }
         var key = String.fromCharCode(e.keyCode);
         if(this._keysDownBuffer.indexOf(key) < 0){
             this._keysDownBuffer.push(key);
@@ -342,7 +342,7 @@ export var Input = {
     },
     _touchEnd(te){
         te.preventDefault();
-        let touch = te.touches[0];
+        //let touch = te.touches[0];
         let obj = {
             which: 1,
             preventDefault(){},
@@ -360,7 +360,7 @@ export var Input = {
             preventDefault(){},
             clientX: touch.clientX,
             clientY: touch.clientY
-        }
+        };
         this._onMouseMove(obj);
     },
     _processEvents(instance){

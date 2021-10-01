@@ -346,11 +346,11 @@ Instance.prototype._syncCalculatedTransforms = function() {
             // TODO don't do this, way too expensive
             if(o.parent.transform._calculatedRotation.radians != 0){
                 //Temporary
-                o.transform._calculatedRotation.radians += o.parent.transform._calculatedRotation.radians
+                o.transform._calculatedRotation.radians += o.parent.transform._calculatedRotation.radians;
             }
         }
     }
-}
+};
 Instance.prototype._processObjectBuffers = function(){
     for(let i = 0; i < this._gameObjectsAddBuffer.length; i++){
         this._gameObjects.push(this._gameObjectsAddBuffer[i]);

@@ -1,6 +1,6 @@
 {
   "name": "whitemage",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "A Unity inspired client/server side game engine.",
   "main": "/dist/whitemage.js",
   "private": true,

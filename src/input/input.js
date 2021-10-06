@@ -16,6 +16,7 @@ export var Input = {
     _mouseUpBuffer: [],
     _mouseMoveBuffer: [],
     _mouseLeftBuffer: false,
+    _lastTouchMove: {x: null, y: null},
     getMouseButtonDown(button){
         return this._miceDown[button];
     },
@@ -113,6 +114,8 @@ export var Input = {
         let handled = false;
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
+                if(handled) break;
+
                 let gameObj = instance._uiItems[i];
                 let colliders = [];
                 let hasMouseDown = false;
@@ -131,8 +134,11 @@ export var Input = {
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
                             handled = true;
                             script.onMouseDown(point);
+                            break;
                         }
+                        if(handled) break;
                     }
+                    if(handled) break;
                 }
             }
         }
@@ -176,6 +182,10 @@ export var Input = {
 
         // TODO SORT AND HANDLE
 
+        if(!e.clientX){
+            e.clientX = this._lastTouchMove.x;
+            e.clientY = this._lastTouchMove.y;
+        }
         var local = instance.render._getRawCursorPosition(e);
         var point = { x: local.x, y: local.y, button: e.which};
 
@@ -191,10 +201,15 @@ export var Input = {
             return;
         }
 
+        instance._uiItems.sort(
+            function(a,b){return b.renderer.sortingOrder - a.renderer.sortingOrder;});
+
         // Look through UI items and try to match the click point to their colliders
         // if they have a script attached with onMouseUp
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
+                if(handled) break;
+
                 let gameObj = instance._uiItems[i];
                 let colliders = [];
                 let hasMouseDown = false;
@@ -213,8 +228,11 @@ export var Input = {
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
                             handled = true;
                             script.onMouseUp(point);
+                            break;
                         }
+                        if(handled) break;
                     }
+                    if(handled) break;
                 }
             }
         }
@@ -338,6 +356,7 @@ export var Input = {
             clientX: touch.clientX,
             clientY: touch.clientY
         };
+        this._lastTouchMove = {x: touch.clientX, y: touch.clientY};
         this._onMouseDown(obj);
     },
     _touchEnd(te){
@@ -361,6 +380,7 @@ export var Input = {
             clientX: touch.clientX,
             clientY: touch.clientY
         };
+        this._lastTouchMove = {x: touch.clientX, y: touch.clientY};
         this._onMouseMove(obj);
     },
     _processEvents(instance){

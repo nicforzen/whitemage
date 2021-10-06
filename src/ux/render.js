@@ -23,6 +23,9 @@ export function Render() {
 Render.prototype.setInstance = function(instance){
     this.instance = instance;
 };
+Render.prototype.useAntiAliasing = function(use){
+    this._ctx.imageSmoothingEnabled = use;
+};
 Render.prototype.fillCanvas = function(color) {
     this._ctx.fillStyle = color.hexString;
     this._ctx.fillRect(0, 0, Screen.currentResolution.width, Screen.currentResolution.height);
@@ -556,10 +559,10 @@ Render.prototype._render = function(){
         let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {
             // TODO same as above, why duplicate values?
-            gameObj.renderer.x = gameObj.transform.position.x;
-            gameObj.renderer.y = gameObj.transform.position.y;
+            gameObj.renderer.x = gameObj.transform._calculatedPosition.x;
+            gameObj.renderer.y = gameObj.transform._calculatedPosition.y;
             gameObj.renderer.scale = gameObj.scale;
-            gameObj.renderer.angleInRadians = gameObj.transform.rotation.radians;
+            gameObj.renderer.angleInRadians = gameObj.transform._calculatedRotation.radians;
             this.render(gameObj.renderer);
         }
     }

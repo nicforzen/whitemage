@@ -64,8 +64,6 @@ Instance.prototype.initialize = function(canvas, localStorage) {
         PlayerPrefs._setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
-        this.render._ctx.imageSmoothingEnabled = false;
-
         
         window.addEventListener('keydown', Input._onKeyDown.bind(Input), false);
         window.addEventListener('keyup', Input._onKeyUp.bind(Input), false);
@@ -147,7 +145,9 @@ Instance.prototype.initialize = function(canvas, localStorage) {
 
     if(this.scene.loadAssets) this.scene.loadAssets();
 };
-
+Instance.useAntiAliasing = function(use){
+    this.render.useAntiAliasing(use);
+};
 Instance.prototype.setDriver = function(driver){
     this.driver = driver;
 };
@@ -334,6 +334,26 @@ Instance.prototype._syncCalculatedTransforms = function() {
 
     for(let i = 0; i < this._gameObjects.length; i++){
         let o = this._gameObjects[i];
+        // TODO aren't pos and localPos the same in Unity if not parented?
+        o.transform._calculatedPosition.x = o.transform.position.x + o.transform.localPosition.x;
+        o.transform._calculatedPosition.y = o.transform.position.y + o.transform.localPosition.y;
+        o.transform._calculatedRotation.radians = o.transform.rotation.radians + o.transform.localRotation.radians;
+        // TODO fix parent positioning
+        if(o.parent){
+            o.transform._calculatedPosition.x += o.parent.transform._calculatedPosition.x;
+            o.transform._calculatedPosition.y += o.parent.transform._calculatedPosition.y;
+
+            // TODO don't do this, way too expensive
+            if(o.parent.transform._calculatedRotation.radians != 0){
+                //Temporary
+                o.transform._calculatedRotation.radians += o.parent.transform._calculatedRotation.radians;
+            }
+        }
+    }
+
+    // Sync UI items
+    for(let i = 0; i < this._uiItems.length; i++){
+        let o = this._uiItems[i];
         // TODO aren't pos and localPos the same in Unity if not parented?
         o.transform._calculatedPosition.x = o.transform.position.x + o.transform.localPosition.x;
         o.transform._calculatedPosition.y = o.transform.position.y + o.transform.localPosition.y;

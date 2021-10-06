@@ -10,18 +10,22 @@ export function Assets() {
 }
 
 Assets.prototype.loadAudio = function(name, url) {
+    //console.log("START LOAD AUDIO: " + name);
     this._stillLoading += 1;
     var audio = new Audio(url);
     audio.addEventListener("canplaythrough", function() {
+        // console.log("DONE LOAD AUDIO: " + name);
         this._stillLoading -= 1;
         this.sounds[name] = audio;
     }.bind(this));
     audio.load();
 };
 Assets.prototype.loadImage = function(name, url) {
+    // console.log("START LOAD IMAGE: " + name);
     this._stillLoading += 1;
     return new Promise(r => {
         let i = new Image(); i.onload = (() => {
+            // console.log("DONE LOAD IMAGE: " + name);
             this.images[name] = { source: i, width: i.width, height: i.height };
             this._stillLoading -= 1;
             r(i);

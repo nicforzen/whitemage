@@ -29,6 +29,7 @@ export function Button(text, x, y, width, height, color, font, textColor, textSi
         let unamePlate = new GameObject("_t");
         unamePlate.renderer = new TextRenderer(font, textSize, textColor, text.toString(), 1, "center", "middle");
         go.addSubobject(unamePlate);
+        go.metadata.label = unamePlate;
     }
 
     return go;

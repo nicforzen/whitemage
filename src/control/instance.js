@@ -145,7 +145,7 @@ Instance.prototype.initialize = function(canvas, localStorage) {
 
     if(this.scene.loadAssets) this.scene.loadAssets();
 };
-Instance.useAntiAliasing = function(use){
+Instance.prototype.useAntiAliasing = function(use){
     this.render.useAntiAliasing(use);
 };
 Instance.prototype.setDriver = function(driver){

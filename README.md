@@ -19,6 +19,10 @@ Nic Forzen
 
 ## Version History
 
+* 0.1.1
+    * Readded phone touch listeners
+    * Bug fixes
+
 * 0.1.0
     * Large improvements to parity with Unity's structure.
     * Redone camera calculations and properties

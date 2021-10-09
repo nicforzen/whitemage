@@ -166,7 +166,7 @@ Instance.prototype.addObject = function(gameObj){
     gameObj.setInstance(this);
     this._gameObjectsAddBuffer.push(gameObj);
     for(var i = 0; i < gameObj.subObjects.length; i++){
-        this._gameObjectsAddBuffer.push(gameObj.subObjects[i]);
+        this.addObject(gameObj.subObjects[i]);
     }
     return gameObj;
 };
@@ -176,7 +176,7 @@ Instance.prototype.addUiItem = function(gameObj){
     gameObj.isUiItem = true;
     this._uiItems.push(gameObj);
     for(let i = 0; i < gameObj.subObjects.length; i++){
-        this._uiItems.push(gameObj.subObjects[i]);
+        this.addUiItem(gameObj.subObjects[i]);
     }
     return gameObj;
 };

@@ -19,6 +19,9 @@ Nic Forzen
 
 ## Version History
 
+* 0.1.2 UNRELEASED
+    * Subobject bug fixes
+
 * 0.1.1
     * Readded phone touch listeners
     * Bug fixes

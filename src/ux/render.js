@@ -554,7 +554,8 @@ Render.prototype._render = function(){
     let oldCamera = this.instance.camera;
     this.instance.camera = this._uiCamera;
     this.instance._uiItems.sort(
-        function(a,b){return a.renderer.sortingOrder - b.renderer.sortingOrder;});
+        function(a,b){return (!a.renderer || !b.renderer) ? 0 :
+            a.renderer.sortingOrder - b.renderer.sortingOrder;});
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {

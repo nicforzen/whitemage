@@ -75,6 +75,13 @@ GameObject.prototype.addSubobject = function(obj){
     obj.instance = this.instance;
     obj.scale = this.scale;
     this.subObjects.push(obj);
+    if(this.instance != null){
+        if(this.isUiItem){
+            this.instance.addUiItem(obj);
+        }else{
+            this.instance.addObject(obj);
+        }
+    }
 };
 GameObject.prototype.setInstance = function(instance){
     this.instance = instance;

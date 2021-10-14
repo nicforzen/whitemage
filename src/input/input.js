@@ -202,8 +202,12 @@ export var Input = {
         }
 
         instance._uiItems.sort(
-            function(a,b){return (!a.renderer || !b.renderer) ? 0 :
-                b.renderer.sortingOrder - a.renderer.sortingOrder;});
+            function(a,b){
+                let as = 0;
+                if(a.renderer && a.renderer != null) as = a.renderer.sortingOrder;
+                let bs = 0;
+                if(b.renderer && b.renderer != null) bs = b.renderer.sortingOrder;
+                return bs-as;});
 
         // Look through UI items and try to match the click point to their colliders
         // if they have a script attached with onMouseUp

@@ -529,8 +529,12 @@ Render.prototype._render = function(){
     // TODO sort by layer also
     // TODO if this never changed, why keep sorting?
     this.instance._gameObjects.sort(
-        function(a,b){return (!a.renderer || !b.renderer) ? 0 :
-            a.renderer.sortingOrder - b.renderer.sortingOrder;});
+        function(a,b){
+            let as = 0;
+            if(a.renderer && a.renderer != null) as = a.renderer.sortingOrder;
+            let bs = 0;
+            if(b.renderer && b.renderer != null) bs = b.renderer.sortingOrder;
+            return as-bs;});
     
     this._ctx.translate(0.5, 0.5); // Hack for smoother tiles
 
@@ -554,8 +558,12 @@ Render.prototype._render = function(){
     let oldCamera = this.instance.camera;
     this.instance.camera = this._uiCamera;
     this.instance._uiItems.sort(
-        function(a,b){return (!a.renderer || !b.renderer) ? 0 :
-            a.renderer.sortingOrder - b.renderer.sortingOrder;});
+        function(a,b){
+            let as = 0;
+            if(a.renderer && a.renderer != null) as = a.renderer.sortingOrder;
+            let bs = 0;
+            if(b.renderer && b.renderer != null) bs = b.renderer.sortingOrder;
+            return as-bs;});
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
         if(gameObj.renderer) {

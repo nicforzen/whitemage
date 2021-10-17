@@ -541,7 +541,7 @@ Render.prototype._render = function(){
     // Render each object
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
-        if(gameObj.renderer) {
+        if(gameObj.activeSelf && gameObj.renderer) {
             // TODO can't I just use gameObject values? Why duplicate values?
             gameObj.renderer.x = gameObj.transform._calculatedPosition.x;
             gameObj.renderer.y = gameObj.transform._calculatedPosition.y;
@@ -566,7 +566,7 @@ Render.prototype._render = function(){
             return as-bs;});
     for(let i=0;i<this.instance._uiItems.length;i++){
         let gameObj = this.instance._uiItems[i];
-        if(gameObj.renderer) {
+        if(gameObj.activeSelf && gameObj.renderer) {
             // TODO same as above, why duplicate values?
             gameObj.renderer.x = gameObj.transform._calculatedPosition.x;
             gameObj.renderer.y = gameObj.transform._calculatedPosition.y;

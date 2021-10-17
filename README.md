@@ -19,8 +19,9 @@ Nic Forzen
 
 ## Version History
 
-* 0.1.2 UNRELEASED
+* 0.1.2
     * Subobject bug fixes
+    * Added SetActive and activeSelf properties to GameObject
 
 * 0.1.1
     * Readded phone touch listeners

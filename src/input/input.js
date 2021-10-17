@@ -117,6 +117,7 @@ export var Input = {
                 if(handled) break;
 
                 let gameObj = instance._uiItems[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
@@ -153,6 +154,7 @@ export var Input = {
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){
                 let gameObj = instance._gameObjects[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
@@ -216,6 +218,7 @@ export var Input = {
                 if(handled) break;
 
                 let gameObj = instance._uiItems[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
@@ -252,6 +255,7 @@ export var Input = {
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){
                 let gameObj = instance._gameObjects[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
@@ -299,6 +303,7 @@ export var Input = {
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._uiItems.length;i++){
                 let gameObj = instance._uiItems[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
@@ -332,6 +337,7 @@ export var Input = {
         if(point.x != null && point.y != null){
             for(let i=0;i<instance._gameObjects.length;i++){
                 let gameObj = instance._gameObjects[i];
+                if(!gameObj.activeSelf) continue;
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){

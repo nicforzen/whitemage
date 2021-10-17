@@ -19,6 +19,7 @@ export function GameObject(name){
     this.layer = 0;
     this.isUiItem = false;
     this._isDestroyed = false;
+    this.activeSelf = true;
 
     this.rigidbody = null;
     this.transform = {
@@ -88,6 +89,9 @@ GameObject.prototype.setInstance = function(instance){
     for(var i = 0; i < this.subObjects.length; i++){
         this.subObjects[i].setInstance(instance);
     }
+};
+GameObject.prototype.setActive = function(value){
+    this.activeSelf = value;
 };
 // GameObject.prototype.collidesAt = function(x, y){
 //     for(var i = 0; i < this.colliders.length; i++){

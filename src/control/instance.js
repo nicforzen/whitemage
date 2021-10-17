@@ -102,6 +102,7 @@ Instance.prototype.initialize = function(canvas, localStorage) {
 
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
+                if(!gameObj.activeSelf) continue;
                 if(gameObj === obj1){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
@@ -127,6 +128,7 @@ Instance.prototype.initialize = function(canvas, localStorage) {
 
             for (let i = 0; i < this._gameObjects.length; i++) {
                 let gameObj = this._gameObjects[i];
+                if(!gameObj.activeSelf) continue;
                 if(gameObj === obj1){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
@@ -200,9 +202,11 @@ Instance.prototype.destroyObject = function(gameObj){
     if(gameObj.rigidbody){
         this._b2World.destroyBody(gameObj.rigidbody._b2Body);
     }
-    for(let j=0;j<gameObj.components.length;j++){
-        let component = gameObj.components[j];
-        if(component instanceof Script && component.onDestroy) component.onDestroy();
+    if(gameObj.activeSelf){
+        for(let j=0;j<gameObj.components.length;j++){
+            let component = gameObj.components[j];
+            if(component instanceof Script && component.onDestroy) component.onDestroy();
+        }
     }
 };
 Instance.prototype.destroyObjectByName = function(name){
@@ -232,9 +236,11 @@ Instance.prototype.destroyUiItem = function(gameObj){
     for(let i = 0; i < gameObj.subObjects.length; i++){
         this.destroyUiItem(gameObj.subObjects[i]);
     }
-    for(let j=0;j<gameObj.components.length;j++){
-        let component = gameObj.components[j];
-        if(component instanceof Script && component.onDestroy) component.onDestroy();
+    if(gameObj.activeSelf){
+        for(let j=0;j<gameObj.components.length;j++){
+            let component = gameObj.components[j];
+            if(component instanceof Script && component.onDestroy) component.onDestroy();
+        }
     }
     Util.removeFromArray(gameObj, this._uiItems);
 };
@@ -424,6 +430,7 @@ Instance.prototype._updatePhysics = function(){
 Instance.prototype._fixedUpdate = function() {
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
@@ -435,6 +442,7 @@ Instance.prototype._fixedUpdate = function() {
 Instance.prototype._update = function() {
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
@@ -446,6 +454,7 @@ Instance.prototype._update = function() {
 Instance.prototype._postUpdate = function() {
     for(let i=0;i<this._gameObjects.length;i++){
         let gameObj = this._gameObjects[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
@@ -458,6 +467,7 @@ Instance.prototype._postUpdate = function() {
 Instance.prototype._fixedUpdateUi = function() {
     for(let i=0;i<this._uiItems.length;i++){
         let gameObj = this._uiItems[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
@@ -469,6 +479,7 @@ Instance.prototype._fixedUpdateUi = function() {
 Instance.prototype._updateUi = function() {
     for(let i=0;i<this._uiItems.length;i++){
         let gameObj = this._uiItems[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
@@ -480,6 +491,7 @@ Instance.prototype._updateUi = function() {
 Instance.prototype._postUpdateUi = function() {
     for(let i=0;i<this._uiItems.length;i++){
         let gameObj = this._uiItems[i];
+        if(!gameObj.activeSelf) continue;
         gameObj.initialize();
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];

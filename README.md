@@ -19,6 +19,8 @@ Nic Forzen
 
 ## Version History
 
+* 0.1.3 UNRELEASED
+
 * 0.1.2
     * Subobject bug fixes
     * Added SetActive and activeSelf properties to GameObject

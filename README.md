@@ -20,6 +20,9 @@ Nic Forzen
 ## Version History
 
 * 0.1.3 UNRELEASED
+    * Added ability to get text data in assets, loadData/getData
+    * Added grey as a base named color to Color, also added "gray" variants
+    * Removed convenience rendering methods from render.js
 
 * 0.1.2
     * Subobject bug fixes

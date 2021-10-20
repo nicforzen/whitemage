@@ -3,6 +3,7 @@ import { Util } from "../util/util.js";
 export function Assets() {
     this.sounds = {};
     this.images = {};
+    this.blobs = {};
     this.fontData = {};
     this.mappingData = {};
     this._stillLoading = 0;
@@ -48,6 +49,42 @@ Assets.prototype.loadImage = function(name, url) {
             r(i);
         }); i.src = url;
     });
+};
+Assets.prototype.loadData = function(name, url) {
+    this._stillLoading += 1;
+    let loaded = false;
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onerror = function() {
+        loaded = true;
+        this._stillLoading -= 1;
+        throw "Error getting asset: " + name;
+    }.bind(this);
+    xmlhttp.onload = function() {
+        if(loaded) return;
+        loaded = true;
+        if (xmlhttp.status != 200) {
+            this._stillLoading -= 1;
+            throw "Error getting asset: " + name + " " + xmlhttp.status;
+        } else {
+            this._stillLoading -= 1;
+            this.blobs[name] = xmlhttp.responseText;
+        }
+    }.bind(this);
+    xmlhttp.onreadystatechange=function(){
+        if (xmlhttp.readyState==4){
+            if(loaded) return;
+            loaded = true;
+            if(xmlhttp.status==200){
+                this._stillLoading -= 1;
+                this.blobs[name] = xmlhttp.responseText;
+            }else if (xmlhttp.status == 0) {
+                this._stillLoading -= 1;
+                throw "Error getting asset (status 0): " + name;
+            }
+        }
+    }.bind(this);
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 };
 Assets.prototype._createSil = function(name, color){
     let SilSuffix = ":_SIL";
@@ -128,6 +165,9 @@ Assets.prototype.getLineHeight = function(font) {
 };
 Assets.prototype.getImage = function(name) {
     return this.images[name];
+};
+Assets.prototype.getData = function(name) {
+    return this.blobs[name];
 };
 Assets.prototype.containsImage = function(name){
     return Util.indexOf(name, Object.keys(this.images)) >= 0;

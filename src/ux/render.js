@@ -35,6 +35,7 @@ Render.prototype._renderRect = function(x1, y1, x2, y2, alpha, anchorXPercent, a
     if (alpha <= 0) return;
 
     let camera = this.instance.camera;
+    if(!camera.enabled) return;
 
     let width = (x2 - x1) * scale * camera.scale;
     let height = (y2 - y1) * scale * camera.scale;
@@ -77,8 +78,9 @@ Render.prototype._renderArc = function(x, y, r, alpha, color, isFill, lineWidth,
     if (alpha <= 0) return;
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
-    this._ctx.beginPath();
     let camera = this.instance.camera;
+    if(!camera.enabled) return;
+    this._ctx.beginPath();
     let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this._wingWidthX;
     let dy = ((y-camera.transform.position.y)*camera.scale+camera.fovY) * this.scaleFactor + this._wingWidthY;
     this._ctx.moveTo(dx, dy);
@@ -97,6 +99,7 @@ Render.prototype._renderPolygon = function(x, y, points, alpha, color, isFill, l
     if (alpha <= 0) return;
     if (alpha != 1) this._ctx.globalAlpha = alpha;
     let camera = this.instance.camera;
+    if(!camera.enabled) return;
     this._ctx.lineWidth = lineWidth * this.scaleFactor;
     this._ctx.beginPath();
     let dx = ((x-camera.transform.position.x)*camera.scale+camera.fovX) * this.scaleFactor + this._wingWidthX;
@@ -182,6 +185,7 @@ Render.prototype._renderImage = function(name, x, y, scale, alpha, anchorXPercen
 
     let camera = this.instance.camera;
     if(!camera) return;
+    if(!camera.enabled) return;
 
     var drawWidth = this.scaleFactor * img.width * scale * camera.scale * inversePpu;
     var drawHeight = this.scaleFactor * img.height * scale * camera.scale * inversePpu;
@@ -267,6 +271,7 @@ Render.prototype._render = function(){
         this.fillCanvas(Color.BLACK);
         return;
     }
+    if(!this.instance.camera.enabled) return;
 
     // TODO only change when camera changes or height changes
     this._calculateScalars();
@@ -295,6 +300,7 @@ Render.prototype._render = function(){
     for(let i=0;i<this.instance._gameObjects.length;i++){
         let gameObj = this.instance._gameObjects[i];
         if(gameObj.activeSelf && gameObj.renderer) {
+            if(!gameObj.renderer.enabled) continue;
             // TODO can't I just use gameObject values? Why duplicate values?
             gameObj.renderer.x = gameObj.transform._calculatedPosition.x;
             gameObj.renderer.y = gameObj.transform._calculatedPosition.y;

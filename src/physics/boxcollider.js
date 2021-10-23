@@ -5,6 +5,7 @@ export function BoxCollider(width, height){
     this.gameObject = null;
     this.width = width;
     this.height = height;
+    this.enabled = true;
     if(this.width === undefined) this.width = 1;
     if(this.height === undefined) this.height = 1;
 

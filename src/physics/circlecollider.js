@@ -5,6 +5,7 @@ import { RigidbodyType } from './rigidbodytype';
 export function CircleCollider(radius){
     this.gameObject = null;
     this.radius = radius || 1;
+    this.enabled = true;
 
     this.bounce = 0;
     this.friction = 0.2;

@@ -1,5 +1,6 @@
 import { Vector2 } from "../physics/vector.js";
 import { Rigidbody } from "../physics/rigidbody.js";
+import { CircleRenderer, RectangleRenderer, SpriteRenderer, TextRenderer } from "../ux/renderer.js";
 
 export function GameObject(name){
     this.name = name;
@@ -45,6 +46,10 @@ GameObject.prototype.addComponent = function(component){
             throw 'Object already has a Rigidbody!';
         }
         this.rigidbody = component;
+    }
+    if(component instanceof CircleRenderer || component instanceof RectangleRenderer
+        || component instanceof TextRenderer || component instanceof SpriteRenderer){
+        this.renderer = component;  
     }
     this.components.push(component);
 };

@@ -2,8 +2,10 @@ import { Script } from "../control/script";
 import { BoxCollider } from "../physics/boxcollider";
 import { CircleCollider } from "../physics/circlecollider";
 import { Vec2 } from "planck";
+import { Vector2 } from "../physics/vector";
 
 export var Input = {
+    mousePosition: new Vector2(null, null),
     _keysDown: [],
     _keysHeld: [],
     _keysUp: [],
@@ -97,6 +99,8 @@ export var Input = {
 
         var local = instance.render._getRawCursorPosition(e);
         var point = { x: local.x, y: local.y, button: e.which};
+        this.mousePosition.x = point.x;
+        this.mousePosition.y = point.y;
 
         // Store static input values
         if(point.x != null && point.y != null){
@@ -121,16 +125,18 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseDown)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled
+                        && gameObj.components[j].onMouseDown)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseDown) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseDown) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
                             handled = true;
@@ -158,16 +164,18 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseDown)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled &&
+                        gameObj.components[j].onMouseDown)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseDown) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseDown) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))) script.onMouseDown(point);
                     }
@@ -190,6 +198,8 @@ export var Input = {
         }
         var local = instance.render._getRawCursorPosition(e);
         var point = { x: local.x, y: local.y, button: e.which};
+        this.mousePosition.x = point.x;
+        this.mousePosition.y = point.y;
 
         // Store static input values
         if(point.x != null && point.y != null){
@@ -222,16 +232,17 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseUp)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled && gameObj.components[j].onMouseUp)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseUp) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseUp) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
                             handled = true;
@@ -259,16 +270,18 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseUp)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled
+                        && gameObj.components[j].onMouseUp)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseUp) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseUp) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))) script.onMouseUp(point);
                     }
@@ -283,10 +296,10 @@ export var Input = {
         e.preventDefault();
         let handled = false;
 
-        // TODO SORT AND HANDLE
-
         var local = instance.render._getRawCursorPosition(e);
         var point = { x: local.x, y: local.y, button: e.which};
+        this.mousePosition.x = point.x;
+        this.mousePosition.y = point.y;
 
         // Store static input values
         if(point.x != null && point.y != null){
@@ -307,16 +320,17 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseOver)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled && gameObj.components[j].onMouseOver)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseOver) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseOver) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))){
                             handled = true;
@@ -341,16 +355,17 @@ export var Input = {
                 let colliders = [];
                 let hasMouseDown = false;
                 for(let j=0;j<gameObj.components.length;j++){
-                    if(gameObj.components[j] instanceof Script && gameObj.components[j].onMouseOver)
+                    if(gameObj.components[j] instanceof Script && gameObj.components[j].enabled && gameObj.components[j].onMouseOver)
                         hasMouseDown = true;
-                    if(gameObj.components[j] instanceof BoxCollider ||
+                    if((gameObj.components[j] instanceof BoxCollider ||
                         gameObj.components[j] instanceof CircleCollider)
+                        && gameObj.components[j].enabled)
                         colliders.push(gameObj.components[j]);
                 }
                 if(!hasMouseDown) continue;
                 for(let j=0;j<gameObj.components.length;j++){
                     let script = gameObj.components[j];
-                    if(!(script instanceof Script) || !script.onMouseOver) continue;
+                    if(!(script instanceof Script) || !script.enabled || !script.onMouseOver) continue;
                     for(let k = 0; k < colliders.length; k++){
                         if(colliders[k]._b2Fixture.testPoint(Vec2(point.x, point.y))) script.onMouseOver(point);
                     }

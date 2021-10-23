@@ -1,5 +1,6 @@
 export function Script(){
     this.id = 0;
+    this.enabled = true;
     this._initialized = false;
     this.gameObject = null;
 

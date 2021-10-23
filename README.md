@@ -19,7 +19,12 @@ Nic Forzen
 
 ## Version History
 
-* 0.1.3 UNRELEASED
+* 0.1.4
+    * Added Input.mousePosition field to get the on screen mouse location
+    * Added .enabled property to Components, allowing them to be disabled
+    * Added components will now populate the .renderer property
+
+* 0.1.3
     * Added ability to get text data in assets, loadData/getData
     * Added grey as a base named color to Color, also added "gray" variants
     * Removed convenience rendering methods from render.js

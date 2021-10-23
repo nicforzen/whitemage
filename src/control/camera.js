@@ -13,6 +13,7 @@ export function Camera(scale) {
     this.backgroundColor = Color.fromHexString("#191970");
     this.aspect = 1;
     this.orthographicSize = 5;
+    this.enabled = true;
 
     this.transform = {
         position: new Vector2()

@@ -106,13 +106,13 @@ Instance.prototype.initialize = function(canvas, localStorage) {
                 if(gameObj === obj1){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
-                        if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj2);
+                        if(component instanceof Script && component.enabled && component.onCollisionEnter) component.onCollisionEnter(obj2);
                     }
                 }
                 if(gameObj === obj2){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
-                        if(component instanceof Script && component.onCollisionEnter) component.onCollisionEnter(obj1);
+                        if(component instanceof Script && component.enabled && component.onCollisionEnter) component.onCollisionEnter(obj1);
                     }
                 }
             }
@@ -132,13 +132,13 @@ Instance.prototype.initialize = function(canvas, localStorage) {
                 if(gameObj === obj1){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
-                        if(component instanceof Script && component.onCollisionExit) component.onCollisionExit(obj2);
+                        if(component instanceof Script && component.enabled && component.onCollisionExit) component.onCollisionExit(obj2);
                     }
                 }
                 if(gameObj === obj2){
                     for(let j=0;j<gameObj.components.length;j++){
                         let component = gameObj.components[j];
-                        if(component instanceof Script && component.onCollisionExit) component.onCollisionExit(obj1);
+                        if(component instanceof Script && component.enabled && component.onCollisionExit) component.onCollisionExit(obj1);
                     }
                 }
             }
@@ -205,7 +205,7 @@ Instance.prototype.destroyObject = function(gameObj){
     if(gameObj.activeSelf){
         for(let j=0;j<gameObj.components.length;j++){
             let component = gameObj.components[j];
-            if(component instanceof Script && component.onDestroy) component.onDestroy();
+            if(component instanceof Script && component.enabled && component.onDestroy) component.onDestroy();
         }
     }
 };
@@ -239,7 +239,7 @@ Instance.prototype.destroyUiItem = function(gameObj){
     if(gameObj.activeSelf){
         for(let j=0;j<gameObj.components.length;j++){
             let component = gameObj.components[j];
-            if(component instanceof Script && component.onDestroy) component.onDestroy();
+            if(component instanceof Script && component.enabled && component.onDestroy) component.onDestroy();
         }
     }
     Util.removeFromArray(gameObj, this._uiItems);
@@ -394,7 +394,7 @@ Instance.prototype._dispatchCollisionStayEvents = function(){
         for(let j = 0; j < o.components.length; j++){
             let script = o.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.onCollisionStay) sBuffer.push(script);
+            if(script.onCollisionStay && script.enabled) sBuffer.push(script);
         }
         // Execute script on all stay bodies
         for(let j = 0; j < o.rigidbody._collisionStayBodies.length; j++){
@@ -435,7 +435,7 @@ Instance.prototype._fixedUpdate = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.fixedUpdate) script.fixedUpdate();
+            if(script.fixedUpdate && script.enabled) script.fixedUpdate();
         }
     }
 };
@@ -447,7 +447,7 @@ Instance.prototype._update = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.update) script.update();
+            if(script.update && script.enabled) script.update();
         }
     }
 };
@@ -459,7 +459,7 @@ Instance.prototype._postUpdate = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.lateUpdate) script.lateUpdate();
+            if(script.lateUpdate && script.enabled) script.lateUpdate();
         }
         if(gameObj.animator) gameObj.animator.advance(Time.deltaTime);
     }
@@ -472,7 +472,7 @@ Instance.prototype._fixedUpdateUi = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.fixedUpdate) script.fixedUpdate();
+            if(script.fixedUpdate && script.enabled) script.fixedUpdate();
         }
     }
 };
@@ -484,7 +484,7 @@ Instance.prototype._updateUi = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.update) script.update();
+            if(script.update && script.enabled) script.update();
         }
     }
 };
@@ -496,7 +496,7 @@ Instance.prototype._postUpdateUi = function() {
         for(let j=0;j<gameObj.components.length;j++){
             let script = gameObj.components[j];
             if(!(script instanceof Script)) continue;
-            if(script.lateUpdate) script.lateUpdate();
+            if(script.lateUpdate && script.enabled) script.lateUpdate();
         }
         if(gameObj.animator) gameObj.animator.advance(Time.deltaTime);
     }

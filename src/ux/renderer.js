@@ -15,6 +15,7 @@ export function ImageRenderer(name) {
         this.flipY = false;
         this.isVisible = true;
         this.sortingOrder = 0;
+        this.enabled = true;
 } // TODO remove when sprite sheets supported in sprite renderer
 
 export function SpriteRenderer(sprite) {
@@ -34,6 +35,7 @@ export function SpriteRenderer(sprite) {
     this.flipY = false;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function RectangleRenderer(width, height, color) {
@@ -53,6 +55,7 @@ export function RectangleRenderer(width, height, color) {
     this.flipY = false;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function CircleRenderer(r, color){
@@ -70,6 +73,7 @@ export function CircleRenderer(r, color){
     this.flipY = false;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function ArcRenderer(r, radianStart, radianEnd, color){
@@ -89,6 +93,7 @@ export function ArcRenderer(r, radianStart, radianEnd, color){
     this.flipY = false;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function PolygonRenderer(points, color) {
@@ -106,6 +111,7 @@ export function PolygonRenderer(points, color) {
     this.flipY = false;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function BitmapTextRenderer(font, text, scale) {
@@ -118,6 +124,7 @@ export function BitmapTextRenderer(font, text, scale) {
     this.anchorYPercent = 0.5;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }
 
 export function TextRenderer(font, size, color, text, scale, alignment, baseline) {
@@ -135,4 +142,5 @@ export function TextRenderer(font, size, color, text, scale, alignment, baseline
     this.baseline = baseline;
     this.isVisible = true;
     this.sortingOrder = 0;
+    this.enabled = true;
 }

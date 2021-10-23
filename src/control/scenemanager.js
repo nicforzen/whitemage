@@ -7,6 +7,6 @@ export var SceneManager = {
     loadScene(scene){
         this._instance.destroy();
         this._instance.setScene(scene);
-        this._instance.initialize(this._canvas, this._localStorage);
+        this._instance.driver.reset();
     }
 };

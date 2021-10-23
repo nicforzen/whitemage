@@ -38,3 +38,7 @@ Driver.prototype._start = function() {
             1000 / Application.targetFrameRate);
     }
 };
+Driver.prototype.reset = function() {
+    clearInterval(this._gameLoopInterval);
+    this.start();
+};

@@ -502,6 +502,7 @@ Instance.prototype._postUpdateUi = function() {
     }
 };
 Instance.prototype.destroy = function(){
+    this.initialized = false;
     this._gameObjects = [];
     this._uiItems = [];
 };

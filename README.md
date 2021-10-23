@@ -19,6 +19,9 @@ Nic Forzen
 
 ## Version History
 
+* 0.1.5 UNRELEASED
+    * Made sure assets were loaded correctly after scene transitions
+
 * 0.1.4
     * Added Input.mousePosition field to get the on screen mouse location
     * Added .enabled property to Components, allowing them to be disabled

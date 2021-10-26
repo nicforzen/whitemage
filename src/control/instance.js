@@ -37,6 +37,7 @@ export function Instance(scene) {
 
     this._positionIterations = 2;
     this._velocityIterations = 5;
+    this._eventsInitialized = false;
     this.setScene(scene);
 }
 
@@ -64,19 +65,22 @@ Instance.prototype.initialize = function(canvas, localStorage) {
         PlayerPrefs._setPrefs(localStorage);
         this.render._canvas = canvas;
         this.render._ctx = canvas.getContext('2d');
-        
-        window.addEventListener('keydown', Input._onKeyDown.bind(Input), false);
-        window.addEventListener('keyup', Input._onKeyUp.bind(Input), false);
-        window.addEventListener('blur', Input._onLostFocus.bind(Input));
-        canvas.addEventListener('touchstart', Input._touchStart.bind(Input));
-        canvas.addEventListener('touchend', Input._touchEnd.bind(Input));
-        canvas.addEventListener('touchmove', Input._touchMove.bind(Input));
-        canvas.addEventListener('mousedown', Input._onMouseDown.bind(Input));
-        canvas.addEventListener('mouseup', Input._onMouseUp.bind(Input));
-        canvas.addEventListener('mousemove', Input._onMouseMove.bind(Input));
-        canvas.addEventListener('mouseout', Input._onMouseLeave.bind(Input));
-        canvas.addEventListener('mouseleave', Input._onMouseLeave.bind(Input));
-        canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+        if(!this._eventsInitialized){
+            this._eventsInitialized = true;
+            window.addEventListener('keydown', Input._onKeyDown.bind(Input), false);
+            window.addEventListener('keyup', Input._onKeyUp.bind(Input), false);
+            window.addEventListener('blur', Input._onLostFocus.bind(Input), false);
+            canvas.addEventListener('touchstart', Input._touchStart.bind(Input), false);
+            canvas.addEventListener('touchend', Input._touchEnd.bind(Input), false);
+            canvas.addEventListener('touchmove', Input._touchMove.bind(Input), false);
+            canvas.addEventListener('mousedown', Input._onMouseDown.bind(Input), false);
+            canvas.addEventListener('mouseup', Input._onMouseUp.bind(Input), false);
+            canvas.addEventListener('mousemove', Input._onMouseMove.bind(Input), false);
+            canvas.addEventListener('mouseout', Input._onMouseLeave.bind(Input), false);
+            canvas.addEventListener('mouseleave', Input._onMouseLeave.bind(Input), false);
+            canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); }, false);
+        }
         canvas.focus();
         // canvas.addEventListener("wheel", function(e) {
         //     const delta = Math.sign(e.deltaY);

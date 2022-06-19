@@ -1,6 +1,6 @@
 
 export const Color = {
-    fromHexString(hexColor) { return _fromHexString(hexColor);},
+    fromHexString(hexColor) { return _fromHexString(hexColor); },
     WHITE: _fromHexString("#FFFFFF"),
     BLACK: _fromHexString("#000000"),
     RED: _fromHexString("#FF0000"),
